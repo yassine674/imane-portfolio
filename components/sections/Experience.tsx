@@ -110,8 +110,6 @@ export function Experience() {
 
           <div className="space-y-8">
             {experiences.map((exp, i) => (
-              /* GSAP targets exp-block (entrance only).
-                 Inner motion.div handles hover independently. */
               <article key={exp.id} className="exp-block relative">
 
                 {/* Timeline dot — desktop */}
@@ -164,7 +162,12 @@ export function Experience() {
                         <p className="font-mono text-[10px] text-[#3D3F52] uppercase tracking-wider">
                           {exp.period}
                         </p>
-                        <p className="font-mono text-[10px] text-[#3D3F52]">📍 {exp.location}</p>
+                        <p className="font-mono text-[10px] text-[#3D3F52] flex items-center gap-1">
+                          <svg width="7" height="9" viewBox="0 0 7 9" fill="currentColor" aria-hidden>
+                            <path d="M3.5 0C1.57 0 0 1.57 0 3.5c0 2.46 3.5 5.25 3.5 5.25S7 5.96 7 3.5C7 1.57 5.43 0 3.5 0zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6z"/>
+                          </svg>
+                          {exp.location}
+                        </p>
                       </div>
 
                       {/* Content */}
@@ -174,7 +177,7 @@ export function Experience() {
                           <p className="text-lg font-semibold" style={{ color: exp.color }}>{exp.company}</p>
                         </div>
 
-                        {/* Bullet points — stagger reveal on scroll (via GSAP) */}
+                        {/* Bullet points */}
                         <ul className="space-y-3 mb-6">
                           {exp.description.map((item, j) => (
                             <motion.li

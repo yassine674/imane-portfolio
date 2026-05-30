@@ -4,6 +4,7 @@ import { useRef, useState } from "react"
 import { motion, useInView, AnimatePresence } from "framer-motion"
 import { useMagnet } from "@/hooks/useMagnet"
 import { personalInfo } from "@/lib/data"
+import { SparklesCore } from "@/components/ui/sparkles"
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -17,7 +18,6 @@ export function Contact() {
     try {
       await navigator.clipboard.writeText(personalInfo.email)
     } catch {
-      /* fallback: execCommand is deprecated but handles older browsers */
       const ta = document.createElement("textarea")
       ta.value = personalInfo.email
       ta.style.position = "fixed"
@@ -39,8 +39,19 @@ export function Contact() {
       className="section-padding px-6 relative overflow-hidden"
       aria-label="Contact"
     >
-      {/* Ambient glow */}
-      <div className="orb w-[700px] h-[500px] bg-[rgba(0,255,209,0.03)] top-0 left-1/2 -translate-x-1/2" />
+      {/* Ambient sparkles — low density, slow, atmospheric */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <SparklesCore
+          id="contact-sparkles"
+          background="transparent"
+          minSize={0.4}
+          maxSize={1.6}
+          particleDensity={35}
+          particleColor="#00FFD1"
+          speed={0.5}
+          className="w-full h-full opacity-40"
+        />
+      </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
 
@@ -55,7 +66,7 @@ export function Contact() {
           <div className="section-label-line" />
         </motion.div>
 
-        {/* Cinematic heading — line-by-line clip reveal */}
+        {/* Cinematic heading */}
         <div className="mb-16">
           <div style={{ overflow: "hidden" }}>
             <motion.div
@@ -90,14 +101,13 @@ export function Contact() {
           </div>
         </div>
 
-        {/* Email interactive block */}
+        {/* Email block */}
         <motion.div
           className="mb-12 max-w-2xl"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          {/* aria-live: screen readers announce copy confirmation */}
           <div aria-live="polite" aria-atomic="true" className="sr-only">
             {copied ? "Email address copied to clipboard." : ""}
           </div>
@@ -126,12 +136,10 @@ export function Contact() {
                   {personalInfo.email}
                 </motion.p>
               </div>
-
-              {/* Icon — spring swap */}
               <motion.div
                 className="shrink-0 w-12 h-12 rounded-full flex items-center justify-center border"
                 animate={{
-                  borderColor: copied ? "rgba(163,230,53,0.5)"  : "rgba(0,255,209,0.2)",
+                  borderColor: copied ? "rgba(163,230,53,0.5)" : "rgba(0,255,209,0.2)",
                   backgroundColor: copied ? "rgba(163,230,53,0.1)" : "transparent",
                   scale: copied ? [1, 1.2, 1] : 1,
                 }}
@@ -139,23 +147,15 @@ export function Contact() {
               >
                 <AnimatePresence mode="wait">
                   {copied ? (
-                    <motion.svg
-                      key="check"
-                      width="18" height="18" viewBox="0 0 18 18" fill="none"
-                      initial={{ scale: 0, rotate: -45 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      exit={{ scale: 0 }}
+                    <motion.svg key="check" width="18" height="18" viewBox="0 0 18 18" fill="none"
+                      initial={{ scale: 0, rotate: -45 }} animate={{ scale: 1, rotate: 0 }} exit={{ scale: 0 }}
                       transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
                     >
                       <path d="M3 9l4 4 8-8" stroke="#A3E635" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </motion.svg>
                   ) : (
-                    <motion.svg
-                      key="copy"
-                      width="18" height="18" viewBox="0 0 18 18" fill="none"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
+                    <motion.svg key="copy" width="18" height="18" viewBox="0 0 18 18" fill="none"
+                      initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
                       transition={{ duration: 0.25 }}
                     >
                       <rect x="6" y="6" width="9" height="9" rx="2" stroke="#00FFD1" strokeWidth="1.5" />
@@ -168,7 +168,7 @@ export function Contact() {
           </motion.button>
         </motion.div>
 
-        {/* Social links — magnetic */}
+        {/* Social links */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mb-20"
           initial={{ opacity: 0, y: 20 }}
@@ -197,21 +197,13 @@ export function Contact() {
                 data-cursor="OPEN"
               >
                 <div>
-                  <motion.p
-                    className="font-display font-semibold text-[#EDE8DC]"
-                    whileHover={{ color: link.color }}
-                    transition={{ duration: 0.25 }}
-                  >
+                  <motion.p className="font-display font-semibold text-[#EDE8DC]" whileHover={{ color: link.color }} transition={{ duration: 0.25 }}>
                     {link.label}
                   </motion.p>
                   <p className="text-xs text-[#3D3F52] mt-0.5">{link.desc}</p>
                 </div>
-                <motion.svg
-                  className="w-4 h-4 text-[#3D3F52]"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  whileHover={{ color: link.color, x: 2, y: -2 }}
-                  transition={{ duration: 0.25 }}
+                <motion.svg className="w-4 h-4 text-[#3D3F52]" viewBox="0 0 16 16" fill="none"
+                  whileHover={{ color: link.color, x: 2, y: -2 }} transition={{ duration: 0.25 }}
                 >
                   <path d="M3 13L13 3M8 3h5v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </motion.svg>
@@ -220,7 +212,7 @@ export function Contact() {
           ))}
         </motion.div>
 
-        {/* Bottom footer line */}
+        {/* Footer */}
         <div className="hr-fade mb-8" />
         <motion.div
           className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"

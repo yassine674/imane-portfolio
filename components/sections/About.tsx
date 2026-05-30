@@ -53,7 +53,7 @@ function CountStat({ fact, inView }: { fact: typeof facts[number]; inView: boole
 export function About() {
   const sectionRef = useRef<HTMLElement>(null)
   const isInView   = useInView(sectionRef, { once: true, margin: "-80px" })
-  const factsRef   = useRef<HTMLUListElement>(null)
+  const factsRef   = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -160,7 +160,7 @@ export function About() {
                 {languages.map((lang) => (
                   <motion.div
                     key={lang.name}
-                    className="lang-card flex items-center gap-3 px-4 py-2.5 rounded-lg border border-[rgba(0,255,209,0.08)] bg-[rgba(8,8,18,0.5)]"
+                    className="lang-card flex items-center gap-4 px-5 py-3 rounded-lg border border-[rgba(0,255,209,0.08)] bg-[rgba(8,8,18,0.5)]"
                     whileHover={{
                       borderColor: "rgba(0,255,209,0.28)",
                       backgroundColor: "rgba(0,255,209,0.04)",
@@ -168,11 +168,9 @@ export function About() {
                     }}
                     transition={{ duration: 0.25 }}
                   >
-                    <span className="text-2xl">{lang.flag}</span>
-                    <div>
-                      <p className="font-medium text-[#EDE8DC] text-sm leading-none">{lang.name}</p>
-                      <p className="font-mono text-[10px] text-[#00FFD1] mt-0.5">{lang.level}</p>
-                    </div>
+                    <span className="font-impact text-2xl leading-none text-[#00FFD1]">{lang.level}</span>
+                    <div className="w-px h-7 bg-[rgba(255,255,255,0.06)]" />
+                    <p className="font-display font-semibold text-[#EDE8DC] text-sm tracking-wide">{lang.name}</p>
                   </motion.div>
                 ))}
               </div>
@@ -184,9 +182,9 @@ export function About() {
             <p className="font-mono text-[10px] tracking-widest text-[#3D3F52] uppercase mb-8">Quick facts</p>
 
             {/* Facts with count-up */}
-            <ul ref={factsRef} className="space-y-0">
+            <div ref={factsRef} className="space-y-0">
               {facts.map((f, i) => (
-                <motion.li
+                <motion.div
                   key={i}
                   className="flex items-baseline gap-4 py-5 border-b border-[rgba(255,255,255,0.05)] last:border-0"
                   initial={{ opacity: 0, x: -30 }}
@@ -198,9 +196,9 @@ export function About() {
                     <p className="font-mono text-[10px] text-[#3D3F52] uppercase tracking-wider mb-0.5">{f.label}</p>
                     <p className="text-sm text-[#8B8FA8] leading-snug">{f.context}</p>
                   </div>
-                </motion.li>
+                </motion.div>
               ))}
-            </ul>
+            </div>
 
             {/* Education timeline */}
             <div className="mt-10">
