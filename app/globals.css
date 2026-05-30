@@ -1,26 +1,362 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ─── Design Tokens ─────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Canvas */
+  --color-bg:          #010108;
+  --color-bg-2:        #08080F;
+  --color-surface:     rgba(8, 8, 18, 0.7);
+  --color-border:      rgba(0, 255, 209, 0.07);
+  --color-border-hi:   rgba(0, 255, 209, 0.22);
+
+  /* Text */
+  --color-parchment:   #EDE8DC;
+  --color-silver:      #8B8FA8;
+  --color-muted:       #3D3F52;
+
+  /* Accents */
+  --color-mint:        #00FFD1;
+  --color-violet:      #7B61FF;
+  --color-fire:        #FF6B35;
+  --color-lime:        #A3E635;
+  --color-ice:         #BAE6FD;
+
+  /* Glows */
+  --glow-mint:         rgba(0, 255, 209, 0.35);
+  --glow-violet:       rgba(123, 97, 255, 0.35);
+  --glow-fire:         rgba(255, 107, 53, 0.3);
+
+  /* Typography — static fallbacks for @theme; runtime var() refs live in body/classes below */
+  --font-impact:       'Bebas Neue', sans-serif;
+  --font-display:      'Syne', sans-serif;
+  --font-serif:        'DM Serif Display', serif;
+  --font-body:         'Space Grotesk', sans-serif;
+  --font-mono:         monospace;
+
+  /* Easing */
+  --ease-expo:         cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back:         cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-cinema:       cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Reset ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  color-scheme: dark;
+  scroll-behavior: auto;
+  font-size: 16px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #010108;
+  color: #EDE8DC;
+  font-family: var(--font-space-grotesk, 'Space Grotesk', sans-serif);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+::selection { background: rgba(0, 255, 209, 0.18); color: #00FFD1; }
+
+::-webkit-scrollbar { width: 1px; }
+::-webkit-scrollbar-track { background: #010108; }
+::-webkit-scrollbar-thumb { background: rgba(0, 255, 209, 0.25); }
+
+/* ─── Fonts — use next/font CSS vars with static fallbacks ─── */
+.font-impact  { font-family: var(--font-bebas-neue,    'Bebas Neue',      sans-serif); }
+.font-display { font-family: var(--font-syne,          'Syne',            sans-serif); }
+.font-serif   { font-family: var(--font-dm-serif,      'DM Serif Display', serif); }
+.font-body    { font-family: var(--font-space-grotesk, 'Space Grotesk',   sans-serif); }
+.font-mono    { font-family: var(--font-geist-mono,     monospace); }
+
+/* ─── Color utilities ────────────────────────────── */
+.text-accent-mint   { color: #00FFD1; }
+.text-accent-violet { color: #7B61FF; }
+.text-accent-fire   { color: #FF6B35; }
+
+/* ─── Glass ──────────────────────────────────────── */
+.glass {
+  background: rgba(8, 8, 18, 0.55);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid rgba(0, 255, 209, 0.07);
+}
+.glass-strong {
+  background: rgba(8, 8, 18, 0.85);
+  backdrop-filter: blur(40px) saturate(1.6);
+  -webkit-backdrop-filter: blur(40px) saturate(1.6);
+  border: 1px solid rgba(0, 255, 209, 0.12);
+}
+
+/* ─── Chip / Label ───────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid rgba(0, 255, 209, 0.2);
+  color: #00FFD1;
+  font-family: var(--font-geist-mono, monospace);
+}
+
+/* ─── Section spacing ────────────────────────────── */
+.section-padding {
+  padding-top: 140px;
+  padding-bottom: 140px;
+}
+@media (max-width: 768px) {
+  .section-padding { padding-top: 96px; padding-bottom: 96px; }
+}
+
+/* ─── Marquee ────────────────────────────────────── */
+@keyframes marquee-l { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes marquee-r { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+.marquee-l { animation: marquee-l 40s linear infinite; }
+.marquee-r { animation: marquee-r 40s linear infinite; }
+.marquee-l:hover, .marquee-r:hover { animation-play-state: paused; }
+
+/* ─── Glow effects ───────────────────────────────── */
+.glow-mint  { box-shadow: 0 0 60px rgba(0,255,209,0.12), 0 0 120px rgba(0,255,209,0.05); }
+.glow-violet{ box-shadow: 0 0 60px rgba(123,97,255,0.12), 0 0 120px rgba(123,97,255,0.05); }
+
+.text-glow-mint   { text-shadow: 0 0 40px rgba(0,255,209,0.6), 0 0 80px rgba(0,255,209,0.25); }
+.text-glow-violet { text-shadow: 0 0 40px rgba(123,97,255,0.6), 0 0 80px rgba(123,97,255,0.25); }
+
+/* ─── Scanline overlay ───────────────────────────── */
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 209, 0.012) 2px,
+    rgba(0, 255, 209, 0.012) 4px
+  );
+  pointer-events: none;
+  z-index: 9996;
+}
+
+/* ─── Noise grain ────────────────────────────────── */
+.grain::before {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9995;
+  opacity: 0.35;
+  animation: grain-shift 8s steps(10) infinite;
+}
+@keyframes grain-shift {
+  0%,100%  { transform: translate(0,0); }
+  10%      { transform: translate(-2%,-3%); }
+  20%      { transform: translate(1%,2%); }
+  30%      { transform: translate(-1%,1%); }
+  40%      { transform: translate(2%,-1%); }
+  50%      { transform: translate(-2%,2%); }
+  60%      { transform: translate(1%,-2%); }
+  70%      { transform: translate(-1%,3%); }
+  80%      { transform: translate(2%,1%); }
+  90%      { transform: translate(-1%,-2%); }
+}
+
+/* ─── Project card 3D tilt ───────────────────────── */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.08s linear, box-shadow 0.3s ease;
+  will-change: transform;
+}
+.card-3d:hover {
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(0,255,209,0.08);
+}
+.card-3d-inner {
+  transform: translateZ(16px);
+}
+
+/* ─── Skill badge ────────────────────────────────── */
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 6px;
+  background: rgba(0,255,209,0.04);
+  border: 1px solid rgba(0,255,209,0.09);
+  font-size: 12px;
+  font-weight: 500;
+  color: #8B8FA8;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  font-family: var(--font-space-grotesk, 'Space Grotesk', sans-serif);
+}
+.skill-tag:hover {
+  background: rgba(0,255,209,0.09);
+  border-color: rgba(0,255,209,0.28);
+  color: #00FFD1;
+}
+
+/* ─── Horizontal rule ────────────────────────────── */
+.hr-fade {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,209,0.2), transparent);
+  border: none;
+  margin: 0;
+}
+
+/* ─── Ambient orb ────────────────────────────────── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+/* ─── Canvas ─────────────────────────────────────── */
+.canvas-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ─── Focus styles (keyboard nav) ────────────────── */
+:focus-visible {
+  outline: 2px solid #00FFD1;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── Reduced motion (consolidated) ─────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-l, .marquee-r, .orb-float, .grain::before { animation: none !important; }
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* ─── Cursor ─────────────────────────────────────── */
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+
+/* ─── Spotlight card hover ───────────────────────── */
+.card-spotlight {
+  position: relative;
+}
+.card-spotlight-beam {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  border-radius: inherit;
+}
+.card-spotlight:hover .card-spotlight-beam {
+  opacity: 1;
+}
+
+/* ─── Word-reveal wrapper ────────────────────────── */
+.word-clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1.15;
+}
+
+/* ─── Magnetic button container ──────────────────── */
+.magnetic-wrap {
+  display: inline-flex;
+  will-change: transform;
+}
+
+/* ─── Experience card glow on hover ─────────────── */
+.exp-card-wrap {
+  position: relative;
+  border-radius: 1rem;
+  transition: box-shadow 0.4s ease;
+}
+.exp-card-wrap:hover {
+  box-shadow: 0 0 0 1px rgba(0,255,209,0.18), 0 20px 60px rgba(0,0,0,0.5), 0 0 60px rgba(0,255,209,0.04);
+}
+
+/* ─── Skill item — hover handled by Framer Motion ─── */
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.875rem;
+  color: #8B8FA8;
+  cursor: default;
+}
+.skill-item-bar {
+  width: 1px;
+  height: 12px;
+  border-radius: 9999px;
+}
+
+/* ─── Section label fade line ────────────────────── */
+.section-label-line {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, rgba(0,255,209,0.3) 0%, transparent 100%);
+}
+
+/* ─── Extracurricular role card — transform via Framer Motion ── */
+.role-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: rgba(8,8,18,0.55);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(94,234,212,0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.role-card:hover {
+  border-color: rgba(94,234,212,0.22);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* ─── Floating orb pulse ─────────────────────────── */
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-20px) scale(1.04); }
+}
+.orb-float {
+  animation: orb-float 8s ease-in-out infinite;
+}
+
+/* ─── Scroll indicator bounce ────────────────────── */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%       { transform: translateY(8px); opacity: 0.5; }
+}
+
+/* ─── Active nav link ────────────────────────────── */
+.nav-link-active {
+  color: #00FFD1 !important;
+}
+.nav-link-active::after {
+  transform: scaleX(1) !important;
+}
+
+/* ─── Preloader line sweep ───────────────────────── */
+@keyframes line-sweep {
+  0%   { transform: scaleX(0) translateX(-100%); }
+  50%  { transform: scaleX(1) translateX(0%); }
+  100% { transform: scaleX(0) translateX(100%); }
+}
+
