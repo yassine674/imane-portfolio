@@ -16,10 +16,8 @@ export function Header() {
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 60))
 
-  /* ── Active section tracking ── */
   useEffect(() => {
     const sectionIds = navLinks.map((l) => l.href.replace("#", ""))
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -28,16 +26,13 @@ export function Header() {
       },
       { threshold: 0.25, rootMargin: "-10% 0px -65% 0px" },
     )
-
     sectionIds.forEach((id) => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     })
-
     return () => observer.disconnect()
   }, [])
 
-  /* ── Close on resize + Escape key ── */
   useEffect(() => {
     const close = () => setMenuOpen(false)
     const onKey = (e: KeyboardEvent) => {
@@ -54,13 +49,11 @@ export function Header() {
     }
   }, [menuOpen])
 
-  /* ── Prevent body scroll when menu is open ── */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
   }, [menuOpen])
 
-  /* ── Focus first menu link when opened ── */
   useEffect(() => {
     if (menuOpen) {
       const first = menuRef.current?.querySelector<HTMLAnchorElement>("a")
@@ -77,23 +70,21 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           scrolled
-            ? "glass-strong py-4 border-b border-[rgba(0,255,209,0.06)]"
+            ? "glass-strong py-4 border-b border-[rgba(127,207,224,0.06)]"
             : "py-7 bg-transparent",
         )}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
-          {/* Logo */}
           <Link href="#" aria-label="Imane MOUMOUN">
             <motion.span
               className="font-impact text-2xl text-[#EDE8DC] tracking-tight"
-              whileHover={{ color: "#00FFD1" }}
+              whileHover={{ color: "#7FCFE0" }}
               transition={{ duration: 0.25 }}
             >
-              IM<span className="text-[#00FFD1]">.</span>
+              IM<span className="text-[#7FCFE0]">.</span>
             </motion.span>
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
             {navLinks.map((link) => {
               const isActive = active === link.href.replace("#", "")
@@ -104,25 +95,23 @@ export function Header() {
                   data-cursor-hover
                   className={cn(
                     "font-mono text-[11px] tracking-[0.15em] uppercase relative group transition-colors duration-300",
-                    isActive ? "text-[#00FFD1]" : "text-[#8B8FA8] hover:text-[#00FFD1]",
+                    isActive ? "text-[#7FCFE0]" : "text-[#8B8FA8] hover:text-[#7FCFE0]",
                   )}
                   whileHover={{ y: -1 }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {link.label}
-                  {/* underline */}
                   <span
                     className={cn(
-                      "absolute -bottom-0.5 left-0 right-0 h-px bg-[#00FFD1] transition-transform duration-300 origin-left",
+                      "absolute -bottom-0.5 left-0 right-0 h-px bg-[#7FCFE0] transition-transform duration-300 origin-left",
                       isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
                     )}
                   />
-                  {/* active dot */}
                   {isActive && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#00FFD1]"
-                      style={{ boxShadow: "0 0 8px rgba(0,255,209,0.8)" }}
+                      className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#7FCFE0]"
+                      style={{ boxShadow: "0 0 8px rgba(127,207,224,0.8)" }}
                     />
                   )}
                 </motion.a>
@@ -130,11 +119,10 @@ export function Header() {
             })}
           </nav>
 
-          {/* CTA */}
           <motion.a
             href="mailto:imanemn127@gmail.com"
             data-cursor-hover
-            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(0,255,209,0.22)] text-[#00FFD1] text-xs font-mono tracking-wider uppercase hover:bg-[rgba(0,255,209,0.08)] hover:border-[#00FFD1] transition-all duration-300"
+            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(127,207,224,0.22)] text-[#7FCFE0] text-xs font-mono tracking-wider uppercase hover:bg-[rgba(127,207,224,0.08)] hover:border-[#7FCFE0] transition-all duration-300"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.2 }}
@@ -143,7 +131,6 @@ export function Header() {
             Open to work
           </motion.a>
 
-          {/* Mobile toggle */}
           <button
             ref={toggleRef}
             onClick={() => setMenuOpen(!menuOpen)}
@@ -159,7 +146,6 @@ export function Header() {
         </div>
       </motion.header>
 
-      {/* Mobile overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -183,7 +169,7 @@ export function Header() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0,   y: 20 }}
                 transition={{ delay: i * 0.06, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="font-impact text-5xl text-[#EDE8DC] hover:text-[#00FFD1] transition-colors tracking-wide"
+                className="font-impact text-5xl text-[#EDE8DC] hover:text-[#7FCFE0] transition-colors tracking-wide"
               >
                 {link.label}
               </motion.a>

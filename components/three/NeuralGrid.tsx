@@ -19,8 +19,8 @@ export function NeuralGrid({ mouse }: NeuralGridProps) {
     const positions = new Float32Array(count * 3)
     const colors = new Float32Array(count * 3)
 
-    const mint  = new THREE.Color("#00FFD1")
-    const violet = new THREE.Color("#7B61FF")
+    const mint  = new THREE.Color("#7FCFE0")
+    const violet = new THREE.Color("#8484C8")
     const dim   = new THREE.Color("#1a1a2e")
 
     let idx = 0
@@ -45,10 +45,9 @@ export function NeuralGrid({ mouse }: NeuralGridProps) {
     return { positions, colors, count, cols, rows }
   }, [])
 
-  /* Cached colors — allocated once, never inside the frame loop */
   const cachedColors = useMemo(() => ({
-    mint:   new THREE.Color("#00FFD1"),
-    violet: new THREE.Color("#7B61FF"),
+    mint:   new THREE.Color("#7FCFE0"),
+    violet: new THREE.Color("#8484C8"),
     dim:    new THREE.Color("#111128"),
   }), [])
 
@@ -72,12 +71,10 @@ export function NeuralGrid({ mouse }: NeuralGridProps) {
       const bx = (i % cols) / (cols - 1) - 0.5
       const by = Math.floor(i / cols) / (rows - 1) - 0.5
 
-      // wave ripple
       const dist = Math.sqrt((bx - mx * 0.5) ** 2 + (by + my * 0.3) ** 2)
       const wave = Math.sin(dist * 12 - t * 2.5) * 0.3
       pos.setZ(i, wave)
 
-      // Color based on wave height
       const intensity = (wave + 0.3) / 0.6
       if (intensity > 0.72) {
         clr.setXYZ(i, mint.r, mint.g, mint.b)
