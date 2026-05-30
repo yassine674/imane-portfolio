@@ -9,7 +9,6 @@ import { useTextScramble } from "@/hooks/useTextScramble"
 import { useMagnet } from "@/hooks/useMagnet"
 import { personalInfo } from "@/lib/data"
 
-/* ── 3D Scene ─────────────────────────────────────────────────── */
 function HeroScene() {
   const mouse = useRef<[number, number]>([0, 0])
 
@@ -25,11 +24,7 @@ function HeroScene() {
   }, [])
 
   return (
-    <Canvas
-      camera={{ position: [0, 0, 9], fov: 55 }}
-      dpr={[1, 1.5]}
-      gl={{ antialias: false, alpha: true }}
-    >
+    <Canvas camera={{ position: [0, 0, 9], fov: 55 }} dpr={[1, 1.5]} gl={{ antialias: false, alpha: true }}>
       <Suspense fallback={null}>
         <NeuralGrid mouse={mouse} />
       </Suspense>
@@ -37,32 +32,25 @@ function HeroScene() {
   )
 }
 
-/* ── Hero ─────────────────────────────────────────────────────── */
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null)
-
-  /* Scroll parallax */
   const { scrollY } = useScroll()
   const yContent = useTransform(scrollY, [0, 600], [0, -100])
   const opacityContent = useTransform(scrollY, [0, 420], [1, 0.15])
   const yCanvas  = useTransform(scrollY, [0, 600], [0,  60])
 
-  /* Text scramble */
   const firstName = useTextScramble("IMANE",   { delay: 1.8, duration: 900  })
   const lastName  = useTextScramble("MOUMOUN", { delay: 2.1, duration: 1100 })
 
-  /* Magnetic CTAs */
   const magnet1 = useMagnet(0.28)
   const magnet2 = useMagnet(0.2)
 
-  /* GSAP entrance */
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     if (prefersReduced) return
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 })
-
       tl.fromTo(".hero-chip",
         { y: -30, opacity: 0, scale: 0.8 },
         { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.7)" },
@@ -103,26 +91,21 @@ export function Hero() {
       className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden"
       aria-label="Hero"
     >
-      {/* 3D reactive grid — slow parallax opposite to content */}
       <motion.div className="canvas-wrap opacity-70" style={{ y: yCanvas }}>
         <HeroScene />
       </motion.div>
 
-      {/* Ambient orbs */}
-      <div className="orb orb-float w-[600px] h-[400px] bg-[rgba(0,255,209,0.04)] top-1/4 -left-32 -z-0"
+      <div className="orb orb-float w-[600px] h-[400px] bg-[rgba(127,207,224,0.04)] top-1/4 -left-32 -z-0"
            style={{ animationDelay: "0s" }} />
-      <div className="orb orb-float w-[400px] h-[300px] bg-[rgba(123,97,255,0.05)] bottom-1/4 -right-16 -z-0"
+      <div className="orb orb-float w-[400px] h-[300px] bg-[rgba(132,132,200,0.05)] bottom-1/4 -right-16 -z-0"
            style={{ animationDelay: "4s" }} />
 
-      {/* Fade to sections */}
-      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#010108] to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#07070F] to-transparent z-10 pointer-events-none" />
 
-      {/* Content — scroll parallax wrapper */}
       <motion.div
         className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 w-full pt-24"
         style={{ y: yContent, opacity: opacityContent }}
       >
-        {/* Status badge */}
         <div className="hero-chip mb-6 w-fit">
           <div className="chip">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
@@ -130,34 +113,23 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Name — Bebas Neue impact + scramble */}
         <div className="mb-2 overflow-hidden" aria-label={personalInfo.name}>
           <div
             className="font-impact leading-none select-none"
-            style={{
-              fontSize: "clamp(5rem, 16vw, 15rem)",
-              color: "#EDE8DC",
-              letterSpacing: "-0.01em",
-            }}
+            style={{ fontSize: "clamp(5rem, 16vw, 15rem)", color: "#EDE8DC", letterSpacing: "-0.01em" }}
             aria-hidden="true"
           >
             {firstName}
           </div>
-          {/* Last name — solid mint, no gradient */}
           <div
             className="font-impact leading-none select-none -mt-4 relative"
-            style={{
-              fontSize: "clamp(5rem, 16vw, 15rem)",
-              letterSpacing: "-0.01em",
-              color: "#00FFD1",
-            }}
+            style={{ fontSize: "clamp(5rem, 16vw, 15rem)", letterSpacing: "-0.01em", color: "#7FCFE0" }}
             aria-hidden="true"
           >
             {lastName}
-            {/* Subtle animated underline shimmer — accent, not gradient text */}
             <motion.div
               className="absolute bottom-2 left-0"
-              style={{ height: "3px", background: "linear-gradient(90deg, transparent, #00FFD1, #7B61FF, transparent)" }}
+              style={{ height: "3px", background: "linear-gradient(90deg, transparent, #7FCFE0, #8484C8, transparent)" }}
               initial={{ scaleX: 0, transformOrigin: "left" }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 1.1, delay: 2.8, ease: [0.16, 1, 0.3, 1] }}
@@ -165,22 +137,18 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Eyebrow divider */}
-        <div className="hero-eyebrow h-px bg-gradient-to-r from-[#00FFD1] via-[#7B61FF] to-transparent mb-6 max-w-xl" />
+        <div className="hero-eyebrow h-px bg-gradient-to-r from-[#7FCFE0] via-[#8484C8] to-transparent mb-6 max-w-xl" />
 
-        {/* Role */}
         <p className="hero-role font-display font-semibold text-xl md:text-2xl text-[#8B8FA8] mb-4 tracking-wide">
           {personalInfo.title}
           <span className="mx-3 text-[#3D3F52]">·</span>
           <span className="text-[#EDE8DC]">{personalInfo.location}</span>
         </p>
 
-        {/* Subtitle */}
         <p className="hero-subtitle max-w-xl text-[#8B8FA8] text-lg leading-relaxed mb-8">
           {personalInfo.subtitle}
         </p>
 
-        {/* Meta */}
         <div className="flex flex-wrap gap-6 mb-10">
           {[
             { label: "Institution", value: "Mines Saint-Étienne" },
@@ -194,9 +162,7 @@ export function Hero() {
           ))}
         </div>
 
-        {/* CTAs — magnetic buttons */}
         <div className="flex flex-wrap gap-4">
-          {/* Primary CTA */}
           <div
             ref={magnet1.ref as React.RefObject<HTMLDivElement>}
             onMouseMove={magnet1.onMouseMove as React.MouseEventHandler<HTMLDivElement>}
@@ -206,20 +172,16 @@ export function Hero() {
           >
             <a
               href="#projects"
-              className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full overflow-hidden font-semibold text-sm text-[#010108] bg-[#00FFD1] hover:bg-[#7B61FF] transition-colors duration-500"
+              className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full overflow-hidden font-semibold text-sm text-[#07070F] bg-[#7FCFE0] hover:bg-[#8484C8] transition-colors duration-500"
               data-cursor="VIEW"
             >
               <span className="relative z-10">View Projects</span>
-              <svg
-                className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
-                viewBox="0 0 16 16" fill="none"
-              >
+              <svg className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 16 16" fill="none">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
           </div>
 
-          {/* Secondary CTA */}
           <div
             ref={magnet2.ref as React.RefObject<HTMLDivElement>}
             onMouseMove={magnet2.onMouseMove as React.MouseEventHandler<HTMLDivElement>}
@@ -229,7 +191,7 @@ export function Hero() {
           >
             <a
               href="#contact"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-[rgba(0,255,209,0.25)] text-[#EDE8DC] text-sm font-medium hover:border-[#00FFD1] hover:text-[#00FFD1] transition-all duration-300"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-[rgba(127,207,224,0.25)] text-[#EDE8DC] text-sm font-medium hover:border-[#7FCFE0] hover:text-[#7FCFE0] transition-all duration-300"
               data-cursor-hover
             >
               Let&apos;s talk
@@ -238,22 +200,15 @@ export function Hero() {
         </div>
       </motion.div>
 
-      {/* Scroll indicator — fully framer-motion controlled */}
       <motion.div
         className="absolute right-8 bottom-12 hidden lg:flex flex-col items-center gap-3 z-20"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1,  y: 0  }}
         transition={{ duration: 0.8, delay: 2.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <span
-          className="font-mono text-[9px] tracking-[0.25em] text-[#3D3F52] uppercase"
-          style={{ writingMode: "vertical-rl" }}
-        >
-          scroll
-        </span>
-        {/* Pulsing line */}
+        <span className="font-mono text-[9px] tracking-[0.25em] text-[#3D3F52] uppercase" style={{ writingMode: "vertical-rl" }}>scroll</span>
         <motion.div
-          className="w-px h-16 bg-gradient-to-b from-[rgba(0,255,209,0.5)] to-transparent"
+          className="w-px h-16 bg-gradient-to-b from-[rgba(127,207,224,0.5)] to-transparent"
           animate={{ scaleY: [1, 0.4, 1], opacity: [1, 0.4, 1] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 3.5 }}
           style={{ transformOrigin: "top" }}
