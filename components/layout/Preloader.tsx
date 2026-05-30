@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import gsap from "gsap"
 
 export function Preloader() {
-  const [phase, setPhase] = useState<"loading" | "reveal" | "done">("loading")
+  const [visible, setVisible] = useState(true)
+  const [unmounted, setUnmounted] = useState(false)
   const counterRef = useRef<HTMLSpanElement>(null)
   const barRef = useRef<HTMLDivElement>(null)
   const nameRef = useRef<HTMLDivElement>(null)
@@ -33,16 +34,18 @@ export function Preloader() {
       "-=0.4",
     )
 
-    // Hold briefly, then exit
+    // Hold briefly, then trigger exit
     .to({}, { duration: 0.35 })
-    .call(() => setPhase("reveal"))
+    .call(() => setVisible(false))
 
     return () => { tl.kill() }
   }, [])
 
+  if (unmounted) return null
+
   return (
     <AnimatePresence>
-      {phase !== "done" && (
+      {visible && (
         <motion.div
           key="preloader"
           className="fixed inset-0 z-[99999] bg-[#010108] flex flex-col items-center justify-center"
@@ -50,7 +53,7 @@ export function Preloader() {
             clipPath: ["inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"],
             transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] },
           }}
-          onAnimationComplete={() => { if (phase === "reveal") setPhase("done") }}
+          onAnimationComplete={() => setUnmounted(true)}
         >
           {/* Corner coords — futuristic feel */}
           <div className="absolute top-8 left-8 font-mono text-[10px] text-[#3D3F52] tracking-widest">
