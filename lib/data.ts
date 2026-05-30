@@ -27,7 +27,7 @@ export const experiences = [
     location: "Montpellier, France",
     period: "Apr. – Aug. 2026",
     type: "Research",
-    color: "#5EEAD4",
+    color: "#5BBFD8",
     description: [
       "Developed deep learning models (Transformers, GNN) for automatic extraction of agricultural parcels from satellite imagery",
       "Explored approaches combining temporal information, geometric constraints, and end-to-end vectorization",
@@ -41,7 +41,7 @@ export const experiences = [
     location: "Pertuis, France",
     period: "Jan. – Feb. 2025",
     type: "Industry",
-    color: "#A78BFA",
+    color: "#9490D4",
     description: [
       "Collected and annotated a dedicated dataset for olive tree trunk detection",
       "Fine-tuned YOLOv8 model with hyperparameter optimization to improve detection performance",
@@ -59,7 +59,7 @@ export const projects = [
     description:
       "Multi-modal RAG system for scientific paper analysis using structured PDF extraction, vector-based retrieval, and agentic reasoning with LlamaIndex. End-to-end FastAPI + Streamlit deployment.",
     tags: ["LlamaIndex", "FastAPI", "Streamlit", "RAG", "LLM"],
-    color: "#5EEAD4",
+    color: "#5BBFD8",
     visual: "neural",
     impact: "End-to-end pipeline from raw PDF to cited answer in under 4s.",
     github: "https://github.com/imanemn127",
@@ -72,7 +72,7 @@ export const projects = [
     description:
       "Generated 10K+ synthetic Indian healthcare records with LLM-based validation pipeline. Geocoding system (98% resolution) + natural-language facility search.",
     tags: ["LLM", "Synthetic Data", "Geocoding", "Streamlit"],
-    color: "#4ADE80",
+    color: "#55C492",
     visual: "wave",
     impact: "10K+ records generated, 98% geocoding resolution rate.",
     github: "https://github.com/imanemn127",
@@ -85,7 +85,7 @@ export const projects = [
     description:
       "REINFORCE-based RL agent for maintenance scheduling + neural fault classifier deployed on STM32L4R9 with TensorFlow Lite and STM32CubeAI.",
     tags: ["RL", "Edge AI", "STM32", "TensorFlow Lite"],
-    color: "#A78BFA",
+    color: "#8484C8",
     visual: "circuit",
     impact: "Classifier running under 256 KB flash on STM32L4R9.",
     github: "https://github.com/imanemn127",
@@ -98,7 +98,7 @@ export const projects = [
     description:
       "Gamma GLM modelling of semiconductor cycle times in R with MLE and simulation-based validation against real production data.",
     tags: ["R", "GLM", "Statistics", "MLE"],
-    color: "#FCD34D",
+    color: "#C8A848",
     visual: "data",
     impact: "Simulation-validated against real fab production data.",
     github: "https://github.com/imanemn127",
@@ -111,7 +111,7 @@ export const projects = [
     description:
       "Comparative evaluation of ML classifiers on noisy ECG signals with PCA-based dimensionality reduction and clustering analysis.",
     tags: ["Scikit-learn", "PCA", "ECG", "Classification"],
-    color: "#F472B6",
+    color: "#C07898",
     visual: "pulse",
     impact: "Benchmarked 6 classifiers; SVM best at 94.2% accuracy.",
     github: "https://github.com/imanemn127",
@@ -124,7 +124,7 @@ export const projects = [
     description:
       "Detection and tracking of tennis balls through fine-tuning of YOLOv5 and TrackNet models for real-time sports analytics.",
     tags: ["YOLOv5", "TrackNet", "Computer Vision", "PyTorch"],
-    color: "#34D399",
+    color: "#50B890",
     visual: "track",
     impact: "Real-time tracking at 30 fps on consumer GPU.",
     github: "https://github.com/imanemn127",
@@ -134,22 +134,22 @@ export const projects = [
 export const skillCategories = [
   {
     name: "Development",
-    color: "#5EEAD4",
+    color: "#5BBFD8",
     skills: ["Python", "C/C++", "R", "Git", "Docker", "Linux", "Matlab"],
   },
   {
     name: "Data & Vision",
-    color: "#A78BFA",
+    color: "#9490D4",
     skills: ["NumPy", "Matplotlib", "Pandas", "OpenCV", "Roboflow", "Tidyverse"],
   },
   {
     name: "ML & Deep Learning",
-    color: "#4ADE80",
+    color: "#55C492",
     skills: ["Scikit-learn", "PyTorch", "TensorFlow", "Keras"],
   },
   {
     name: "Embedded / HW",
-    color: "#FCD34D",
+    color: "#C8A848",
     skills: ["STM32", "CubeAI", "CubeMX", "SystemVerilog", "Vivado", "Modelsim"],
   },
 ]
