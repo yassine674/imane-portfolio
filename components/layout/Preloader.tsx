@@ -1,110 +1,85 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import gsap from "gsap"
+import { SpiralAnimation } from "@/components/ui/spiral-animation"
+import { usePreloader } from "@/lib/preloader-context"
 
 export function Preloader() {
+  const { markDone } = usePreloader()
   const [visible, setVisible] = useState(true)
   const [done, setDone] = useState(false)
-  const counterRef = useRef<HTMLSpanElement>(null)
-  const barRef = useRef<HTMLDivElement>(null)
-  const nameRef = useRef<HTMLDivElement>(null)
+  const [enterVisible, setEnterVisible] = useState(false)
 
   useEffect(() => {
-    const obj = { val: 0 }
-    const tl = gsap.timeline()
-
-    // Count 0 → 100
-    tl.to(obj, {
-      val: 100,
-      duration: 2.0,
-      ease: "power1.inOut",
-      onUpdate() {
-        const v = Math.round(obj.val)
-        if (counterRef.current) counterRef.current.textContent = String(v).padStart(3, "0")
-        if (barRef.current)     barRef.current.style.transform = `scaleX(${v / 100})`
-      },
-    })
-
-    // Reveal name
-    .fromTo(nameRef.current,
-      { y: 60, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
-      "-=0.4",
-    )
-
-    // Hold briefly, then trigger exit
-    .to({}, { duration: 0.35 })
-    .call(() => setVisible(false))
-
-    // Safety fallback — guarantee preloader always dismisses
-    const fallback = setTimeout(() => setVisible(false), 5000)
-
-    return () => { tl.kill(); clearTimeout(fallback) }
+    // Show "Enter" button after 2s
+    const showEnter = setTimeout(() => setEnterVisible(true), 2000)
+    // Auto-dismiss after 9s if user hasn't clicked
+    const autoDismiss = setTimeout(() => setVisible(false), 9000)
+    return () => {
+      clearTimeout(showEnter)
+      clearTimeout(autoDismiss)
+    }
   }, [])
 
   if (done) return null
 
   return (
-    <AnimatePresence onExitComplete={() => setDone(true)}>
+    <AnimatePresence onExitComplete={() => { setDone(true); markDone() }}>
       {visible && (
         <motion.div
           key="preloader"
-          className="fixed inset-0 z-[99999] bg-[#07070F] flex flex-col items-center justify-center"
+          className="fixed inset-0 z-[99999] bg-black overflow-hidden"
           initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
           exit={{
             clipPath: "inset(0% 0% 100% 0%)",
             transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] },
           }}
         >
-          {/* Corner coords — futuristic feel */}
-          <div className="absolute top-8 left-8 font-mono text-[10px] text-[#3D3F52] tracking-widest">
+          {/* Spiral canvas fills the entire screen */}
+          <div className="absolute inset-0">
+            <SpiralAnimation />
+          </div>
+
+          {/* Corner labels */}
+          <div className="absolute top-8 left-8 font-mono text-[10px] text-[rgba(255,255,255,0.2)] tracking-widest pointer-events-none">
             43.5297°N / 5.7003°E
           </div>
-          <div className="absolute top-8 right-8 font-mono text-[10px] text-[#3D3F52] tracking-widest">
+          <div className="absolute top-8 right-8 font-mono text-[10px] text-[rgba(255,255,255,0.2)] tracking-widest pointer-events-none">
             PORTFOLIO.V3
           </div>
-
-          {/* Name reveal */}
-          <div ref={nameRef} className="mb-14 text-center opacity-0">
-            <div
-              className="font-impact text-[clamp(4rem,12vw,10rem)] leading-none"
-              style={{ color: "#EDE8DC", letterSpacing: "-0.01em" }}
-            >
-              IMANE
-            </div>
-            <div
-              className="font-impact text-[clamp(4rem,12vw,10rem)] leading-none -mt-2"
-              style={{ color: "#7FCFE0", letterSpacing: "-0.01em" }}
-            >
-              MOUMOUN
-            </div>
+          <div className="absolute bottom-8 left-8 font-mono text-[10px] text-[rgba(255,255,255,0.2)] tracking-widest pointer-events-none">
+            AI & ML ENGINEER
+          </div>
+          <div className="absolute bottom-8 right-8 font-mono text-[10px] text-[rgba(255,255,255,0.2)] tracking-widest pointer-events-none">
+            MINES SAINT-ÉTIENNE
           </div>
 
-          {/* Progress bar */}
-          <div className="w-48 h-px bg-[rgba(255,255,255,0.06)] overflow-hidden relative mb-4">
-            <div
-              ref={barRef}
-              className="absolute inset-y-0 left-0 right-0 origin-left"
-              style={{
-                background: "linear-gradient(90deg, #7FCFE0, #8484C8)",
-                transform: "scaleX(0)",
-                transition: "none",
-              }}
+          {/* Enter button — fades in after 2s */}
+          <motion.button
+            type="button"
+            onClick={() => setVisible(false)}
+            aria-label="Enter portfolio"
+            className="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 z-10 group"
+            initial={{ opacity: 0, y: 12 }}
+            animate={enterVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="
+              block text-white text-base tracking-[0.35em] uppercase font-light
+              transition-all duration-500
+              group-hover:tracking-[0.5em] group-hover:text-[#7FCFE0]
+            ">
+              Enter
+            </span>
+            {/* Animated underline */}
+            <motion.span
+              className="block h-px bg-white mx-auto mt-2"
+              initial={{ width: 0 }}
+              animate={enterVisible ? { width: "100%" } : { width: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             />
-          </div>
-
-          {/* Counter */}
-          <span ref={counterRef} className="font-mono text-xs text-[#3D3F52] tracking-widest">
-            000
-          </span>
-
-          {/* Bottom bar */}
-          <div className="absolute bottom-8 left-8 right-8 flex items-center justify-between">
-            <span className="font-mono text-[10px] text-[#3D3F52] tracking-widest">AI & ML ENGINEER</span>
-            <span className="font-mono text-[10px] text-[#3D3F52] tracking-widest">MINES SAINT-ÉTIENNE</span>
-          </div>
+          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>

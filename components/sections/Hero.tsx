@@ -7,19 +7,20 @@ import { useMagnet } from "@/hooks/useMagnet"
 import { personalInfo } from "@/lib/data"
 import { useLang, t } from "@/lib/i18n"
 import { ShutterText } from "@/components/ui/hero-shutter-text"
+import { HeroStarfield } from "@/components/ui/hero-starfield"
+import { usePreloader } from "@/lib/preloader-context"
 
 interface Ripple { id: number; x: number; y: number }
 
-/* ── Inline styles for DigitalSerenity animations ── */
 const HERO_STYLES = `
 @keyframes hero-grid-draw {
   0%   { stroke-dashoffset: 1000; opacity: 0; }
-  50%  { opacity: 0.15; }
-  100% { stroke-dashoffset: 0; opacity: 0.1; }
+  50%  { opacity: 0.08; }
+  100% { stroke-dashoffset: 0; opacity: 0.05; }
 }
 @keyframes hero-dot-pulse {
-  0%,100% { opacity: 0.08; transform: scale(1); }
-  50%     { opacity: 0.22; transform: scale(1.15); }
+  0%,100% { opacity: 0.06; transform: scale(1); }
+  50%     { opacity: 0.18; transform: scale(1.15); }
 }
 @keyframes hero-ripple {
   0%   { transform: translate(-50%,-50%) scale(0); opacity: 0.6; }
@@ -36,7 +37,7 @@ const HERO_STYLES = `
   75%     { transform: translateY(-18px) translateX(8px); opacity: 0.7; }
 }
 .hero-grid-line {
-  stroke: rgba(127,207,224,0.35);
+  stroke: rgba(127,207,224,0.2);
   stroke-width: 0.5;
   opacity: 0;
   stroke-dasharray: 6 6;
@@ -44,14 +45,14 @@ const HERO_STYLES = `
   animation: hero-grid-draw 2.5s ease-out forwards;
 }
 .hero-detail-dot {
-  fill: rgba(127,207,224,0.6);
+  fill: rgba(127,207,224,0.5);
   opacity: 0;
   animation: hero-dot-pulse 3s ease-in-out infinite;
 }
 .hero-corner-el {
   position: absolute;
   width: 36px; height: 36px;
-  border: 1px solid rgba(127,207,224,0.15);
+  border: 1px solid rgba(127,207,224,0.12);
   opacity: 0;
   animation: hero-corner-in 0.8s ease-out forwards;
 }
@@ -91,27 +92,20 @@ export function Hero() {
   const containerRef = useRef<HTMLElement>(null)
   const { lang } = useLang()
   const tx = t[lang]
+  const { preloaderDone } = usePreloader()
 
-  /* Scroll parallax */
   const { scrollY } = useScroll()
-  const yContent  = useTransform(scrollY, [0, 600], [0, -100])
-  const yOpacity  = useTransform(scrollY, [0, 420],  [1, 0.15])
+  const yContent = useTransform(scrollY, [0, 600], [0, -100])
+  const yOpacity = useTransform(scrollY, [0, 420], [1, 0.15])
 
-  /* Magnetic CTAs */
   const magnet1 = useMagnet(0.28)
   const magnet2 = useMagnet(0.2)
 
-  /* Mouse gradient */
   const [mouseStyle, setMouseStyle] = useState({ left: "0px", top: "0px", opacity: 0 })
-
-  /* Click ripples */
   const [ripples, setRipples] = useState<Ripple[]>([])
-
-  /* Particles ref for scroll trigger */
   const particlesRef = useRef<HTMLDivElement[]>([])
   const scrolledRef = useRef(false)
 
-  /* Mouse move */
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       setMouseStyle({ left: `${e.clientX}px`, top: `${e.clientY}px`, opacity: 1 })
@@ -125,7 +119,6 @@ export function Hero() {
     }
   }, [])
 
-  /* Click ripple */
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       const r: Ripple = { id: Date.now(), x: e.clientX, y: e.clientY }
@@ -137,7 +130,6 @@ export function Hero() {
     return () => section?.removeEventListener("click", onClick)
   }, [])
 
-  /* Particles on scroll */
   useEffect(() => {
     const onScroll = () => {
       if (scrolledRef.current) return
@@ -150,14 +142,13 @@ export function Hero() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  /* GSAP entrance */
   useEffect(() => {
+    if (!preloaderDone) return
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     if (prefersReduced) return
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.3 })
-
+      const tl = gsap.timeline({ delay: 0.1 })
       tl.fromTo(".hero-chip",
         { y: -30, opacity: 0, scale: 0.8 },
         { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.7)" },
@@ -169,28 +160,28 @@ export function Hero() {
       )
       .fromTo(".hero-role",
         { y: 40, opacity: 0 },
-        { y: 0,  opacity: 1, duration: 0.7, ease: "power3.out" },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
         "-=0.3",
       )
       .fromTo(".hero-subtitle",
         { y: 24, opacity: 0 },
-        { y: 0,  opacity: 1, duration: 0.6, ease: "power3.out" },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
         "-=0.2",
       )
       .fromTo(".hero-meta",
         { y: 16, opacity: 0 },
-        { y: 0,  opacity: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" },
         "-=0.2",
       )
       .fromTo(".hero-cta",
         { y: 20, opacity: 0, scale: 0.94 },
-        { y: 0,  opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: "back.out(1.4)" },
+        { y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: "back.out(1.4)" },
         "-=0.1",
       )
     }, containerRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [preloaderDone])
 
   const setParticleRef = useCallback((el: HTMLDivElement | null, i: number) => {
     if (el) particlesRef.current[i] = el
@@ -200,13 +191,11 @@ export function Hero() {
     <>
       <style dangerouslySetInnerHTML={{ __html: HERO_STYLES }} />
 
-      {/* Mouse gradient — outside section so it's fixed to viewport */}
       <div
         id="hero-mouse-gradient"
         style={{ left: mouseStyle.left, top: mouseStyle.top, opacity: mouseStyle.opacity }}
       />
 
-      {/* Click ripples */}
       {ripples.map((r) => (
         <div
           key={r.id}
@@ -217,10 +206,13 @@ export function Hero() {
 
       <section
         ref={containerRef}
-        className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden"
+        className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden bg-black"
         aria-label="Hero"
       >
-        {/* ── Animated SVG grid ── */}
+        {/* ── Twinkling starfield ── */}
+        <HeroStarfield />
+
+        {/* ── Subtle SVG grid over stars ── */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none"
           xmlns="http://www.w3.org/2000/svg"
@@ -228,16 +220,14 @@ export function Hero() {
         >
           <defs>
             <pattern id="heroBaseGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(127,207,224,0.035)" strokeWidth="0.5" />
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(127,207,224,0.02)" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#heroBaseGrid)" />
-          {/* Animated accent lines */}
           <line x1="0" y1="20%" x2="100%" y2="20%" className="hero-grid-line" style={{ animationDelay: "0.8s" }} />
           <line x1="0" y1="80%" x2="100%" y2="80%" className="hero-grid-line" style={{ animationDelay: "1.2s" }} />
           <line x1="18%" y1="0" x2="18%" y2="100%" className="hero-grid-line" style={{ animationDelay: "1.5s" }} />
           <line x1="82%" y1="0" x2="82%" y2="100%" className="hero-grid-line" style={{ animationDelay: "1.9s" }} />
-          {/* Intersection dots */}
           <circle cx="18%" cy="20%" r="2.5" className="hero-detail-dot" style={{ animationDelay: "2.6s" }} />
           <circle cx="82%" cy="20%" r="2.5" className="hero-detail-dot" style={{ animationDelay: "2.8s" }} />
           <circle cx="18%" cy="80%" r="2.5" className="hero-detail-dot" style={{ animationDelay: "3.0s" }} />
@@ -246,20 +236,20 @@ export function Hero() {
         </svg>
 
         {/* Corner ornaments */}
-        <div className="hero-corner-el top-8 left-8"  style={{ animationDelay: "3.8s" }}>
+        <div className="hero-corner-el top-8 left-8" style={{ animationDelay: "0.6s" }}>
           <div className="absolute top-0 left-0 w-2 h-2 rounded-full bg-[rgba(127,207,224,0.3)]" />
         </div>
-        <div className="hero-corner-el top-8 right-8" style={{ animationDelay: "4.0s" }}>
+        <div className="hero-corner-el top-8 right-8" style={{ animationDelay: "0.8s" }}>
           <div className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[rgba(127,207,224,0.3)]" />
         </div>
-        <div className="hero-corner-el bottom-24 left-8"  style={{ animationDelay: "4.2s" }}>
+        <div className="hero-corner-el bottom-24 left-8" style={{ animationDelay: "1.0s" }}>
           <div className="absolute bottom-0 left-0 w-2 h-2 rounded-full bg-[rgba(127,207,224,0.3)]" />
         </div>
-        <div className="hero-corner-el bottom-24 right-8" style={{ animationDelay: "4.4s" }}>
+        <div className="hero-corner-el bottom-24 right-8" style={{ animationDelay: "1.2s" }}>
           <div className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[rgba(127,207,224,0.3)]" />
         </div>
 
-        {/* Floating particles (activated on first scroll) */}
+        {/* Floating particles (activated on scroll) */}
         {[
           { top: "25%", left: "12%", delay: "0.5s" },
           { top: "60%", left: "88%", delay: "1.1s" },
@@ -277,11 +267,11 @@ export function Hero() {
         ))}
 
         {/* Ambient orbs */}
-        <div className="orb orb-float w-[600px] h-[400px] bg-[rgba(127,207,224,0.04)] top-1/4 -left-32 -z-0" style={{ animationDelay: "0s" }} />
-        <div className="orb orb-float w-[400px] h-[300px] bg-[rgba(132,132,200,0.04)] bottom-1/4 -right-16 -z-0" style={{ animationDelay: "4s" }} />
+        <div className="orb orb-float w-[600px] h-[400px] bg-[rgba(127,207,224,0.03)] top-1/4 -left-32 -z-0" style={{ animationDelay: "0s" }} />
+        <div className="orb orb-float w-[400px] h-[300px] bg-[rgba(132,132,200,0.03)] bottom-1/4 -right-16 -z-0" style={{ animationDelay: "4s" }} />
 
         {/* Fade to next section */}
-        <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#07070F] to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none" />
 
         {/* Content */}
         <motion.div
@@ -289,53 +279,56 @@ export function Hero() {
           style={{ y: yContent, opacity: yOpacity }}
         >
           {/* Status badge */}
-          <div className="hero-chip mb-6 w-fit">
+          <div className="hero-chip mb-6 w-fit opacity-0">
             <div className="chip">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
               {personalInfo.currentRole}
             </div>
           </div>
 
-          {/* Name — shutter animation */}
+          {/* Name — shutter animation (mounted only after preloader exits) */}
           <div className="mb-2" aria-label={personalInfo.name}>
-            {/* IMANE — parchment */}
             <div style={{ fontSize: "clamp(5rem, 16vw, 15rem)", letterSpacing: "-0.01em" }} className="-mb-3">
-              <ShutterText
-                text="IMANE"
-                textColor="#EDE8DC"
-                accentColor="#7FCFE0"
-                baseDelay={3.5}
-              />
+              {preloaderDone && (
+                <ShutterText
+                  text="IMANE"
+                  textColor="#EDE8DC"
+                  accentColor="#7FCFE0"
+                  baseDelay={0.2}
+                />
+              )}
             </div>
-            {/* MOUMOUN — mint, with underline shimmer */}
             <div className="relative" style={{ fontSize: "clamp(5rem, 16vw, 15rem)", letterSpacing: "-0.01em" }}>
-              <ShutterText
-                text="MOUMOUN"
-                textColor="#7FCFE0"
-                accentColor="#8484C8"
-                baseDelay={3.5}
-              />
-              <motion.div
-                className="absolute bottom-2 left-0"
-                style={{ height: "3px", background: "linear-gradient(90deg, transparent, #7FCFE0, #8484C8, transparent)" }}
-                initial={{ scaleX: 0, transformOrigin: "left" }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 1.1, delay: 2.8, ease: [0.16, 1, 0.3, 1] }}
-              />
+              {preloaderDone && (
+                <ShutterText
+                  text="MOUMOUN"
+                  textColor="#7FCFE0"
+                  accentColor="#8484C8"
+                  baseDelay={0.2}
+                />
+              )}
+              {preloaderDone && (
+                <motion.div
+                  className="absolute bottom-2 left-0"
+                  style={{ height: "3px", background: "linear-gradient(90deg, transparent, #7FCFE0, #8484C8, transparent)" }}
+                  initial={{ scaleX: 0, transformOrigin: "left" }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1.1, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                />
+              )}
             </div>
-
           </div>
 
           {/* Eyebrow divider */}
-          <div className="hero-eyebrow h-px bg-gradient-to-r from-[#7FCFE0] via-[#8484C8] to-transparent mb-6 max-w-xl" />
+          <div className="hero-eyebrow h-px bg-gradient-to-r from-[#7FCFE0] via-[#8484C8] to-transparent mb-6 max-w-xl opacity-0" />
 
           {/* Role */}
-          <p className="hero-role font-display font-semibold text-xl md:text-2xl text-[#8B8FA8] mb-4 tracking-wide">
+          <p className="hero-role font-display font-semibold text-xl md:text-2xl text-[#8B8FA8] mb-4 tracking-wide opacity-0">
             {tx.hero.role}
           </p>
 
           {/* Subtitle */}
-          <p className="hero-subtitle max-w-xl text-[#8B8FA8] text-lg leading-relaxed mb-8">
+          <p className="hero-subtitle max-w-xl text-[#8B8FA8] text-lg leading-relaxed mb-8 opacity-0">
             {tx.hero.subtitle}
           </p>
 
@@ -346,7 +339,7 @@ export function Hero() {
               { label: "GPA",         value: "3.93 / 4.10" },
               { label: "Focus",       value: "AI · CV · Edge" },
             ].map((m) => (
-              <div key={m.label} className="hero-meta flex flex-col gap-0.5">
+              <div key={m.label} className="hero-meta flex flex-col gap-0.5 opacity-0">
                 <span className="font-mono text-[10px] tracking-widest text-[#3D3F52] uppercase">{m.label}</span>
                 <span className="font-display font-semibold text-sm text-[#EDE8DC]">{m.value}</span>
               </div>
@@ -360,7 +353,7 @@ export function Hero() {
               onMouseMove={magnet1.onMouseMove as React.MouseEventHandler<HTMLDivElement>}
               onMouseLeave={magnet1.onMouseLeave as React.MouseEventHandler<HTMLDivElement>}
               onMouseEnter={magnet1.onMouseEnter as React.MouseEventHandler<HTMLDivElement>}
-              className="hero-cta magnetic-wrap"
+              className="hero-cta magnetic-wrap opacity-0"
             >
               <a
                 href="#projects"
@@ -378,7 +371,7 @@ export function Hero() {
               onMouseMove={magnet2.onMouseMove as React.MouseEventHandler<HTMLDivElement>}
               onMouseLeave={magnet2.onMouseLeave as React.MouseEventHandler<HTMLDivElement>}
               onMouseEnter={magnet2.onMouseEnter as React.MouseEventHandler<HTMLDivElement>}
-              className="hero-cta magnetic-wrap"
+              className="hero-cta magnetic-wrap opacity-0"
             >
               <a
                 href="#contact"
@@ -394,8 +387,8 @@ export function Hero() {
         <motion.div
           className="absolute right-8 bottom-12 hidden lg:flex flex-col items-center gap-3 z-20"
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 2.8, ease: [0.16, 1, 0.3, 1] }}
+          animate={preloaderDone ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="font-mono text-[9px] tracking-[0.25em] text-[#3D3F52] uppercase" style={{ writingMode: "vertical-rl" }}>
             scroll
@@ -403,7 +396,7 @@ export function Hero() {
           <motion.div
             className="w-px h-16 bg-gradient-to-b from-[rgba(127,207,224,0.5)] to-transparent"
             animate={{ scaleY: [1, 0.4, 1], opacity: [1, 0.4, 1] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 3.5 }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
             style={{ transformOrigin: "top" }}
           />
         </motion.div>

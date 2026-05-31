@@ -3,6 +3,7 @@ import { Bebas_Neue, Space_Grotesk, Syne, DM_Serif_Display, Geist_Mono } from "n
 import "./globals.css"
 import { SmoothScroll } from "@/components/layout/SmoothScroll"
 import { LanguageProvider } from "@/lib/i18n"
+import { PreloaderProvider } from "@/lib/preloader-context"
 
 import { Preloader } from "@/components/layout/Preloader"
 import { ScrollProgress } from "@/components/layout/ScrollProgress"
@@ -72,6 +73,7 @@ export default function RootLayout({
     >
       <head />
       <body className="min-h-full antialiased grain scanlines">
+        <PreloaderProvider>
         <LanguageProvider>
           <SmoothScroll>
             <ScrollProgress />
@@ -81,6 +83,7 @@ export default function RootLayout({
             {children}
           </SmoothScroll>
         </LanguageProvider>
+        </PreloaderProvider>
       </body>
     </html>
   )
