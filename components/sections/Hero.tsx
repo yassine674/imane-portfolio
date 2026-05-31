@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import gsap from "gsap"
-import { useTextScramble } from "@/hooks/useTextScramble"
 import { useMagnet } from "@/hooks/useMagnet"
 import { personalInfo } from "@/lib/data"
 import { useLang, t } from "@/lib/i18n"
+import { ShutterText } from "@/components/ui/hero-shutter-text"
 
 interface Ripple { id: number; x: number; y: number }
 
@@ -97,9 +97,8 @@ export function Hero() {
   const yContent  = useTransform(scrollY, [0, 600], [0, -100])
   const yOpacity  = useTransform(scrollY, [0, 420],  [1, 0.15])
 
-  /* Text scramble */
-  const firstName = useTextScramble("IMANE",   { delay: 1.8, duration: 900  })
-  const lastName  = useTextScramble("MOUMOUN", { delay: 2.1, duration: 1100 })
+  /* Shutter text replay key */
+  const [shutterKey, setShutterKey] = useState(0)
 
   /* Magnetic CTAs */
   const magnet1 = useMagnet(0.28)
@@ -300,21 +299,25 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Name — scramble + DigitalSerenity word-reveal */}
-          <div className="mb-2 overflow-hidden" aria-label={personalInfo.name}>
-            <div
-              className="font-impact leading-none select-none"
-              style={{ fontSize: "clamp(5rem, 16vw, 15rem)", color: "#EDE8DC", letterSpacing: "-0.01em" }}
-              aria-hidden="true"
-            >
-              {firstName}
+          {/* Name — shutter animation */}
+          <div className="mb-2" aria-label={personalInfo.name}>
+            {/* IMANE — parchment */}
+            <div style={{ fontSize: "clamp(5rem, 16vw, 15rem)", letterSpacing: "-0.01em" }} className="-mb-3">
+              <ShutterText
+                text="IMANE"
+                textColor="#EDE8DC"
+                accentColor="#7FCFE0"
+                animKey={shutterKey}
+              />
             </div>
-            <div
-              className="font-impact leading-none select-none -mt-4 relative"
-              style={{ fontSize: "clamp(5rem, 16vw, 15rem)", letterSpacing: "-0.01em", color: "#7FCFE0" }}
-              aria-hidden="true"
-            >
-              {lastName}
+            {/* MOUMOUN — mint, with underline shimmer */}
+            <div className="relative" style={{ fontSize: "clamp(5rem, 16vw, 15rem)", letterSpacing: "-0.01em" }}>
+              <ShutterText
+                text="MOUMOUN"
+                textColor="#7FCFE0"
+                accentColor="#8484C8"
+                animKey={shutterKey}
+              />
               <motion.div
                 className="absolute bottom-2 left-0"
                 style={{ height: "3px", background: "linear-gradient(90deg, transparent, #7FCFE0, #8484C8, transparent)" }}
@@ -323,6 +326,21 @@ export function Hero() {
                 transition={{ duration: 1.1, delay: 2.8, ease: [0.16, 1, 0.3, 1] }}
               />
             </div>
+
+            {/* Replay button */}
+            <motion.button
+              type="button"
+              onClick={() => setShutterKey((k) => k + 1)}
+              aria-label="Replay name animation"
+              className="mt-3 flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] text-[#3D3F52] uppercase hover:text-[#7FCFE0] transition-colors duration-300 group"
+              whileHover={{ x: 4 }}
+              transition={{ duration: 0.2 }}
+            >
+              <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" viewBox="0 0 16 16" fill="none">
+                <path d="M13.5 8A5.5 5.5 0 1 1 8 2.5M13.5 2.5v3h-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              re-shutter
+            </motion.button>
           </div>
 
           {/* Eyebrow divider */}
