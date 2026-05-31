@@ -76,7 +76,7 @@ export function About() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="about" className="section-padding px-6" aria-label="About">
+    <section ref={sectionRef} id="about" className="section-padding" aria-label="About">
       <div className="max-w-7xl mx-auto">
 
         {/* Label */}

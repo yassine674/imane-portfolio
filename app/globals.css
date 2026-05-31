@@ -109,6 +109,8 @@ body {
 .section-padding {
   padding-top: 140px;
   padding-bottom: 140px;
+  padding-left: clamp(1.5rem, 5vw, 5rem);
+  padding-right: clamp(1.5rem, 5vw, 5rem);
 }
 @media (max-width: 768px) {
   .section-padding { padding-top: 96px; padding-bottom: 96px; }

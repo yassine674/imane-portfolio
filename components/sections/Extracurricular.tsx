@@ -38,7 +38,7 @@ export function Extracurricular() {
     <section
       ref={sectionRef}
       id="extras"
-      className="section-padding px-6"
+      className="section-padding"
       aria-label="Extracurricular"
     >
       <div className="max-w-7xl mx-auto">

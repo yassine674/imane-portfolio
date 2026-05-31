@@ -76,7 +76,7 @@ export function Skills() {
     <section
       ref={sectionRef}
       id="skills"
-      className="section-padding px-6 overflow-hidden"
+      className="section-padding overflow-hidden"
       aria-label="Skills"
     >
       <div className="max-w-7xl mx-auto">

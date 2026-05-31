@@ -7,7 +7,6 @@ import { PreloaderProvider } from "@/lib/preloader-context"
 
 import { Preloader } from "@/components/layout/Preloader"
 import { ScrollProgress } from "@/components/layout/ScrollProgress"
-import { FloatingSocial } from "@/components/layout/FloatingSocial"
 
 const bebasNeue = Bebas_Neue({
   variable: "--font-bebas-neue",
@@ -79,7 +78,6 @@ export default function RootLayout({
             <ScrollProgress />
             <Preloader />
 
-            <FloatingSocial />
             {children}
           </SmoothScroll>
         </LanguageProvider>

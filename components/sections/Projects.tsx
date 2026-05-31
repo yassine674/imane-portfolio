@@ -26,7 +26,7 @@ export function Projects() {
   return (
     <section ref={sectionRef} id="projects" className="relative" aria-label="Projects">
       {/* Section header — above the parallax scroll area */}
-      <div className="max-w-7xl mx-auto px-6 pt-[140px] pb-0">
+      <div className="max-w-7xl mx-auto pt-[140px] pb-0 px-[clamp(1.5rem,5vw,5rem)]">
 
         <motion.div
           className="flex items-center gap-4 mb-20"
