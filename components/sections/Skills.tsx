@@ -28,15 +28,15 @@ function MarqueeStrip({
             key={i}
             className="skill-tag"
             whileHover={{
-              backgroundColor: "rgba(0,255,209,0.1)",
-              borderColor:     "rgba(0,255,209,0.35)",
-              color:           "#00FFD1",
+              backgroundColor: "rgba(127,207,224,0.1)",
+              borderColor:     "rgba(127,207,224,0.35)",
+              color:           "#7FCFE0",
               scale:           1.05,
               y:               -2,
             }}
             transition={{ duration: 0.2 }}
           >
-            <span className="w-1 h-1 rounded-full bg-[rgba(0,255,209,0.4)]" />
+            <span className="w-1 h-1 rounded-full bg-[rgba(127,207,224,0.4)]" />
             {skill}
           </motion.span>
         ))}
@@ -97,7 +97,7 @@ export function Skills() {
           <div>
             {/* Stacked: small label then large single word */}
             <motion.p
-              className="font-mono text-[11px] tracking-[0.3em] text-[#00FFD1] uppercase mb-3"
+              className="font-mono text-[11px] tracking-[0.3em] text-[#7FCFE0] uppercase mb-3"
               initial={{ opacity: 0, x: -16 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -129,8 +129,8 @@ export function Skills() {
 
         {/* Marquee strips — fade-masked edges */}
         <div className="relative -mx-6 mb-16">
-          <div className="absolute left-0 inset-y-0 w-24 z-10 bg-gradient-to-r from-[#010108] to-transparent pointer-events-none" />
-          <div className="absolute right-0 inset-y-0 w-24 z-10 bg-gradient-to-l from-[#010108] to-transparent pointer-events-none" />
+          <div className="absolute left-0 inset-y-0 w-24 z-10 bg-gradient-to-r from-[#07070F] to-transparent pointer-events-none" />
+          <div className="absolute right-0 inset-y-0 w-24 z-10 bg-gradient-to-l from-[#07070F] to-transparent pointer-events-none" />
           <div className="space-y-3 py-2">
             <MarqueeStrip items={row1} speed={38} />
             <MarqueeStrip items={row2} reverse speed={46} />
@@ -143,7 +143,7 @@ export function Skills() {
           {skillCategories.map((cat) => (
             <motion.div
               key={cat.name}
-              className="skill-cat relative p-6 rounded-2xl glass border border-[rgba(0,255,209,0.06)] group overflow-hidden"
+              className="skill-cat relative p-6 rounded-2xl glass border border-[rgba(127,207,224,0.06)] group overflow-hidden"
               whileHover={{
                 borderColor: `${cat.color}35`,
                 y: -5,

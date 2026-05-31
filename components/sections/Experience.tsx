@@ -73,7 +73,7 @@ export function Experience() {
           {/* Ghost number — positional context at low opacity */}
           <motion.span
             className="absolute -top-4 right-0 font-impact text-[clamp(6rem,18vw,16rem)] leading-none select-none pointer-events-none"
-            style={{ color: "rgba(123,97,255,0.05)", letterSpacing: "-0.04em" }}
+            style={{ color: "rgba(132,132,200,0.05)", letterSpacing: "-0.04em" }}
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 1.2, delay: 0.2 }}
@@ -93,7 +93,7 @@ export function Experience() {
           <div style={{ overflow: "hidden" }}>
             <motion.div
               className="font-impact text-[clamp(4rem,9vw,8rem)] leading-[0.9]"
-              style={{ color: "#7B61FF" }}
+              style={{ color: "#8484C8" }}
               initial={{ y: "100%" }}
               animate={isInView ? { y: 0 } : { y: "100%" }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.07 }}
@@ -106,7 +106,7 @@ export function Experience() {
         {/* Experience list */}
         <div className="exp-list relative max-w-4xl">
           {/* Timeline vertical line — GSAP-animated */}
-          <div className="exp-timeline-line absolute left-6 top-8 bottom-8 w-px bg-gradient-to-b from-[rgba(0,255,209,0.4)] via-[rgba(123,97,255,0.3)] to-transparent hidden md:block" />
+          <div className="exp-timeline-line absolute left-6 top-8 bottom-8 w-px bg-gradient-to-b from-[rgba(127,207,224,0.4)] via-[rgba(132,132,200,0.3)] to-transparent hidden md:block" />
 
           <div className="space-y-8">
             {experiences.map((exp, i) => (
@@ -116,7 +116,7 @@ export function Experience() {
 
                 {/* Timeline dot — desktop */}
                 <motion.div
-                  className="absolute -left-[37px] top-10 w-5 h-5 rounded-full border-2 border-[#010108] hidden md:block z-10"
+                  className="absolute -left-[37px] top-10 w-5 h-5 rounded-full border-2 border-[#07070F] hidden md:block z-10"
                   style={{ backgroundColor: exp.color }}
                   animate={{
                     boxShadow: [
@@ -132,8 +132,8 @@ export function Experience() {
                 <motion.div
                   className="exp-card-wrap rounded-2xl overflow-hidden"
                   style={{
-                    background: "rgba(8,8,18,0.6)",
-                    border: "1px solid rgba(0,255,209,0.07)",
+                    background: "rgba(13,12,30,0.6)",
+                    border: "1px solid rgba(127,207,224,0.07)",
                   }}
                   whileHover={{
                     y: -4,
@@ -164,7 +164,12 @@ export function Experience() {
                         <p className="font-mono text-[10px] text-[#3D3F52] uppercase tracking-wider">
                           {exp.period}
                         </p>
-                        <p className="font-mono text-[10px] text-[#3D3F52]">📍 {exp.location}</p>
+                        <p className="font-mono text-[10px] text-[#3D3F52] flex items-center gap-1">
+                          <svg width="7" height="9" viewBox="0 0 7 9" fill="currentColor" aria-hidden>
+                            <path d="M3.5 0C1.57 0 0 1.57 0 3.5c0 2.46 3.5 5.25 3.5 5.25S7 5.96 7 3.5C7 1.57 5.43 0 3.5 0zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6z"/>
+                          </svg>
+                          {exp.location}
+                        </p>
                       </div>
 
                       {/* Content */}

@@ -11,7 +11,7 @@ export function Footer() {
   return (
     <motion.footer
       ref={ref}
-      className="border-t border-[rgba(0,255,209,0.06)] py-10 px-6"
+      className="border-t border-[rgba(127,207,224,0.06)] py-10 px-6"
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -23,7 +23,7 @@ export function Footer() {
           whileHover={{ color: "#EDE8DC" }}
           transition={{ duration: 0.3 }}
         >
-          IM<span style={{ color: "rgba(0,255,209,0.4)" }}>.</span>
+          IM<span style={{ color: "rgba(127,207,224,0.4)" }}>.</span>
         </motion.span>
 
         <p className="font-mono text-[10px] tracking-widest text-[#3D3F52] uppercase">
@@ -45,7 +45,7 @@ export function Footer() {
               initial={{ opacity: 0, y: 10 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ color: "#00FFD1", y: -2 }}
+              whileHover={{ color: "#7FCFE0", y: -2 }}
             >
               {l.label}
             </motion.a>

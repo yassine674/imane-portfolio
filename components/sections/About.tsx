@@ -43,7 +43,7 @@ function CountStat({ fact, inView }: { fact: typeof facts[number]; inView: boole
   }, [inView, fact])
 
   return (
-    <span ref={ref} className="font-impact text-4xl text-[#00FFD1] leading-none w-16 shrink-0">
+    <span ref={ref} className="font-impact text-4xl text-[#7FCFE0] leading-none w-16 shrink-0">
       {fact.display}
     </span>
   )
@@ -53,7 +53,7 @@ function CountStat({ fact, inView }: { fact: typeof facts[number]; inView: boole
 export function About() {
   const sectionRef = useRef<HTMLElement>(null)
   const isInView   = useInView(sectionRef, { once: true, margin: "-80px" })
-  const factsRef   = useRef<HTMLUListElement>(null)
+  const factsRef   = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -121,7 +121,7 @@ export function About() {
               <div style={{ overflow: "hidden" }}>
                 <motion.div
                   className="font-impact text-[clamp(3.5rem,7vw,6rem)] leading-[0.95]"
-                  style={{ color: "#00FFD1" }}
+                  style={{ color: "#7FCFE0" }}
                   initial={{ y: "100%" }}
                   animate={isInView ? { y: 0 } : { y: "100%" }}
                   transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.13 }}
@@ -160,19 +160,17 @@ export function About() {
                 {languages.map((lang) => (
                   <motion.div
                     key={lang.name}
-                    className="lang-card flex items-center gap-3 px-4 py-2.5 rounded-lg border border-[rgba(0,255,209,0.08)] bg-[rgba(8,8,18,0.5)]"
+                    className="lang-card flex items-center gap-4 px-5 py-3 rounded-lg border border-[rgba(127,207,224,0.08)] bg-[rgba(13,12,30,0.5)]"
                     whileHover={{
-                      borderColor: "rgba(0,255,209,0.28)",
-                      backgroundColor: "rgba(0,255,209,0.04)",
+                      borderColor: "rgba(127,207,224,0.28)",
+                      backgroundColor: "rgba(127,207,224,0.04)",
                       y: -3,
                     }}
                     transition={{ duration: 0.25 }}
                   >
-                    <span className="text-2xl">{lang.flag}</span>
-                    <div>
-                      <p className="font-medium text-[#EDE8DC] text-sm leading-none">{lang.name}</p>
-                      <p className="font-mono text-[10px] text-[#00FFD1] mt-0.5">{lang.level}</p>
-                    </div>
+                    <span className="font-impact text-2xl leading-none text-[#7FCFE0]">{lang.level}</span>
+                    <div className="w-px h-7 bg-[rgba(255,255,255,0.06)]" />
+                    <p className="font-display font-semibold text-[#EDE8DC] text-sm tracking-wide">{lang.name}</p>
                   </motion.div>
                 ))}
               </div>
@@ -184,9 +182,9 @@ export function About() {
             <p className="font-mono text-[10px] tracking-widest text-[#3D3F52] uppercase mb-8">Quick facts</p>
 
             {/* Facts with count-up */}
-            <ul ref={factsRef} className="space-y-0">
+            <div ref={factsRef} className="space-y-0">
               {facts.map((f, i) => (
-                <motion.li
+                <motion.div
                   key={i}
                   className="flex items-baseline gap-4 py-5 border-b border-[rgba(255,255,255,0.05)] last:border-0"
                   initial={{ opacity: 0, x: -30 }}
@@ -198,9 +196,9 @@ export function About() {
                     <p className="font-mono text-[10px] text-[#3D3F52] uppercase tracking-wider mb-0.5">{f.label}</p>
                     <p className="text-sm text-[#8B8FA8] leading-snug">{f.context}</p>
                   </div>
-                </motion.li>
+                </motion.div>
               ))}
-            </ul>
+            </div>
 
             {/* Education timeline */}
             <div className="mt-10">
@@ -208,7 +206,7 @@ export function About() {
               <div className="space-y-6 relative">
                 <motion.div
                   className="absolute left-[5px] top-2 bottom-2 w-px"
-                  style={{ background: "linear-gradient(to bottom, rgba(0,255,209,0.4), rgba(123,97,255,0.2), transparent)" }}
+                  style={{ background: "linear-gradient(to bottom, rgba(127,207,224,0.4), rgba(132,132,200,0.2), transparent)" }}
                   initial={{ scaleY: 0, transformOrigin: "top" }}
                   animate={isInView ? { scaleY: 1 } : {}}
                   transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -222,12 +220,12 @@ export function About() {
                     transition={{ duration: 0.65, delay: 0.5 + i * 0.14, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <motion.div
-                      className="absolute left-0 top-1.5 w-2.5 h-2.5 rounded-full border-2 border-[#010108]"
-                      style={{ backgroundColor: i === 0 ? "#00FFD1" : "#7B61FF" }}
+                      className="absolute left-0 top-1.5 w-2.5 h-2.5 rounded-full border-2 border-[#07070F]"
+                      style={{ backgroundColor: i === 0 ? "#7FCFE0" : "#8484C8" }}
                       animate={{
                         boxShadow: i === 0
-                          ? ["0 0 0px rgba(0,255,209,0)", "0 0 14px rgba(0,255,209,0.6)", "0 0 0px rgba(0,255,209,0)"]
-                          : ["0 0 0px rgba(123,97,255,0)", "0 0 14px rgba(123,97,255,0.6)", "0 0 0px rgba(123,97,255,0)"],
+                          ? ["0 0 0px rgba(127,207,224,0)", "0 0 14px rgba(127,207,224,0.6)", "0 0 0px rgba(127,207,224,0)"]
+                          : ["0 0 0px rgba(132,132,200,0)", "0 0 14px rgba(132,132,200,0.6)", "0 0 0px rgba(132,132,200,0)"],
                       }}
                       transition={{ duration: 2.5, repeat: Infinity, delay: i * 1 }}
                     />
@@ -235,7 +233,7 @@ export function About() {
                     <p className="font-display font-bold text-[#EDE8DC] leading-tight">{edu.degree}</p>
                     <p className="text-sm text-[#8B8FA8]">{edu.institution}</p>
                     {edu.gpa && (
-                      <p className="font-mono text-xs mt-1" style={{ color: i === 0 ? "#00FFD1" : "#7B61FF" }}>
+                      <p className="font-mono text-xs mt-1" style={{ color: i === 0 ? "#7FCFE0" : "#8484C8" }}>
                         GPA {edu.gpa}
                       </p>
                     )}

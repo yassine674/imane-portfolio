@@ -15,7 +15,7 @@ export function BackgroundGrid() {
       <motion.div
         className="absolute inset-0"
         style={{
-          backgroundImage: "radial-gradient(circle, rgba(0,255,209,0.2) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, rgba(127,207,224,0.2) 1px, transparent 1px)",
           backgroundSize: "44px 44px",
           opacity: 0.12,
           y: bgY,
@@ -23,13 +23,13 @@ export function BackgroundGrid() {
       />
 
       {/* Strong radial vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,transparent_30%,#010108_80%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,transparent_30%,#07070F_80%)]" />
 
       {/* Top center glow — parallax upward */}
       <motion.div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full blur-[120px]"
         style={{
-          background: "rgba(0,255,209,0.028)",
+          background: "rgba(127,207,224,0.028)",
           y: orbY1,
         }}
       />
@@ -38,7 +38,7 @@ export function BackgroundGrid() {
       <motion.div
         className="absolute bottom-1/4 right-0 w-[500px] h-[400px] rounded-full blur-[100px]"
         style={{
-          background: "rgba(123,97,255,0.035)",
+          background: "rgba(132,132,200,0.035)",
           y: orbY2,
         }}
       />
