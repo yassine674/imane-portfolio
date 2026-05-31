@@ -1,5 +1,4 @@
 import { Header } from "@/components/layout/Header"
-import { Footer } from "@/components/layout/Footer"
 import { BackgroundGrid } from "@/components/layout/BackgroundGrid"
 import { Hero } from "@/components/sections/Hero"
 import { About } from "@/components/sections/About"
@@ -23,7 +22,6 @@ export default function Home() {
         <Extracurricular />
         <Contact />
       </main>
-      <Footer />
     </>
   )
 }

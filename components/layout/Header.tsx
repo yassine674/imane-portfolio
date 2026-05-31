@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"
 import { navLinks } from "@/lib/data"
 import { cn } from "@/lib/utils"
+import { LanguageSwitch } from "@/components/ui/language-switch"
 
 export function Header() {
   const [scrolled,  setScrolled]  = useState(false)
@@ -77,7 +78,7 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           scrolled
-            ? "glass-strong py-4 border-b border-[rgba(0,255,209,0.06)]"
+            ? "glass-strong py-4 border-b border-[rgba(127,207,224,0.06)]"
             : "py-7 bg-transparent",
         )}
       >
@@ -86,10 +87,10 @@ export function Header() {
           <Link href="#" aria-label="Imane MOUMOUN">
             <motion.span
               className="font-impact text-2xl text-[#EDE8DC] tracking-tight"
-              whileHover={{ color: "#00FFD1" }}
+              whileHover={{ color: "#7FCFE0" }}
               transition={{ duration: 0.25 }}
             >
-              IM<span className="text-[#00FFD1]">.</span>
+              IM<span className="text-[#7FCFE0]">.</span>
             </motion.span>
           </Link>
 
@@ -104,7 +105,7 @@ export function Header() {
                   data-cursor-hover
                   className={cn(
                     "font-mono text-[11px] tracking-[0.15em] uppercase relative group transition-colors duration-300",
-                    isActive ? "text-[#00FFD1]" : "text-[#8B8FA8] hover:text-[#00FFD1]",
+                    isActive ? "text-[#7FCFE0]" : "text-[#8B8FA8] hover:text-[#7FCFE0]",
                   )}
                   whileHover={{ y: -1 }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
@@ -113,7 +114,7 @@ export function Header() {
                   {/* underline */}
                   <span
                     className={cn(
-                      "absolute -bottom-0.5 left-0 right-0 h-px bg-[#00FFD1] transition-transform duration-300 origin-left",
+                      "absolute -bottom-0.5 left-0 right-0 h-px bg-[#7FCFE0] transition-transform duration-300 origin-left",
                       isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
                     )}
                   />
@@ -121,8 +122,8 @@ export function Header() {
                   {isActive && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#00FFD1]"
-                      style={{ boxShadow: "0 0 8px rgba(0,255,209,0.8)" }}
+                      className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#7FCFE0]"
+                      style={{ boxShadow: "0 0 8px rgba(127,207,224,0.8)" }}
                     />
                   )}
                 </motion.a>
@@ -130,25 +131,29 @@ export function Header() {
             })}
           </nav>
 
-          {/* CTA */}
-          <motion.a
-            href="mailto:imanemn127@gmail.com"
-            data-cursor-hover
-            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(0,255,209,0.22)] text-[#00FFD1] text-xs font-mono tracking-wider uppercase hover:bg-[rgba(0,255,209,0.08)] hover:border-[#00FFD1] transition-all duration-300"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.2 }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
-            Open to work
-          </motion.a>
+          {/* Language switch + CTA — desktop */}
+          <div className="hidden md:flex items-center gap-4">
+            <LanguageSwitch />
+            <motion.a
+              href="mailto:imanemn127@gmail.com"
+              data-cursor-hover
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[rgba(127,207,224,0.22)] text-[#7FCFE0] text-xs font-mono tracking-wider uppercase hover:bg-[rgba(127,207,224,0.08)] hover:border-[#7FCFE0] transition-all duration-300"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
+              Open to work
+            </motion.a>
+          </div>
 
           {/* Mobile toggle */}
           <button
+            type="button"
             ref={toggleRef}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
+            aria-expanded={menuOpen ? "true" : "false"}
             aria-controls="mobile-menu"
             className="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1.5"
           >
@@ -183,11 +188,19 @@ export function Header() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0,   y: 20 }}
                 transition={{ delay: i * 0.06, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="font-impact text-5xl text-[#EDE8DC] hover:text-[#00FFD1] transition-colors tracking-wide"
+                className="font-impact text-5xl text-[#EDE8DC] hover:text-[#7FCFE0] transition-colors tracking-wide"
               >
                 {link.label}
               </motion.a>
             ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ delay: navLinks.length * 0.06 + 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <LanguageSwitch />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

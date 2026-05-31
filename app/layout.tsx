@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 import { Bebas_Neue, Space_Grotesk, Syne, DM_Serif_Display, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { SmoothScroll } from "@/components/layout/SmoothScroll"
-import { CursorFollower } from "@/components/layout/CursorFollower"
+import { LanguageProvider } from "@/lib/i18n"
+
 import { Preloader } from "@/components/layout/Preloader"
 import { ScrollProgress } from "@/components/layout/ScrollProgress"
 import { FloatingSocial } from "@/components/layout/FloatingSocial"
@@ -71,13 +72,15 @@ export default function RootLayout({
     >
       <head />
       <body className="min-h-full antialiased grain scanlines">
-        <SmoothScroll>
-          <ScrollProgress />
-          <Preloader />
-          <CursorFollower />
-          <FloatingSocial />
-          {children}
-        </SmoothScroll>
+        <LanguageProvider>
+          <SmoothScroll>
+            <ScrollProgress />
+            <Preloader />
+
+            <FloatingSocial />
+            {children}
+          </SmoothScroll>
+        </LanguageProvider>
       </body>
     </html>
   )

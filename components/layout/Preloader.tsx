@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import gsap from "gsap"
 
 export function Preloader() {
-  const [phase, setPhase] = useState<"loading" | "reveal" | "done">("loading")
+  const [visible, setVisible] = useState(true)
+  const [done, setDone] = useState(false)
   const counterRef = useRef<HTMLSpanElement>(null)
   const barRef = useRef<HTMLDivElement>(null)
   const nameRef = useRef<HTMLDivElement>(null)
@@ -33,24 +34,29 @@ export function Preloader() {
       "-=0.4",
     )
 
-    // Hold briefly, then exit
+    // Hold briefly, then trigger exit
     .to({}, { duration: 0.35 })
-    .call(() => setPhase("reveal"))
+    .call(() => setVisible(false))
 
-    return () => { tl.kill() }
+    // Safety fallback — guarantee preloader always dismisses
+    const fallback = setTimeout(() => setVisible(false), 5000)
+
+    return () => { tl.kill(); clearTimeout(fallback) }
   }, [])
 
+  if (done) return null
+
   return (
-    <AnimatePresence>
-      {phase !== "done" && (
+    <AnimatePresence onExitComplete={() => setDone(true)}>
+      {visible && (
         <motion.div
           key="preloader"
-          className="fixed inset-0 z-[99999] bg-[#010108] flex flex-col items-center justify-center"
+          className="fixed inset-0 z-[99999] bg-[#07070F] flex flex-col items-center justify-center"
+          initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
           exit={{
-            clipPath: ["inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"],
+            clipPath: "inset(0% 0% 100% 0%)",
             transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] },
           }}
-          onAnimationComplete={() => { if (phase === "reveal") setPhase("done") }}
         >
           {/* Corner coords — futuristic feel */}
           <div className="absolute top-8 left-8 font-mono text-[10px] text-[#3D3F52] tracking-widest">
@@ -70,7 +76,7 @@ export function Preloader() {
             </div>
             <div
               className="font-impact text-[clamp(4rem,12vw,10rem)] leading-none -mt-2"
-              style={{ color: "#00FFD1", letterSpacing: "-0.01em" }}
+              style={{ color: "#7FCFE0", letterSpacing: "-0.01em" }}
             >
               MOUMOUN
             </div>
@@ -82,7 +88,7 @@ export function Preloader() {
               ref={barRef}
               className="absolute inset-y-0 left-0 right-0 origin-left"
               style={{
-                background: "linear-gradient(90deg, #00FFD1, #7B61FF)",
+                background: "linear-gradient(90deg, #7FCFE0, #8484C8)",
                 transform: "scaleX(0)",
                 transition: "none",
               }}
