@@ -110,8 +110,6 @@ export function Experience() {
 
           <div className="space-y-8">
             {experiences.map((exp, i) => (
-              /* GSAP targets exp-block (entrance only).
-                 Inner motion.div handles hover independently. */
               <article key={exp.id} className="exp-block relative">
 
                 {/* Timeline dot — desktop */}
@@ -179,7 +177,7 @@ export function Experience() {
                           <p className="text-lg font-semibold" style={{ color: exp.color }}>{exp.company}</p>
                         </div>
 
-                        {/* Bullet points — stagger reveal on scroll (via GSAP) */}
+                        {/* Bullet points */}
                         <ul className="space-y-3 mb-6">
                           {exp.description.map((item, j) => (
                             <motion.li

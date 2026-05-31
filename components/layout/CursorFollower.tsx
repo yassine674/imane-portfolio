@@ -2,15 +2,6 @@
 
 import { useEffect, useRef } from "react"
 
-/**
- * Premium cursor: dot + ring + optional text label.
- *
- * Elements can set:
- *   data-cursor-hover  — enlarges ring (default interactive state)
- *   data-cursor="VIEW" — enlarges ring and shows text label
- *   data-cursor="OPEN" — same, different label
- *   data-cursor="COPY" — same, different label
- */
 export function CursorFollower() {
   const dotRef    = useRef<HTMLDivElement>(null)
   const ringRef   = useRef<HTMLDivElement>(null)
@@ -33,9 +24,7 @@ export function CursorFollower() {
       const attr = cursorEl?.getAttribute("data-cursor") ?? ""
       label.current = attr
 
-      hovered.current = !!(
-        t.closest("a, button, [data-cursor-hover], [data-cursor]")
-      )
+      hovered.current = !!(t.closest("a, button, [data-cursor-hover], [data-cursor]"))
 
       if (labelRef.current) labelRef.current.textContent = attr
     }
@@ -50,8 +39,7 @@ export function CursorFollower() {
       ring.current.y += (pos.current.y - ring.current.y) * lerp
 
       if (dotRef.current) {
-        dotRef.current.style.transform =
-          `translate(${pos.current.x - 3}px, ${pos.current.y - 3}px)`
+        dotRef.current.style.transform = `translate(${pos.current.x - 3}px, ${pos.current.y - 3}px)`
       }
 
       if (ringRef.current) {
@@ -87,14 +75,11 @@ export function CursorFollower() {
 
   return (
     <>
-      {/* Dot */}
       <div
         ref={dotRef}
         className="cursor-dot w-1.5 h-1.5 rounded-full bg-[#7FCFE0] hidden lg:block"
         style={{ willChange: "transform" }}
       />
-
-      {/* Ring with optional text label */}
       <div
         ref={ringRef}
         className="cursor-ring w-10 h-10 rounded-full border hidden lg:flex items-center justify-center"
@@ -109,8 +94,6 @@ export function CursorFollower() {
           style={{ pointerEvents: "none" }}
         />
       </div>
-
-      {/* Spotlight glow */}
       <div
         ref={spotRef}
         className="fixed pointer-events-none z-[9990] hidden lg:block"
