@@ -7,21 +7,12 @@ import { useMagnet } from "@/hooks/useMagnet"
 import { personalInfo } from "@/lib/data"
 import { useLang, t } from "@/lib/i18n"
 import { ShutterText } from "@/components/ui/hero-shutter-text"
-import { HeroStarfield } from "@/components/ui/hero-starfield"
+import { SparklesCore } from "@/components/ui/sparkles"
 import { usePreloader } from "@/lib/preloader-context"
 
 interface Ripple { id: number; x: number; y: number }
 
 const HERO_STYLES = `
-@keyframes hero-grid-draw {
-  0%   { stroke-dashoffset: 1000; opacity: 0; }
-  50%  { opacity: 0.08; }
-  100% { stroke-dashoffset: 0; opacity: 0.05; }
-}
-@keyframes hero-dot-pulse {
-  0%,100% { opacity: 0.06; transform: scale(1); }
-  50%     { opacity: 0.18; transform: scale(1.15); }
-}
 @keyframes hero-ripple {
   0%   { transform: translate(-50%,-50%) scale(0); opacity: 0.6; }
   100% { transform: translate(-50%,-50%) scale(8); opacity: 0; }
@@ -35,19 +26,6 @@ const HERO_STYLES = `
   25%     { transform: translateY(-12px) translateX(6px); opacity: 0.55; }
   50%     { transform: translateY(-6px)  translateX(-4px);opacity: 0.35; }
   75%     { transform: translateY(-18px) translateX(8px); opacity: 0.7; }
-}
-.hero-grid-line {
-  stroke: rgba(127,207,224,0.2);
-  stroke-width: 0.5;
-  opacity: 0;
-  stroke-dasharray: 6 6;
-  stroke-dashoffset: 1000;
-  animation: hero-grid-draw 2.5s ease-out forwards;
-}
-.hero-detail-dot {
-  fill: rgba(127,207,224,0.5);
-  opacity: 0;
-  animation: hero-dot-pulse 3s ease-in-out infinite;
 }
 .hero-corner-el {
   position: absolute;
@@ -79,13 +57,39 @@ const HERO_STYLES = `
   position: fixed;
   pointer-events: none;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(127,207,224,0.06), rgba(132,132,200,0.04), transparent 70%);
+  background: radial-gradient(circle, rgba(127,207,224,0.05), rgba(132,132,200,0.03), transparent 70%);
   transform: translate(-50%,-50%);
   width: 420px; height: 420px;
   filter: blur(40px);
   will-change: left, top, opacity;
   transition: left 80ms linear, top 80ms linear, opacity 350ms ease-out;
 }
+.hero-content-wrap {
+  padding-left: clamp(2rem, 8vw, 6rem);
+  padding-right: clamp(2rem, 8vw, 6rem);
+}
+.hero-name-row {
+  font-size: clamp(5rem, 16vw, 15rem);
+  letter-spacing: -0.01em;
+}
+.hero-particle-delay-1 { animation-delay: 0.5s; }
+.hero-particle-delay-2 { animation-delay: 1.1s; }
+.hero-particle-delay-3 { animation-delay: 1.7s; }
+.hero-particle-delay-4 { animation-delay: 2.3s; }
+.hero-particle-delay-5 { animation-delay: 0.9s; }
+.hero-particle-delay-6 { animation-delay: 1.4s; }
+.hero-particle-pos-1 { top: 25%; left: 12%; }
+.hero-particle-pos-2 { top: 60%; left: 88%; }
+.hero-particle-pos-3 { top: 42%; left:  8%; }
+.hero-particle-pos-4 { top: 72%; left: 92%; }
+.hero-particle-pos-5 { top: 35%; left: 95%; }
+.hero-particle-pos-6 { top: 15%; left: 50%; }
+.hero-corner-delay-1 { animation-delay: 0.6s; }
+.hero-corner-delay-2 { animation-delay: 0.8s; }
+.hero-corner-delay-3 { animation-delay: 1.0s; }
+.hero-corner-delay-4 { animation-delay: 1.2s; }
+.hero-scroll-label { writing-mode: vertical-rl; }
+.hero-scroll-bar   { transform-origin: top; }
 `
 
 export function Hero() {
@@ -95,7 +99,7 @@ export function Hero() {
   const { preloaderDone } = usePreloader()
 
   const { scrollY } = useScroll()
-  const yContent = useTransform(scrollY, [0, 600], [0, -100])
+  const yContent = useTransform(scrollY, [0, 600], [0, -80])
   const yOpacity = useTransform(scrollY, [0, 420], [1, 0.15])
 
   const magnet1 = useMagnet(0.28)
@@ -107,9 +111,8 @@ export function Hero() {
   const scrolledRef = useRef(false)
 
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
+    const onMove = (e: MouseEvent) =>
       setMouseStyle({ left: `${e.clientX}px`, top: `${e.clientY}px`, opacity: 1 })
-    }
     const onLeave = () => setMouseStyle((s) => ({ ...s, opacity: 0 }))
     window.addEventListener("mousemove", onMove)
     document.addEventListener("mouseleave", onLeave)
@@ -209,73 +212,47 @@ export function Hero() {
         className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden bg-black"
         aria-label="Hero"
       >
-        {/* ── Twinkling starfield ── */}
-        <HeroStarfield />
-
-        {/* ── Subtle SVG grid over stars ── */}
-        <svg
+        {/* ── Ambient background sparkles ── */}
+        <SparklesCore
+          id="hero-bg-sparkles"
+          background="transparent"
+          minSize={0.3}
+          maxSize={1.2}
+          particleDensity={55}
+          particleColor="#ffffff"
+          speed={0.4}
           className="absolute inset-0 w-full h-full pointer-events-none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <defs>
-            <pattern id="heroBaseGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(127,207,224,0.02)" strokeWidth="0.5" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#heroBaseGrid)" />
-          <line x1="0" y1="20%" x2="100%" y2="20%" className="hero-grid-line" style={{ animationDelay: "0.8s" }} />
-          <line x1="0" y1="80%" x2="100%" y2="80%" className="hero-grid-line" style={{ animationDelay: "1.2s" }} />
-          <line x1="18%" y1="0" x2="18%" y2="100%" className="hero-grid-line" style={{ animationDelay: "1.5s" }} />
-          <line x1="82%" y1="0" x2="82%" y2="100%" className="hero-grid-line" style={{ animationDelay: "1.9s" }} />
-          <circle cx="18%" cy="20%" r="2.5" className="hero-detail-dot" style={{ animationDelay: "2.6s" }} />
-          <circle cx="82%" cy="20%" r="2.5" className="hero-detail-dot" style={{ animationDelay: "2.8s" }} />
-          <circle cx="18%" cy="80%" r="2.5" className="hero-detail-dot" style={{ animationDelay: "3.0s" }} />
-          <circle cx="82%" cy="80%" r="2.5" className="hero-detail-dot" style={{ animationDelay: "3.2s" }} />
-          <circle cx="50%" cy="50%" r="1.5" className="hero-detail-dot" style={{ animationDelay: "3.5s" }} />
-        </svg>
+        />
 
         {/* Corner ornaments */}
-        <div className="hero-corner-el top-8 left-8" style={{ animationDelay: "0.6s" }}>
+        <div className="hero-corner-el hero-corner-delay-1 top-8 left-8">
           <div className="absolute top-0 left-0 w-2 h-2 rounded-full bg-[rgba(127,207,224,0.3)]" />
         </div>
-        <div className="hero-corner-el top-8 right-8" style={{ animationDelay: "0.8s" }}>
+        <div className="hero-corner-el hero-corner-delay-2 top-8 right-8">
           <div className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[rgba(127,207,224,0.3)]" />
         </div>
-        <div className="hero-corner-el bottom-24 left-8" style={{ animationDelay: "1.0s" }}>
+        <div className="hero-corner-el hero-corner-delay-3 bottom-24 left-8">
           <div className="absolute bottom-0 left-0 w-2 h-2 rounded-full bg-[rgba(127,207,224,0.3)]" />
         </div>
-        <div className="hero-corner-el bottom-24 right-8" style={{ animationDelay: "1.2s" }}>
+        <div className="hero-corner-el hero-corner-delay-4 bottom-24 right-8">
           <div className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[rgba(127,207,224,0.3)]" />
         </div>
 
         {/* Floating particles (activated on scroll) */}
-        {[
-          { top: "25%", left: "12%", delay: "0.5s" },
-          { top: "60%", left: "88%", delay: "1.1s" },
-          { top: "42%", left:  "8%", delay: "1.7s" },
-          { top: "72%", left: "92%", delay: "2.3s" },
-          { top: "35%", left: "95%", delay: "0.9s" },
-          { top: "15%", left: "50%", delay: "1.4s" },
-        ].map((p, i) => (
+        {(["1","2","3","4","5","6"] as const).map((n, i) => (
           <div
-            key={i}
+            key={n}
             ref={(el) => setParticleRef(el, i)}
-            className="hero-particle"
-            style={{ top: p.top, left: p.left, animationDelay: p.delay }}
+            className={`hero-particle hero-particle-pos-${n} hero-particle-delay-${n}`}
           />
         ))}
-
-        {/* Ambient orbs */}
-        <div className="orb orb-float w-[600px] h-[400px] bg-[rgba(127,207,224,0.03)] top-1/4 -left-32 -z-0" style={{ animationDelay: "0s" }} />
-        <div className="orb orb-float w-[400px] h-[300px] bg-[rgba(132,132,200,0.03)] bottom-1/4 -right-16 -z-0" style={{ animationDelay: "4s" }} />
 
         {/* Fade to next section */}
         <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none" />
 
-        {/* Content */}
+        {/* ── Content ── */}
         <motion.div
-          className="relative z-20 max-w-7xl mx-auto px-[clamp(1.5rem,5vw,5rem)] w-full pt-24"
+          className="relative z-20 max-w-7xl mx-auto w-full pt-24 hero-content-wrap"
           style={{ y: yContent, opacity: yOpacity }}
         >
           {/* Status badge */}
@@ -287,36 +264,42 @@ export function Hero() {
           </div>
 
           {/* Name — shutter animation (mounted only after preloader exits) */}
-          <div className="mb-2" aria-label={personalInfo.name}>
-            <div style={{ fontSize: "clamp(5rem, 16vw, 15rem)", letterSpacing: "-0.01em" }} className="-mb-3">
+          <div className="mb-0" aria-label={personalInfo.name}>
+            <div className="hero-name-row -mb-3">
               {preloaderDone && (
-                <ShutterText
-                  text="IMANE"
-                  textColor="#EDE8DC"
-                  accentColor="#7FCFE0"
-                  baseDelay={0.2}
-                />
+                <ShutterText text="IMANE" textColor="#EDE8DC" accentColor="#7FCFE0" baseDelay={0.2} />
               )}
             </div>
-            <div className="relative" style={{ fontSize: "clamp(5rem, 16vw, 15rem)", letterSpacing: "-0.01em" }}>
+            <div className="hero-name-row relative">
               {preloaderDone && (
-                <ShutterText
-                  text="MOUMOUN"
-                  textColor="#7FCFE0"
-                  accentColor="#8484C8"
-                  baseDelay={0.2}
-                />
-              )}
-              {preloaderDone && (
-                <motion.div
-                  className="absolute bottom-2 left-0"
-                  style={{ height: "3px", background: "linear-gradient(90deg, transparent, #7FCFE0, #8484C8, transparent)" }}
-                  initial={{ scaleX: 0, transformOrigin: "left" }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 1.1, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                />
+                <ShutterText text="MOUMOUN" textColor="#7FCFE0" accentColor="#8484C8" baseDelay={0.2} />
               )}
             </div>
+          </div>
+
+          {/* ── Sparkle horizon — the "starfield below the name" ── */}
+          <div className="relative w-full h-44 -mt-2 mb-8 overflow-hidden">
+            {/* Glow line — cyan */}
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#7FCFE0] to-transparent blur-sm" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#7FCFE0] to-transparent" />
+            {/* Glow line — violet accent */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 w-1/3 h-[5px] bg-gradient-to-r from-transparent via-[#8484C8] to-transparent blur-sm" />
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 w-1/3 h-px bg-gradient-to-r from-transparent via-[#8484C8] to-transparent" />
+
+            {/* Dense sparkles in this zone */}
+            <SparklesCore
+              id="hero-horizon-sparkles"
+              background="transparent"
+              minSize={0.4}
+              maxSize={1.0}
+              particleDensity={1200}
+              particleColor="#ffffff"
+              speed={0.8}
+              className="w-full h-full"
+            />
+
+            {/* Radial mask — fades sparkles at edges, keeps center bright */}
+            <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(500px_180px_at_top,transparent_20%,white)]" />
           </div>
 
           {/* Eyebrow divider */}
@@ -390,14 +373,13 @@ export function Hero() {
           animate={preloaderDone ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="font-mono text-[9px] tracking-[0.25em] text-[#3D3F52] uppercase" style={{ writingMode: "vertical-rl" }}>
+          <span className="hero-scroll-label font-mono text-[9px] tracking-[0.25em] text-[#3D3F52] uppercase">
             scroll
           </span>
           <motion.div
-            className="w-px h-16 bg-gradient-to-b from-[rgba(127,207,224,0.5)] to-transparent"
+            className="hero-scroll-bar w-px h-16 bg-gradient-to-b from-[rgba(127,207,224,0.5)] to-transparent"
             animate={{ scaleY: [1, 0.4, 1], opacity: [1, 0.4, 1] }}
             transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
-            style={{ transformOrigin: "top" }}
           />
         </motion.div>
       </section>
