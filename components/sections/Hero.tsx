@@ -97,9 +97,6 @@ export function Hero() {
   const yContent  = useTransform(scrollY, [0, 600], [0, -100])
   const yOpacity  = useTransform(scrollY, [0, 420],  [1, 0.15])
 
-  /* Shutter text replay key */
-  const [shutterKey, setShutterKey] = useState(0)
-
   /* Magnetic CTAs */
   const magnet1 = useMagnet(0.28)
   const magnet2 = useMagnet(0.2)
@@ -307,7 +304,7 @@ export function Hero() {
                 text="IMANE"
                 textColor="#EDE8DC"
                 accentColor="#7FCFE0"
-                animKey={shutterKey}
+                baseDelay={3.5}
               />
             </div>
             {/* MOUMOUN — mint, with underline shimmer */}
@@ -316,7 +313,7 @@ export function Hero() {
                 text="MOUMOUN"
                 textColor="#7FCFE0"
                 accentColor="#8484C8"
-                animKey={shutterKey}
+                baseDelay={3.5}
               />
               <motion.div
                 className="absolute bottom-2 left-0"
@@ -327,20 +324,6 @@ export function Hero() {
               />
             </div>
 
-            {/* Replay button */}
-            <motion.button
-              type="button"
-              onClick={() => setShutterKey((k) => k + 1)}
-              aria-label="Replay name animation"
-              className="mt-3 flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] text-[#3D3F52] uppercase hover:text-[#7FCFE0] transition-colors duration-300 group"
-              whileHover={{ x: 4 }}
-              transition={{ duration: 0.2 }}
-            >
-              <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" viewBox="0 0 16 16" fill="none">
-                <path d="M13.5 8A5.5 5.5 0 1 1 8 2.5M13.5 2.5v3h-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              re-shutter
-            </motion.button>
           </div>
 
           {/* Eyebrow divider */}
