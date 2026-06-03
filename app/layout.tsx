@@ -67,11 +67,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${spaceGrotesk.variable} ${syne.variable} ${dmSerifDisplay.variable} ${geistMono.variable} h-full`}
+      className={`${bebasNeue.variable} ${spaceGrotesk.variable} ${syne.variable} ${dmSerifDisplay.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head />
-      <body className="min-h-full antialiased grain scanlines">
+      <body className="min-h-screen antialiased grain scanlines">
         <PreloaderProvider>
         <LanguageProvider>
           <SmoothScroll>

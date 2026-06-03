@@ -28,7 +28,19 @@ export function useLenis() {
 
     ScrollTrigger.defaults({ markers: false })
 
+    /* Recalculate scroll height after all content/images have rendered */
+    const refreshId = setTimeout(() => {
+      lenis.resize()
+      ScrollTrigger.refresh()
+    }, 300)
+
+    window.addEventListener("load", () => {
+      lenis.resize()
+      ScrollTrigger.refresh()
+    })
+
     return () => {
+      clearTimeout(refreshId)
       gsap.ticker.remove(tick)
       lenis.destroy()
       lenisInstance = null
