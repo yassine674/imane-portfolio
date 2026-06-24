@@ -1,249 +1,227 @@
-"use client"
+"use client";
+import { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { personalInfo, education, languages } from "@/lib/data";
+import { MovingGradient } from "@/components/layout/MovingGradient";
+import { FloatingPetals } from "@/components/layout/FloatingPetals";
+import { SplitReveal } from "@/components/layout/SplitReveal";
 
-import { useEffect, useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import gsap from "gsap"
-import ScrollTrigger from "gsap/ScrollTrigger"
-import { personalInfo, languages, education } from "@/lib/data"
-import { AnimatedText } from "@/components/ui/AnimatedText"
+gsap.registerPlugin(ScrollTrigger);
 
-const facts = [
-  { label: "GPA",         display: "3.93", numeric: 3.93, decimals: 2, suffix: "",  context: "out of 4.10 — Mines Saint-Étienne" },
-  { label: "Projects",    display: "8+",   numeric: 8,    decimals: 0, suffix: "+", context: "from satellite imagery to embedded ML" },
-  { label: "Languages",   display: "4",    numeric: 4,    decimals: 0, suffix: "",  context: "French, Arabic (C2) · English (C1)" },
-  { label: "Distinction", display: "2×",   numeric: 2,    decimals: 0, suffix: "×", context: "Best Speaker Award — public speaking" },
-]
+/* Strong, soft peach/coral/rose wash — microsoft.ai humanist warmth */
+const PAPER_BLOBS = [
+  { size: "52vw", top: "-16%", right: "-10%", color: "oklch(78% 0.15 38 / 0.5)",  anim: "mesh-1 21s ease-in-out infinite", blur: "90px" },
+  { size: "44vw", top: "-8%",  left: "-12%",  color: "oklch(80% 0.12 60 / 0.4)",  anim: "mesh-2 26s ease-in-out infinite", blur: "100px" },
+  { size: "38vw", bottom: "-14%", left: "20%", color: "oklch(75% 0.13 350 / 0.32)", anim: "mesh-3 19s ease-in-out infinite", blur: "100px" },
+];
 
-/* ── Count-up stat component ─────────────────────────────────── */
-function CountStat({ fact, inView }: { fact: typeof facts[number]; inView: boolean }) {
-  const ref  = useRef<HTMLSpanElement>(null)
-  const done = useRef(false)
-
-  useEffect(() => {
-    if (!inView || done.current || !ref.current) return
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (ref.current) ref.current.textContent = fact.display
-      return
-    }
-    done.current = true
-    const obj = { val: 0 }
-    gsap.to(obj, {
-      val: fact.numeric,
-      duration: 1.6,
-      ease: "power3.out",
-      delay: 0.2,
-      onUpdate() {
-        if (!ref.current) return
-        const n = fact.decimals > 0
-          ? obj.val.toFixed(fact.decimals)
-          : Math.round(obj.val).toString()
-        ref.current.textContent = n + fact.suffix
-      },
-    })
-  }, [inView, fact])
-
-  return (
-    <span ref={ref} className="font-impact text-4xl text-[#7FCFE0] leading-none w-16 shrink-0">
-      {fact.display}
-    </span>
-  )
-}
-
-/* ── About section ───────────────────────────────────────────── */
 export function About() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const isInView   = useInView(sectionRef, { once: true, margin: "-80px" })
-  const factsRef   = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (prefersReduced) return
-
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".lang-card",
-        { scale: 0.88, opacity: 0, y: 12 },
-        {
-          scale: 1, opacity: 1, y: 0,
-          stagger: 0.08,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: { trigger: ".lang-row", start: "top 85%" },
-        },
-      )
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+      gsap.from(".ab-label", { scrollTrigger: { trigger: ".ab-label", start: "top 88%", once: true }, opacity: 0, y: 14, duration: 0.6, ease: "power3.out" });
+      /* heading now uses SplitReveal (per-char obsidian entrance) */
+      gsap.from(".ab-body", { scrollTrigger: { trigger: ".ab-body", start: "top 85%", once: true }, opacity: 0, y: 18, duration: 0.7, ease: "power3.out" });
+      gsap.from(".ab-fact", { scrollTrigger: { trigger: ".ab-facts", start: "top 80%", once: true }, opacity: 0, y: 20, duration: 0.6, stagger: 0.1, ease: "power3.out" });
+      gsap.from(".ab-edu-item", { scrollTrigger: { trigger: ".ab-edu", start: "top 80%", once: true }, opacity: 0, x: -16, duration: 0.6, stagger: 0.15, ease: "power3.out" });
+      gsap.from(".ab-lang", { scrollTrigger: { trigger: ".ab-langs", start: "top 85%", once: true }, opacity: 0, y: 10, duration: 0.5, stagger: 0.07, ease: "power3.out" });
+    }, ref);
+    return () => ctx.revert();
+  }, []);
+
+  const facts = [
+    { value: "3.93", label: "GPA", sub: `/ ${personalInfo.gpaOf} · ${personalInfo.school}` },
+    { value: "2+", label: "Internships", sub: "Inria & PELLENC" },
+    { value: "6+", label: "Projects", sub: "Edge AI to LLMs" },
+    { value: "4", label: "Languages", sub: "FR · AR · EN · DE" },
+  ];
 
   return (
-    <section ref={sectionRef} id="about" className="section-padding" aria-label="About">
-      <div className="max-w-7xl mx-auto">
+    <section
+      ref={ref}
+      id="about"
+      aria-labelledby="about-h"
+      className="section-light"
+      style={{
+        padding: "clamp(5rem, 11vw, 9rem) clamp(1.5rem, 5vw, 3.5rem) clamp(6rem, 14vw, 12rem)",
+        overflow: "hidden",
+      }}
+    >
+      <MovingGradient blobs={PAPER_BLOBS} hueSpin={false} />
+      <FloatingPetals opacity={0.6} />
 
-        {/* Label */}
-        <motion.div
-          className="flex items-center gap-4 mb-16"
-          initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <span className="chip">01 — About</span>
-          <div className="section-label-line" />
-        </motion.div>
+      <div style={{ position: "relative", zIndex: 2 }}>
+      {/* Label — mono micro-caption */}
+      <div className="ab-label" style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.12em", color: "var(--accent)", textTransform: "lowercase", marginBottom: "2.5rem", display: "flex", alignItems: "center", gap: "0.6rem" }}>
+        <span aria-hidden="true" style={{ width: "1.8rem", height: "1px", background: "var(--accent)", display: "inline-block" }} />
+        01 — about
+      </div>
 
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-16 lg:gap-24 mb-20">
+      {/* Heading — elegant all-serif, humanist (microsoft.ai) */}
+      <h2
+        id="about-h"
+        className="ab-heading"
+        style={{
+          fontFamily: "var(--font-serif)", fontWeight: 400,
+          fontSize: "clamp(3rem, 9vw, 8.5rem)",
+          lineHeight: 0.94, letterSpacing: "-0.01em",
+          color: "var(--text)",
+          marginBottom: "clamp(3rem, 7vw, 6rem)",
+          maxWidth: "16ch",
+        }}
+      >
+        <div><SplitReveal text="Where math" /></div>
+        <div>
+          <SplitReveal text={"meets "} />
+          <SplitReveal text="intuition" style={{ color: "var(--accent)", fontStyle: "italic", fontWeight: 500 }} />
+        </div>
+      </h2>
 
-          {/* Left: narrative */}
-          <div>
-            {/* Heading — editorial mix: impact + serif italic counterpoint */}
-            <div className="mb-8">
-              <div style={{ overflow: "hidden" }}>
-                <motion.div
-                  className="font-impact text-[clamp(3.5rem,7vw,6rem)] leading-[0.95] text-[#EDE8DC]"
-                  initial={{ y: "100%" }}
-                  animate={isInView ? { y: 0 } : { y: "100%" }}
-                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      {/* Two-col layout */}
+      <div
+        className="about-cols"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1.2fr",
+          gap: "clamp(3rem, 6vw, 6rem)",
+          alignItems: "start",
+        }}
+      >
+        {/* Left — bio + facts */}
+        <div>
+          <p
+            className="ab-body"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "clamp(0.9rem, 1.4vw, 1.05rem)",
+              lineHeight: 1.8,
+              color: "var(--text-2)",
+              maxWidth: "52ch",
+              marginBottom: "clamp(2.5rem, 5vw, 4rem)",
+            }}
+          >
+            {personalInfo.bio}
+          </p>
+
+          {/* Facts — editorial list */}
+          <ul
+            className="ab-facts"
+            style={{ listStyle: "none", padding: 0, margin: 0 }}
+            aria-label="Key statistics"
+          >
+            {facts.map((f) => (
+              <li
+                key={f.label}
+                className="ab-fact"
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: "1.25rem",
+                  padding: "1.25rem 0",
+                  borderBottom: "1px solid var(--border)",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-serif)", fontWeight: 500, fontStyle: "italic",
+                    fontSize: "clamp(2.4rem, 5.5vw, 4rem)",
+                    color: "var(--accent)",
+                    lineHeight: 1,
+                    minWidth: "3.5rem",
+                  }}
                 >
-                  TURNING
-                </motion.div>
-              </div>
-              {/* Serif italic interlude — breaks the all-caps monotony */}
-              <div style={{ overflow: "hidden" }}>
-                <motion.div
-                  className="font-serif italic text-[clamp(1.6rem,3.5vw,3rem)] leading-[1.1] text-[#8B8FA8] pl-1"
-                  initial={{ y: "100%", opacity: 0 }}
-                  animate={isInView ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }}
-                  transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.06 }}
-                >
-                  research
-                </motion.div>
-              </div>
-              <div style={{ overflow: "hidden" }}>
-                <motion.div
-                  className="font-impact text-[clamp(3.5rem,7vw,6rem)] leading-[0.95]"
-                  style={{ color: "#7FCFE0" }}
-                  initial={{ y: "100%" }}
-                  animate={isInView ? { y: 0 } : { y: "100%" }}
-                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.13 }}
-                >
-                  INTO IMPACT.
-                </motion.div>
-              </div>
+                  {f.value}
+                </span>
+                <div>
+                  <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.9rem", color: "var(--text)", letterSpacing: "0.04em", textTransform: "uppercase", marginBottom: "0.15rem" }}>
+                    {f.label}
+                  </div>
+                  <div style={{ fontFamily: "var(--font-body)", fontSize: "0.78rem", color: "var(--text-3)" }}>
+                    {f.sub}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Right — education + languages */}
+        <div>
+          {/* Education */}
+          <div className="ab-edu" style={{ marginBottom: "3rem" }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.1em", color: "var(--text-3)", textTransform: "lowercase", marginBottom: "1.5rem" }}>
+              education
             </div>
-
-            {/* Bio — AnimatedText word-by-word */}
-            <AnimatedText
-              text={personalInfo.bio}
-              className="text-[#8B8FA8] text-lg leading-relaxed mb-6 max-w-prose"
-              delay={0.15}
-              stagger={0.025}
-              duration={0.7}
-            />
-
-            <AnimatedText
-              text="Currently at Inria building Transformer + GNN models for satellite agricultural imagery. Past: deploying neural fault classifiers on STM32 with TFLite under 256KB flash."
-              className="text-[#8B8FA8] text-lg leading-relaxed max-w-prose"
-              delay={0.3}
-              stagger={0.02}
-              duration={0.65}
-            />
-
-            {/* Languages */}
-            <motion.div
-              className="mt-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.45 }}
-            >
-              <p className="font-mono text-[10px] tracking-widest text-[#3D3F52] uppercase mb-5">Languages</p>
-              <div className="lang-row flex flex-wrap gap-3">
-                {languages.map((lang) => (
-                  <motion.div
-                    key={lang.name}
-                    className="lang-card flex items-center gap-4 px-5 py-3 rounded-lg border border-[rgba(127,207,224,0.08)] bg-[rgba(13,12,30,0.5)]"
-                    whileHover={{
-                      borderColor: "rgba(127,207,224,0.28)",
-                      backgroundColor: "rgba(127,207,224,0.04)",
-                      y: -3,
-                    }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <span className="font-impact text-2xl leading-none text-[#7FCFE0]">{lang.level}</span>
-                    <div className="w-px h-7 bg-[rgba(255,255,255,0.06)]" />
-                    <p className="font-display font-semibold text-[#EDE8DC] text-sm tracking-wide">{lang.name}</p>
-                  </motion.div>
-                ))}
+            {education.map((e, i) => (
+              <div
+                key={i}
+                className="ab-edu-item"
+                style={{
+                  paddingLeft: "1.25rem",
+                  borderLeft: "1px solid var(--border)",
+                  marginBottom: "2rem",
+                  position: "relative",
+                }}
+              >
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    left: -4, top: "0.45rem",
+                    width: 7, height: 7,
+                    borderRadius: "50%",
+                    background: "var(--accent)",
+                  }}
+                />
+                <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.95rem", color: "var(--text)", marginBottom: "0.3rem" }}>
+                  {e.school}
+                </div>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.82rem", color: "var(--text-2)", marginBottom: "0.2rem" }}>
+                  {e.degree}
+                </div>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", color: "var(--text-3)", marginBottom: "0.3rem" }}>
+                  {e.period} · {e.location}
+                </div>
+                <div style={{ fontFamily: "var(--font-serif)", fontSize: "0.82rem", color: "var(--text-3)" }}>
+                  {e.details}
+                </div>
               </div>
-            </motion.div>
+            ))}
           </div>
 
-          {/* Right: facts + education */}
+          {/* Languages */}
           <div>
-            <p className="font-mono text-[10px] tracking-widest text-[#3D3F52] uppercase mb-8">Quick facts</p>
-
-            {/* Facts with count-up */}
-            <div ref={factsRef} className="space-y-0">
-              {facts.map((f, i) => (
-                <motion.div
-                  key={i}
-                  className="flex items-baseline gap-4 py-5 border-b border-[rgba(255,255,255,0.05)] last:border-0"
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.7, delay: 0.1 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <CountStat fact={f} inView={isInView} />
-                  <div>
-                    <p className="font-mono text-[10px] text-[#3D3F52] uppercase tracking-wider mb-0.5">{f.label}</p>
-                    <p className="text-sm text-[#8B8FA8] leading-snug">{f.context}</p>
-                  </div>
-                </motion.div>
-              ))}
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.1em", color: "var(--text-3)", textTransform: "lowercase", marginBottom: "1.25rem" }}>
+              languages
             </div>
-
-            {/* Education timeline */}
-            <div className="mt-10">
-              <p className="font-mono text-[10px] tracking-widest text-[#3D3F52] uppercase mb-6">Education</p>
-              <div className="space-y-6 relative">
-                <motion.div
-                  className="absolute left-[5px] top-2 bottom-2 w-px"
-                  style={{ background: "linear-gradient(to bottom, rgba(127,207,224,0.4), rgba(132,132,200,0.2), transparent)" }}
-                  initial={{ scaleY: 0, transformOrigin: "top" }}
-                  animate={isInView ? { scaleY: 1 } : {}}
-                  transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                />
-                {education.map((edu, i) => (
-                  <motion.div
-                    key={i}
-                    className="relative pl-7"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.65, delay: 0.5 + i * 0.14, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <motion.div
-                      className="absolute left-0 top-1.5 w-2.5 h-2.5 rounded-full border-2 border-[#07070F]"
-                      style={{ backgroundColor: i === 0 ? "#7FCFE0" : "#8484C8" }}
-                      animate={{
-                        boxShadow: i === 0
-                          ? ["0 0 0px rgba(127,207,224,0)", "0 0 14px rgba(127,207,224,0.6)", "0 0 0px rgba(127,207,224,0)"]
-                          : ["0 0 0px rgba(132,132,200,0)", "0 0 14px rgba(132,132,200,0.6)", "0 0 0px rgba(132,132,200,0)"],
-                      }}
-                      transition={{ duration: 2.5, repeat: Infinity, delay: i * 1 }}
-                    />
-                    <p className="font-mono text-[10px] text-[#3D3F52] uppercase tracking-wider mb-1">{edu.period}</p>
-                    <p className="font-display font-bold text-[#EDE8DC] leading-tight">{edu.degree}</p>
-                    <p className="text-sm text-[#8B8FA8]">{edu.institution}</p>
-                    {edu.gpa && (
-                      <p className="font-mono text-xs mt-1" style={{ color: i === 0 ? "#7FCFE0" : "#8484C8" }}>
-                        GPA {edu.gpa}
-                      </p>
-                    )}
-                  </motion.div>
-                ))}
-              </div>
+            <div className="ab-langs" style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem" }}>
+              {languages.map((l) => (
+                <div
+                  key={l.name}
+                  className="ab-lang"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    padding: "0.5rem 1rem",
+                    border: "1px solid var(--border)",
+                    borderRadius: "3px",
+                    background: "var(--surface)",
+                  }}
+                >
+                  <span aria-hidden="true" style={{ fontSize: "0.9rem" }}>{l.flag}</span>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: "0.78rem", color: "var(--text-2)" }}>{l.name}</span>
+                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.68rem", color: "var(--accent)", letterSpacing: "0.08em" }}>{l.level}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
+      </div>
     </section>
-  )
+  );
 }

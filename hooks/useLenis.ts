@@ -1,55 +1,30 @@
-"use client"
+"use client";
+import { useEffect } from "react";
+import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { useEffect } from "react"
-import Lenis from "lenis"
-import gsap from "gsap"
-import ScrollTrigger from "gsap/ScrollTrigger"
-
-let lenisInstance: Lenis | null = null
+gsap.registerPlugin(ScrollTrigger);
 
 export function useLenis() {
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
       lerp: 0.08,
       smoothWheel: true,
-      syncTouch: true,
-    })
+      syncTouch: false,
+    });
 
-    lenisInstance = lenis
+    lenis.on("scroll", ScrollTrigger.update);
 
-    lenis.on("scroll", ScrollTrigger.update)
-
-    /* Store the tick reference so the exact same fn is removed on cleanup */
-    const tick = (time: number) => lenis.raf(time * 1000)
-    gsap.ticker.add(tick)
-    gsap.ticker.lagSmoothing(0)
-
-    ScrollTrigger.defaults({ markers: false })
-
-    /* Recalculate scroll height after all content/images have rendered */
-    const refreshId = setTimeout(() => {
-      lenis.resize()
-      ScrollTrigger.refresh()
-    }, 300)
-
-    window.addEventListener("load", () => {
-      lenis.resize()
-      ScrollTrigger.refresh()
-    })
+    const ticker = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(ticker);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      clearTimeout(refreshId)
-      gsap.ticker.remove(tick)
-      lenis.destroy()
-      lenisInstance = null
-    }
-  }, [])
-
-  return lenisInstance
-}
-
-export function getLenis() {
-  return lenisInstance
+      lenis.destroy();
+      gsap.ticker.remove(ticker);
+    };
+  }, []);
 }

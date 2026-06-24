@@ -1,88 +1,50 @@
-import type { Metadata } from "next"
-import { Bebas_Neue, Space_Grotesk, Syne, DM_Serif_Display, Geist_Mono } from "next/font/google"
-import "./globals.css"
-import { SmoothScroll } from "@/components/layout/SmoothScroll"
-import { LanguageProvider } from "@/lib/i18n"
-import { PreloaderProvider } from "@/lib/preloader-context"
+import type { Metadata } from "next";
+import { Cormorant_Garamond, Bricolage_Grotesque, Red_Hat_Mono } from "next/font/google";
+import "./globals.css";
 
-import { Preloader } from "@/components/layout/Preloader"
-import { ScrollProgress } from "@/components/layout/ScrollProgress"
-
-const bebasNeue = Bebas_Neue({
-  variable: "--font-bebas-neue",
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: "400",
+  axes: ["opsz", "wght"],
+  variable: "--font-display-var",
   display: "swap",
-})
+});
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-})
-
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-})
-
-const dmSerifDisplay = DM_Serif_Display({
-  variable: "--font-dm-serif",
-  subsets: ["latin"],
-  weight: "400",
   style: ["normal", "italic"],
+  variable: "--font-serif-var",
   display: "swap",
-})
+});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+/* Micro-labels — echoes the mono captions on microsoft.ai */
+const redHatMono = Red_Hat_Mono({
   subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono-var",
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
-  title: "Imane MOUMOUN · AI & ML Engineer",
+  title: "Imane MOUMOUN — AI & ML Engineer",
   description:
-    "Portfolio of Imane MOUMOUN, AI & ML Engineering student at Mines Saint-Étienne. Specializing in deep learning, computer vision, and edge AI systems.",
-  keywords: [
-    "AI", "ML", "Machine Learning", "Deep Learning", "Computer Vision",
-    "Edge AI", "PyTorch", "TensorFlow", "Mines Saint-Étienne",
-  ],
-  authors: [{ name: "Imane MOUMOUN" }],
+    "Portfolio of Imane MOUMOUN — engineering intelligent systems at the intersection of deep learning, computer vision, and edge AI. Currently AI Research Intern at Inria.",
+  keywords: ["AI", "Machine Learning", "Computer Vision", "Edge AI", "PyTorch", "Deep Learning"],
+  authors: [{ name: "Imane MOUMOUN", url: "https://github.com/imanemn127" }],
   openGraph: {
-    title: "Imane MOUMOUN · AI & ML Engineer",
-    description: "Building intelligent systems at the intersection of deep learning, computer vision, and edge AI.",
+    title: "Imane MOUMOUN — AI & ML Engineer",
+    description:
+      "Building intelligent systems at the intersection of deep learning, computer vision, and edge AI.",
     type: "website",
+    locale: "en_US",
   },
-}
+  robots: { index: true, follow: true },
+};
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${bebasNeue.variable} ${spaceGrotesk.variable} ${syne.variable} ${dmSerifDisplay.variable} ${geistMono.variable}`}
-      suppressHydrationWarning
-    >
-      <head />
-      <body className="min-h-screen antialiased grain scanlines">
-        <PreloaderProvider>
-        <LanguageProvider>
-          <SmoothScroll>
-            <ScrollProgress />
-            <Preloader />
-
-            {children}
-          </SmoothScroll>
-        </LanguageProvider>
-        </PreloaderProvider>
-      </body>
+    <html lang="en" className={`${bricolage.variable} ${cormorant.variable} ${redHatMono.variable}`}>
+      <body>{children}</body>
     </html>
-  )
+  );
 }

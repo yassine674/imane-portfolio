@@ -1,50 +1,57 @@
-"use client"
+"use client";
+import { useState, useEffect, useRef } from "react";
 
-import { useState, useEffect, useRef } from "react"
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&";
 
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&"
+interface Options {
+  delay?: number;
+  duration?: number;
+}
 
-export function useTextScramble(finalText: string, options?: { delay?: number; duration?: number; trigger?: boolean }) {
-  const { delay = 0, duration = 1200, trigger = true } = options ?? {}
-  const [display, setDisplay] = useState(() => finalText.replace(/[^ ]/g, CHARS[0]))
-  const frameRef = useRef<number | null>(null)
-  const startRef = useRef<number | null>(null)
+export function useTextScramble(target: string, { delay = 0, duration = 800 }: Options = {}): string {
+  const [display, setDisplay] = useState("");
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    if (!trigger) return
+    let startTime: number | null = null;
+    const delayMs = delay;
 
-    const timeout = setTimeout(() => {
-      const animate = (timestamp: number) => {
-        if (!startRef.current) startRef.current = timestamp
-        const elapsed = timestamp - startRef.current
-        const progress = Math.min(elapsed / duration, 1)
+    const tick = (now: number) => {
+      if (startTime === null) startTime = now;
+      const elapsed = now - startTime - delayMs;
 
-        const result = finalText
-          .split("")
-          .map((char, i) => {
-            if (char === " ") return " "
-            const charProgress = Math.max(0, (progress - (i / finalText.length) * 0.4) / 0.6)
-            if (charProgress >= 1) return char
-            return CHARS[Math.floor(Math.random() * CHARS.length)]
-          })
-          .join("")
+      if (elapsed < 0) {
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
 
-        setDisplay(result)
+      const progress = Math.min(elapsed / duration, 1);
+      const len = target.length;
+      let result = "";
 
-        if (progress < 1) {
-          frameRef.current = requestAnimationFrame(animate)
+      for (let i = 0; i < len; i++) {
+        const charProgress = (progress - (i / len) * 0.4) / 0.6;
+        if (charProgress >= 1) {
+          result += target[i];
+        } else if (charProgress > 0) {
+          result += CHARS[Math.floor(Math.random() * CHARS.length)];
+        } else {
+          result += CHARS[Math.floor(Math.random() * CHARS.length)];
         }
       }
 
-      frameRef.current = requestAnimationFrame(animate)
-    }, delay * 1000)
+      setDisplay(result);
 
-    return () => {
-      clearTimeout(timeout)
-      if (frameRef.current) cancelAnimationFrame(frameRef.current)
-      startRef.current = null
-    }
-  }, [finalText, delay, duration, trigger])
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        setDisplay(target);
+      }
+    };
 
-  return display
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [target, delay, duration]);
+
+  return display;
 }

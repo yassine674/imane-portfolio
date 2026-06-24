@@ -1,57 +1,48 @@
-"use client"
-
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
-import { personalInfo } from "@/lib/data"
+"use client";
+import { personalInfo } from "@/lib/data";
+import { RollText } from "@/components/layout/RollText";
 
 export function Footer() {
-  const ref    = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-40px" })
-
   return (
-    <motion.footer
-      ref={ref}
-      className="border-t border-[rgba(127,207,224,0.06)] py-10 px-6"
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    <footer
+      style={{
+        padding: "2.5rem clamp(1.5rem, 5vw, 3.5rem)",
+        borderTop: "1px solid var(--border)",
+        display: "flex", flexWrap: "wrap", gap: "1.5rem",
+        alignItems: "center", justifyContent: "space-between",
+      }}
     >
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5">
-        <motion.span
-          className="font-impact text-2xl tracking-tight"
-          style={{ color: "#3D3F52" }}
-          whileHover={{ color: "#EDE8DC" }}
-          transition={{ duration: 0.3 }}
-        >
-          IM<span style={{ color: "rgba(127,207,224,0.4)" }}>.</span>
-        </motion.span>
-
-        <p className="font-mono text-[10px] tracking-widest text-[#3D3F52] uppercase">
-          © 2026 Imane MOUMOUN — All rights reserved
-        </p>
-
-        <div className="flex items-center gap-5">
-          {[
-            { label: "LI", href: personalInfo.linkedin },
-            { label: "GH", href: personalInfo.github },
-            { label: "✉",  href: `mailto:${personalInfo.email}` },
-          ].map((l, i) => (
-            <motion.a
-              key={l.label}
-              href={l.href}
-              target={l.href.startsWith("http") ? "_blank" : undefined}
-              rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="font-mono text-[11px] text-[#3D3F52] tracking-widest uppercase"
-              initial={{ opacity: 0, y: 10 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ color: "#7FCFE0", y: -2 }}
-            >
-              {l.label}
-            </motion.a>
-          ))}
-        </div>
+      <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "1rem", color: "var(--text)" }}>
+        IM<span style={{ color: "var(--accent)" }}>.</span>
+      </span>
+      <span style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", letterSpacing: "0.1em", color: "var(--text-3)", textTransform: "uppercase" }}>
+        © {new Date().getFullYear()} {personalInfo.name}
+      </span>
+      <div style={{ display: "flex", gap: "2rem" }}>
+        {[
+          { label: "GitHub", href: personalInfo.github },
+          { label: "LinkedIn", href: personalInfo.linkedin },
+          { label: "Email", href: `mailto:${personalInfo.email}` },
+        ].map((l) => (
+          <a
+            key={l.label}
+            href={l.href}
+            aria-label={l.label}
+            target={l.href.startsWith("http") ? "_blank" : undefined}
+            rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            style={{
+              fontFamily: "var(--font-body)", fontSize: "0.7rem",
+              letterSpacing: "0.1em", color: "var(--text-3)",
+              textDecoration: "none", textTransform: "uppercase",
+              transition: "color 0.9s var(--f-cubic)",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-3)")}
+          >
+            <RollText text={l.label} />
+          </a>
+        ))}
       </div>
-    </motion.footer>
-  )
+    </footer>
+  );
 }

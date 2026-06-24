@@ -1,214 +1,168 @@
-"use client"
+"use client";
+import { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { allSkills, skillCategories } from "@/lib/data";
+import { MovingGradient } from "@/components/layout/MovingGradient";
+import { SplitReveal } from "@/components/layout/SplitReveal";
 
-import { useEffect, useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import gsap from "gsap"
-import ScrollTrigger from "gsap/ScrollTrigger"
-import { skillCategories, allSkills } from "@/lib/data"
+gsap.registerPlugin(ScrollTrigger);
 
-/* ── Marquee strip ───────────────────────────────── */
-function MarqueeStrip({
-  items,
-  reverse = false,
-  speed   = 40,
-}: {
-  items: string[]
-  reverse?: boolean
-  speed?: number
-}) {
-  const doubled = [...items, ...items]
-  return (
-    <div className="overflow-hidden">
-      <div
-        className={`flex gap-3 w-max ${reverse ? "marquee-r" : "marquee-l"}`}
-        style={{ animationDuration: `${speed}s` }}
-      >
-        {doubled.map((skill, i) => (
-          <motion.span
-            key={i}
-            className="skill-tag"
-            whileHover={{
-              backgroundColor: "rgba(127,207,224,0.1)",
-              borderColor:     "rgba(127,207,224,0.35)",
-              color:           "#7FCFE0",
-              scale:           1.05,
-              y:               -2,
-            }}
-            transition={{ duration: 0.2 }}
-          >
-            <span className="w-1 h-1 rounded-full bg-[rgba(127,207,224,0.4)]" />
-            {skill}
-          </motion.span>
-        ))}
-      </div>
-    </div>
-  )
-}
+const PAPER_BLOBS = [
+  { size: "40vw", top: "-8%", left: "-6%", color: "oklch(80% 0.13 55 / 0.20)", anim: "mesh-2 23s ease-in-out infinite", blur: "85px" },
+  { size: "32vw", bottom: "-10%", right: "-4%", color: "oklch(72% 0.12 300 / 0.13)", anim: "mesh-3 27s ease-in-out infinite", blur: "90px" },
+];
 
-/* ── Section ─────────────────────────────────────── */
 export function Skills() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const isInView   = useInView(sectionRef, { once: true, margin: "-80px" })
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".skill-cat",
-        { y: 45, opacity: 0, scale: 0.96 },
-        {
-          y: 0, opacity: 1, scale: 1,
-          stagger: 0.12,
-          duration: 0.85,
-          ease: "power3.out",
-          scrollTrigger: { trigger: ".skill-cats", start: "top 80%" },
-        },
-      )
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
-
-  const row1 = allSkills.slice(0, 16)
-  const row2 = allSkills.slice(8, 24)
-  const row3 = allSkills.slice(14)
+      gsap.from(".sk-label", { scrollTrigger: { trigger: ".sk-label", start: "top 88%", once: true }, opacity: 0, y: 14, duration: 0.6, ease: "power3.out" });
+      /* heading now uses SplitReveal (per-char obsidian entrance) */
+      gsap.from(".sk-word", {
+        scrollTrigger: { trigger: ".sk-cloud", start: "top 80%", once: true },
+        opacity: 0, y: 24, duration: 0.5,
+        stagger: { amount: 0.8, from: "random" },
+        ease: "power3.out",
+      });
+      gsap.from(".sk-cat", {
+        scrollTrigger: { trigger: ".sk-cats", start: "top 78%", once: true },
+        opacity: 0, y: 20, duration: 0.6, stagger: 0.12, ease: "power3.out",
+      });
+    }, ref);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref}
       id="skills"
-      className="section-padding overflow-hidden"
-      aria-label="Skills"
+      aria-labelledby="sk-h"
+      className="section-light"
+      style={{
+        padding: "clamp(5rem, 11vw, 9rem) clamp(1.5rem, 5vw, 3.5rem) clamp(6rem, 14vw, 12rem)",
+        overflow: "hidden",
+      }}
     >
-      <div className="max-w-7xl mx-auto">
+      <MovingGradient blobs={PAPER_BLOBS} hueSpin={false} />
 
-        {/* Label */}
-        <motion.div
-          className="flex items-center gap-4 mb-16"
-          initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <span className="chip">04 — Skills</span>
-          <div className="section-label-line" />
-        </motion.div>
+      <div style={{ position: "relative", zIndex: 1 }}>
+      <div className="sk-label" style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.12em", color: "var(--accent)", textTransform: "lowercase", marginBottom: "2.5rem", display: "flex", alignItems: "center", gap: "0.6rem" }}>
+        <span aria-hidden="true" style={{ width: "1.8rem", height: "1px", background: "var(--accent)", display: "inline-block" }} />
+        04 — skills
+      </div>
 
-        {/* Heading — wide inline treatment: label + large word on one axis */}
-        <div className="mb-16 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-          <div>
-            {/* Stacked: small label then large single word */}
-            <motion.p
-              className="font-mono text-[11px] tracking-[0.3em] text-[#7FCFE0] uppercase mb-3"
-              initial={{ opacity: 0, x: -16 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      <h2
+        id="sk-h"
+        className="sk-heading"
+        style={{
+          fontFamily: "var(--font-serif)", fontWeight: 400,
+          fontSize: "clamp(3rem, 9vw, 8.5rem)",
+          lineHeight: 0.94, letterSpacing: "-0.01em",
+          color: "var(--text)",
+          marginBottom: "clamp(4rem, 8vw, 7rem)",
+        }}
+      >
+        <div><SplitReveal text="Tools I" /></div>
+        <div><SplitReveal text="master" style={{ fontStyle: "italic", fontWeight: 500, color: "var(--accent)" }} /></div>
+      </h2>
+
+      {/* Typographic word flow */}
+      <div
+        className="sk-cloud"
+        role="list"
+        aria-label="All skills"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.5rem 0.75rem",
+          marginBottom: "clamp(4rem, 8vw, 7rem)",
+          maxWidth: "900px",
+        }}
+      >
+        {allSkills.map((skill, i) => {
+          const sizes = ["0.72rem", "0.85rem", "1rem", "1.15rem", "0.78rem"];
+          const weights: Array<100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900> = [400, 500, 600, 700, 800];
+          const sz = sizes[i % sizes.length];
+          const wt = weights[i % weights.length];
+          const isAccent = i % 7 === 0;
+
+          return (
+            <span
+              key={skill}
+              role="listitem"
+              className="sk-word"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: wt,
+                fontSize: sz,
+                letterSpacing: "-0.01em",
+                color: isAccent ? "var(--accent)" : "var(--text-2)",
+                cursor: "default",
+                transition: "color 0.2s",
+                lineHeight: 2,
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = isAccent ? "var(--accent)" : "var(--text-2)")}
             >
-              Technical
-            </motion.p>
-            <div style={{ overflow: "hidden" }}>
-              <motion.div
-                className="font-impact text-[clamp(5rem,11vw,10rem)] leading-[0.9] text-[#EDE8DC]"
-                style={{ letterSpacing: "-0.02em" }}
-                initial={{ y: "100%" }}
-                animate={isInView ? { y: 0 } : { y: "100%" }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
-              >
-                ARSENAL
-              </motion.div>
+              {skill}
+            </span>
+          );
+        })}
+      </div>
+
+      {/* Category breakdown */}
+      <div
+        className="sk-cats"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+          gap: "clamp(1rem, 2vw, 1.5rem)",
+        }}
+        role="list"
+        aria-label="Skill categories"
+      >
+        {skillCategories.map((cat) => (
+          <div
+            key={cat.name}
+            className="sk-cat"
+            role="listitem"
+            style={{
+              padding: "1.5rem",
+              border: "1px solid var(--border)",
+              borderRadius: "6px",
+              background: "var(--surface)",
+              transition: "border-color 0.2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
+          >
+            <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "0.78rem", color: "var(--accent)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "1rem" }}>
+              {cat.name}
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem" }}>
+              {cat.skills.map((s) => (
+                <span
+                  key={s}
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.72rem",
+                    color: "var(--text-2)",
+                    padding: "0.2rem 0.55rem",
+                    background: "var(--surface-2)",
+                    borderRadius: "3px",
+                  }}
+                >
+                  {s}
+                </span>
+              ))}
             </div>
           </div>
-
-          <motion.p
-            className="text-[#8B8FA8] text-lg max-w-sm"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            From PyTorch to TFLite on STM32 — full-stack AI from research to edge deployment.
-          </motion.p>
-        </div>
-
-        {/* Marquee strips — fade-masked edges */}
-        <div className="relative -mx-6 mb-16">
-          <div className="absolute left-0 inset-y-0 w-24 z-10 bg-gradient-to-r from-[#07070F] to-transparent pointer-events-none" />
-          <div className="absolute right-0 inset-y-0 w-24 z-10 bg-gradient-to-l from-[#07070F] to-transparent pointer-events-none" />
-          <div className="space-y-3 py-2">
-            <MarqueeStrip items={row1} speed={38} />
-            <MarqueeStrip items={row2} reverse speed={46} />
-            <MarqueeStrip items={row3} speed={34} />
-          </div>
-        </div>
-
-        {/* Category cards */}
-        <div className="skill-cats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {skillCategories.map((cat) => (
-            <motion.div
-              key={cat.name}
-              className="skill-cat relative p-6 rounded-2xl glass border border-[rgba(127,207,224,0.06)] group overflow-hidden"
-              whileHover={{
-                borderColor: `${cat.color}35`,
-                y: -5,
-              }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {/* Per-category top accent line — distinguishes each card */}
-              <div
-                className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl"
-                style={{ background: `linear-gradient(90deg, ${cat.color}, ${cat.color}30, transparent)` }}
-              />
-
-              {/* Subtle corner glow on hover */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
-                style={{ background: `radial-gradient(ellipse at top left, ${cat.color}08 0%, transparent 60%)` }}
-              />
-
-              {/* Category header */}
-              <div className="flex items-center gap-3 mb-6 relative z-10">
-                <motion.div
-                  className="w-2 h-2 rounded-full shrink-0"
-                  style={{ backgroundColor: cat.color }}
-                  animate={{
-                    boxShadow: [
-                      `0 0 0px ${cat.color}00`,
-                      `0 0 10px ${cat.color}90`,
-                      `0 0 0px ${cat.color}00`,
-                    ],
-                  }}
-                  transition={{ duration: 2.8, repeat: Infinity }}
-                />
-                <p
-                  className="font-mono text-[11px] uppercase tracking-widest font-semibold"
-                  style={{ color: cat.color }}
-                >
-                  {cat.name}
-                </p>
-              </div>
-
-              {/* Skill list — individual item hover */}
-              <ul className="space-y-2.5 relative z-10">
-                {cat.skills.map((skill, i) => (
-                  <motion.li
-                    key={skill}
-                    className="skill-item"
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.4, delay: 0.2 + i * 0.07 }}
-                    whileHover={{ x: 6, color: cat.color }}
-                  >
-                    <motion.span
-                      className="skill-item-bar"
-                      style={{ backgroundColor: `${cat.color}50` }}
-                      whileHover={{ height: "20px", opacity: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                    {skill}
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
+        ))}
+      </div>
       </div>
     </section>
-  )
+  );
 }

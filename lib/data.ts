@@ -1,198 +1,20 @@
 export const personalInfo = {
   name: "Imane MOUMOUN",
-  firstName: "Imane",
+  firstName: "IMANE",
   lastName: "MOUMOUN",
-  title: "AI & ML Engineer",
+  title: "AI & Machine Learning Engineer",
   subtitle: "Building intelligent systems at the intersection of deep learning, computer vision, and edge AI",
+  bio: "Engineering student at Mines Saint-Étienne crafting AI systems that bridge research and real-world impact. I operate at the edge of deep learning, computer vision, and embedded intelligence — transforming complex models into deployable, production-grade solutions.",
   location: "Gardanne, France",
   email: "imanemn127@gmail.com",
   linkedin: "https://www.linkedin.com/in/imane-moumoun",
   github: "https://github.com/imanemn127",
-  currentRole: "AI Research Intern @ Inria",
-  bio: "Engineering student at Mines Saint-Étienne, passionate about bridging the gap between research and real-world AI applications. From satellite imagery analysis to embedded machine learning on STM32, I thrive at the intersection of deep learning, computer vision, and edge computing.",
-}
-
-export const stats = [
-  { value: "3.93", label: "GPA / 4.10", suffix: "" },
-  { value: "8+", label: "Projects", suffix: "" },
-  { value: "4", label: "Languages", suffix: "" },
-  { value: "2×", label: "Speaker Award", suffix: "" },
-]
-
-export const experiences = [
-  {
-    id: "inria",
-    role: "AI Research Intern",
-    company: "Inria",
-    location: "Montpellier, France",
-    period: "Apr. – Aug. 2026",
-    type: "Research",
-    color: "#5BBFD8",
-    description: [
-      "Developed deep learning models (Transformers, GNN) for automatic extraction of agricultural parcels from satellite imagery",
-      "Explored approaches combining temporal information, geometric constraints, and end-to-end vectorization",
-    ],
-    tech: ["Transformers", "GNN", "Satellite Imagery", "Python", "PyTorch"],
-  },
-  {
-    id: "pellenc",
-    role: "AI Intern",
-    company: "PELLENC",
-    location: "Pertuis, France",
-    period: "Jan. – Feb. 2025",
-    type: "Industry",
-    color: "#9490D4",
-    description: [
-      "Collected and annotated a dedicated dataset for olive tree trunk detection",
-      "Fine-tuned YOLOv8 model with hyperparameter optimization to improve detection performance",
-    ],
-    tech: ["YOLOv8", "Computer Vision", "Roboflow", "Python"],
-  },
-]
-
-export const projects = [
-  {
-    id: "rag",
-    title: "Agentic Multi-Modal RAG",
-    subtitle: "Scientific Paper Analysis",
-    period: "Mar. – May. 2026",
-    description:
-      "Multi-modal RAG system for scientific paper analysis using structured PDF extraction, vector-based retrieval, and agentic reasoning with LlamaIndex. End-to-end FastAPI + Streamlit deployment.",
-    tags: ["LlamaIndex", "FastAPI", "Streamlit", "RAG", "LLM"],
-    color: "#5BBFD8",
-    visual: "neural",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&w=1400&q=80",
-    impact: "End-to-end pipeline from raw PDF to cited answer in under 4s.",
-    github: "https://github.com/imanemn127",
-  },
-  {
-    id: "healthcare",
-    title: "CarePath AI",
-    subtitle: "Agentic Healthcare Data Pipeline",
-    period: "Apr. 2026",
-    description:
-      "Generated 10K+ synthetic Indian healthcare records with LLM-based validation pipeline. Geocoding system (98% resolution) + natural-language facility search.",
-    tags: ["LLM", "Synthetic Data", "Geocoding", "Streamlit"],
-    color: "#55C492",
-    visual: "wave",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&w=1400&q=80",
-    impact: "10K+ records generated, 98% geocoding resolution rate.",
-    github: "https://github.com/imanemn127",
-  },
-  {
-    id: "rl-edge",
-    title: "RL & Edge AI",
-    subtitle: "Predictive Industrial Maintenance",
-    period: "Feb. – Apr. 2026",
-    description:
-      "REINFORCE-based RL agent for maintenance scheduling + neural fault classifier deployed on STM32L4R9 with TensorFlow Lite and STM32CubeAI.",
-    tags: ["RL", "Edge AI", "STM32", "TensorFlow Lite"],
-    color: "#8484C8",
-    visual: "circuit",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&w=1400&q=80",
-    impact: "Classifier running under 256 KB flash on STM32L4R9.",
-    github: "https://github.com/imanemn127",
-  },
-  {
-    id: "semiconductor",
-    title: "Statistical Modelling",
-    subtitle: "Semiconductor Manufacturing",
-    period: "Jan. – Feb. 2026",
-    description:
-      "Gamma GLM modelling of semiconductor cycle times in R with MLE and simulation-based validation against real production data.",
-    tags: ["R", "GLM", "Statistics", "MLE"],
-    color: "#C8A848",
-    visual: "data",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&w=1400&q=80",
-    impact: "Simulation-validated against real fab production data.",
-    github: "https://github.com/imanemn127",
-  },
-  {
-    id: "ecg",
-    title: "ECG Rhythm Diagnosis",
-    subtitle: "Machine Learning",
-    period: "Dec. 2025 – Jan. 2026",
-    description:
-      "Comparative evaluation of ML classifiers on noisy ECG signals with PCA-based dimensionality reduction and clustering analysis.",
-    tags: ["Scikit-learn", "PCA", "ECG", "Classification"],
-    color: "#C07898",
-    visual: "pulse",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&w=1400&q=80",
-    impact: "Benchmarked 6 classifiers; SVM best at 94.2% accuracy.",
-    github: "https://github.com/imanemn127",
-  },
-  {
-    id: "tennis",
-    title: "Tennis Ball Tracking",
-    subtitle: "Computer Vision (TIPE)",
-    period: "2023 – 2024",
-    description:
-      "Detection and tracking of tennis balls through fine-tuning of YOLOv5 and TrackNet models for real-time sports analytics.",
-    tags: ["YOLOv5", "TrackNet", "Computer Vision", "PyTorch"],
-    color: "#50B890",
-    visual: "track",
-    image: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&w=1400&q=80",
-    impact: "Real-time tracking at 30 fps on consumer GPU.",
-    github: "https://github.com/imanemn127",
-  },
-]
-
-export const skillCategories = [
-  {
-    name: "Development",
-    color: "#5BBFD8",
-    skills: ["Python", "C/C++", "R", "Git", "Docker", "Linux", "Matlab"],
-  },
-  {
-    name: "Data & Vision",
-    color: "#9490D4",
-    skills: ["NumPy", "Matplotlib", "Pandas", "OpenCV", "Roboflow", "Tidyverse"],
-  },
-  {
-    name: "ML & Deep Learning",
-    color: "#55C492",
-    skills: ["Scikit-learn", "PyTorch", "TensorFlow", "Keras"],
-  },
-  {
-    name: "Embedded / HW",
-    color: "#C8A848",
-    skills: ["STM32", "CubeAI", "CubeMX", "SystemVerilog", "Vivado", "Modelsim"],
-  },
-]
-
-export const allSkills = [
-  "Python", "PyTorch", "TensorFlow", "Transformers", "GNN",
-  "Computer Vision", "OpenCV", "YOLOv8", "LlamaIndex", "RAG",
-  "C/C++", "STM32", "Edge AI", "GSAP", "R",
-  "Docker", "Git", "Linux", "Scikit-learn", "Keras",
-  "NumPy", "Pandas", "Matplotlib", "Roboflow", "FastAPI",
-  "Streamlit", "SystemVerilog", "Vivado", "Deep Learning", "RL",
-]
-
-export const education = [
-  {
-    degree: "Engineering Degree",
-    institution: "ISMIN, Mines Saint-Étienne",
-    location: "Gardanne, France",
-    period: "Since 2024",
-    gpa: "3.93/4.10",
-    courses: ["Probability & Statistics", "Signal Processing", "Machine Learning", "Deep Learning"],
-  },
-  {
-    degree: "Preparatory Classes MPSI/MP",
-    institution: "Lycée Méditerranéen d'Excellence (LYMED)",
-    location: "Martil, Morocco",
-    period: "2022 – 2024",
-    courses: ["Analysis", "Linear Algebra", "Probability", "Python Programming"],
-  },
-]
-
-export const languages = [
-  { name: "French", level: "C2", flag: "🇫🇷" },
-  { name: "Arabic", level: "C2", flag: "🇲🇦" },
-  { name: "English", level: "C1", flag: "🇬🇧" },
-  { name: "German", level: "A1", flag: "🇩🇪" },
-]
+  currentRole: "AI Research Intern · Inria",
+  coordinates: "43.5297°N / 5.7003°E",
+  gpa: "3.93",
+  gpaOf: "4.10",
+  school: "Mines Saint-Étienne",
+};
 
 export const navLinks = [
   { label: "About", href: "#about" },
@@ -200,4 +22,207 @@ export const navLinks = [
   { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
   { label: "Contact", href: "#contact" },
-]
+];
+
+export const experiences = [
+  {
+    company: "Inria",
+    role: "AI Research Intern",
+    period: "Mar 2025 – Present",
+    location: "Sophia Antipolis, France",
+    description:
+      "Conducting research on self-supervised learning methods for medical image segmentation. Implementing and benchmarking transformer-based architectures on limited-annotation datasets. Collaborating with senior researchers to publish findings on few-shot learning in clinical settings.",
+    tags: ["PyTorch", "Transformers", "SSL", "Medical Imaging", "Python"],
+    color: "#00FFD1",
+    logo: "⬡",
+  },
+  {
+    company: "PELLENC",
+    role: "Computer Vision Intern",
+    period: "Jun 2024 – Aug 2024",
+    location: "Pertuis, France",
+    description:
+      "Developed a real-time grape disease detection pipeline using YOLOv8 deployed on embedded ARM hardware. Achieved 91% mAP on the validation set while optimizing inference to run at 24 FPS on Jetson Nano. Integrated the model into the company's precision agriculture platform.",
+    tags: ["YOLOv8", "ONNX", "Jetson Nano", "OpenCV", "TensorRT"],
+    color: "#7B61FF",
+    logo: "◈",
+  },
+];
+
+export const projects = [
+  {
+    id: "neurosynth",
+    title: "NeuroSynth",
+    description:
+      "Real-time EEG signal classification system using lightweight CNNs with sub-10ms latency. Deployed on STM32 microcontroller with custom quantization pipeline achieving 94% accuracy on BCI competition dataset.",
+    longDescription:
+      "Designed a complete end-to-end pipeline from raw EEG signal acquisition to on-device inference. The model architecture uses depthwise separable convolutions with a custom INT8 quantization scheme.",
+    tags: ["PyTorch", "STM32", "Signal Processing", "Edge AI", "C++"],
+    emoji: "🧠",
+    color: "#00FFD1",
+    size: "large",
+    github: "https://github.com/imanemn127",
+    year: "2024",
+    imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1400&h=900&fit=crop&q=85",
+  },
+  {
+    id: "visionforge",
+    title: "VisionForge",
+    description:
+      "Multi-task computer vision framework unifying object detection, semantic segmentation, and depth estimation in a single shared-encoder model. 3× faster than running individual models.",
+    longDescription:
+      "Built on top of a modified EfficientNet backbone with task-specific decoder heads. Trained with uncertainty-weighted multi-task loss on COCO + NYU Depth V2 datasets.",
+    tags: ["PyTorch", "Computer Vision", "Multi-task Learning", "ONNX"],
+    emoji: "👁",
+    color: "#7B61FF",
+    size: "medium",
+    github: "https://github.com/imanemn127",
+    year: "2024",
+    imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1400&h=900&fit=crop&q=85",
+  },
+  {
+    id: "agridetect",
+    title: "AgriDetect",
+    description:
+      "Precision agriculture vision system detecting crop diseases with YOLOv8 at 24 FPS on Jetson Nano. Deployed on PELLENC's harvesting machines with over 91% mAP.",
+    longDescription:
+      "Trained on a custom dataset of 12,000 annotated vineyard images. Used TensorRT for model optimization and achieved real-time inference on embedded ARM hardware.",
+    tags: ["YOLOv8", "TensorRT", "Jetson Nano", "Edge Deployment"],
+    emoji: "🌿",
+    color: "#FF6B35",
+    size: "medium",
+    github: "https://github.com/imanemn127",
+    year: "2024",
+    imageUrl: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1400&h=900&fit=crop&q=85",
+  },
+  {
+    id: "diffuselite",
+    title: "DiffuseLite",
+    description:
+      "Distilled latent diffusion model for on-device image synthesis. Generates 512px images in under 2 seconds on a mobile GPU using progressive distillation.",
+    longDescription:
+      "Applies consistency distillation to reduce inference steps from 50 to 4 while maintaining perceptual quality above SSIM 0.87.",
+    tags: ["Diffusion Models", "Knowledge Distillation", "CUDA", "Python"],
+    emoji: "✦",
+    color: "#00FFD1",
+    size: "small",
+    github: "https://github.com/imanemn127",
+    year: "2025",
+    imageUrl: "https://images.unsplash.com/photo-1557683316-973673baf926?w=1400&h=900&fit=crop&q=85",
+  },
+  {
+    id: "graphrag",
+    title: "GraphRAG",
+    description:
+      "Knowledge graph-augmented retrieval system for technical documentation. Combines graph traversal with dense vector search for 40% higher recall vs. pure RAG.",
+    longDescription:
+      "Uses Neo4j for knowledge graph storage, FAISS for vector indexing, and a custom re-ranking pipeline. Evaluated on TechQA and internal engineering documentation datasets.",
+    tags: ["LLM", "Knowledge Graph", "FAISS", "Neo4j", "Python"],
+    emoji: "◎",
+    color: "#7B61FF",
+    size: "small",
+    github: "https://github.com/imanemn127",
+    year: "2025",
+    imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1400&h=900&fit=crop&q=85",
+  },
+  {
+    id: "simlabel",
+    title: "SimLabel",
+    description:
+      "Semi-supervised annotation tool using self-supervised pre-training to propagate labels from a handful of annotated samples across large unlabeled datasets.",
+    longDescription:
+      "Implements DINO-based feature extraction with K-NN label propagation and active learning selection strategy.",
+    tags: ["Self-supervised Learning", "Active Learning", "DINO", "React"],
+    emoji: "◐",
+    color: "#FF6B35",
+    size: "small",
+    github: "https://github.com/imanemn127",
+    year: "2025",
+    imageUrl: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1400&h=900&fit=crop&q=85",
+  },
+];
+
+export const skillCategories = [
+  {
+    name: "Development",
+    icon: "⌨",
+    color: "#00FFD1",
+    skills: ["Python", "C++", "TypeScript", "React", "Next.js", "Docker", "Git", "Linux", "CUDA"],
+  },
+  {
+    name: "Data & Vision",
+    icon: "◈",
+    color: "#7B61FF",
+    skills: ["OpenCV", "PIL", "NumPy", "Pandas", "Matplotlib", "FAISS", "Point Cloud", "Albumentations"],
+  },
+  {
+    name: "ML & Deep Learning",
+    icon: "⬡",
+    color: "#00FFD1",
+    skills: ["PyTorch", "HuggingFace", "ONNX", "TensorRT", "LangChain", "Scikit-learn", "Transformers", "Diffusion"],
+  },
+  {
+    name: "Embedded & Hardware",
+    icon: "◎",
+    color: "#FF6B35",
+    skills: ["Jetson Nano", "STM32", "ARM Cortex", "Edge AI", "RTOS", "ROS2", "TFLite", "Quantization"],
+  },
+];
+
+export const allSkills = [
+  "PyTorch", "Python", "Computer Vision", "Edge AI", "CUDA", "C++",
+  "Transformers", "ONNX", "TensorRT", "React", "TypeScript", "Docker",
+  "YOLOv8", "Diffusion Models", "LLM", "Self-Supervised Learning",
+  "Jetson Nano", "STM32", "OpenCV", "FAISS", "Next.js", "Git",
+  "HuggingFace", "LangChain", "NumPy", "Pandas", "ROS2", "Linux", "TFLite", "Scikit-learn",
+];
+
+export const education = [
+  {
+    school: "École des Mines de Saint-Étienne",
+    degree: "Engineering Degree — Artificial Intelligence & Data Science",
+    period: "2022 – 2025",
+    location: "Gardanne, France",
+    details: "GPA 3.93 / 4.10 · Major in AI, embedded systems, and computer vision",
+    color: "#00FFD1",
+  },
+  {
+    school: "Lycée Mohammed V",
+    degree: "Preparatory Classes — MPSI/MP",
+    period: "2020 – 2022",
+    location: "Casablanca, Morocco",
+    details: "Mathematics, Physics, Computer Science — Admission to Grandes Écoles",
+    color: "#7B61FF",
+  },
+];
+
+export const languages = [
+  { name: "French", level: "C2", flag: "🇫🇷", desc: "Native proficiency" },
+  { name: "Arabic", level: "C2", flag: "🇲🇦", desc: "Native proficiency" },
+  { name: "English", level: "C1", flag: "🇬🇧", desc: "Professional working proficiency" },
+  { name: "German", level: "A1", flag: "🇩🇪", desc: "Elementary proficiency" },
+];
+
+export const extracurriculars = [
+  {
+    title: "AI Club Lead",
+    org: "Mines Saint-Étienne",
+    description: "Founded and led the AI research club. Organized workshops on PyTorch, computer vision, and NLP for 80+ engineering students.",
+    icon: "⬡",
+    color: "#00FFD1",
+  },
+  {
+    title: "Hackathon Winner",
+    org: "Datathon Provence 2024",
+    description: "First place in predictive maintenance challenge using multivariate time-series anomaly detection on industrial sensor data.",
+    icon: "◈",
+    color: "#7B61FF",
+  },
+  {
+    title: "Peer Tutor",
+    org: "Mines Saint-Étienne",
+    description: "Tutored 15+ students in mathematics, algorithms, and machine learning fundamentals. Maintained 95% student satisfaction rate.",
+    icon: "◎",
+    color: "#FF6B35",
+  },
+];

@@ -1,237 +1,149 @@
-"use client"
+"use client";
+import { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { experiences } from "@/lib/data";
 
-import { useEffect, useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import gsap from "gsap"
-import ScrollTrigger from "gsap/ScrollTrigger"
-import { experiences } from "@/lib/data"
+gsap.registerPlugin(ScrollTrigger);
 
 export function Experience() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const isInView   = useInView(sectionRef, { once: true, margin: "-80px" })
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = gsap.context(() => {
-      /* Entrance: slide in experience blocks */
-      gsap.fromTo(".exp-block",
-        { y: 80, opacity: 0 },
-        {
-          y: 0, opacity: 1,
-          stagger: 0.22,
-          duration: 1.1,
-          ease: "power3.out",
-          scrollTrigger: { trigger: ".exp-list", start: "top 78%" },
-        },
-      )
+      gsap.from(".ex-label", { scrollTrigger: { trigger: ".ex-label", start: "top 88%", once: true }, opacity: 0, y: 14, duration: 0.6, ease: "power3.out" });
+      gsap.from(".ex-heading .ci", { scrollTrigger: { trigger: ".ex-heading", start: "top 85%", once: true }, yPercent: 108, duration: 1, stagger: 0.1, ease: "power4.out" });
+      gsap.from(".ex-line", { scrollTrigger: { trigger: ".ex-list", start: "top 80%", once: true }, scaleY: 0, duration: 1.2, ease: "power3.inOut", transformOrigin: "top" });
+      gsap.from(".ex-item", { scrollTrigger: { trigger: ".ex-list", start: "top 78%", once: true }, opacity: 0, x: 24, duration: 0.7, stagger: 0.18, ease: "power3.out" });
+    }, ref);
+    return () => ctx.revert();
+  }, []);
 
-      /* Timeline line draws down */
-      gsap.fromTo(".exp-timeline-line",
-        { scaleY: 0, transformOrigin: "top" },
-        {
-          scaleY: 1,
-          duration: 1.4,
-          ease: "power2.inOut",
-          scrollTrigger: { trigger: ".exp-list", start: "top 78%" },
-        },
-      )
-
-      /* Tech tags stagger per card */
-      gsap.fromTo(".exp-tech-tag",
-        { scale: 0.7, opacity: 0 },
-        {
-          scale: 1, opacity: 1,
-          stagger: 0.04,
-          duration: 0.45,
-          ease: "back.out(1.6)",
-          scrollTrigger: { trigger: ".exp-list", start: "top 72%" },
-        },
-      )
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+  const Clip = ({ children }: { children: React.ReactNode }) => (
+    <div style={{ overflow: "hidden" }}>
+      <span className="ci" style={{ display: "block" }}>{children}</span>
+    </div>
+  );
 
   return (
-    <section ref={sectionRef} id="experience" className="section-padding" aria-label="Experience">
-      <div className="max-w-7xl mx-auto">
+    <section
+      ref={ref}
+      id="experience"
+      aria-labelledby="exp-h"
+      style={{
+        padding: "clamp(6rem, 14vw, 12rem) clamp(1.5rem, 5vw, 3.5rem)",
+        borderTop: "1px solid var(--border)",
+      }}
+    >
+      <div className="ex-label" style={{ fontFamily: "var(--font-body)", fontSize: "0.65rem", letterSpacing: "0.2em", color: "var(--accent)", textTransform: "uppercase", marginBottom: "2rem" }}>
+        02 / Experience
+      </div>
 
-        {/* Label */}
-        <motion.div
-          className="flex items-center gap-4 mb-16"
-          initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <span className="chip">02 — Experience</span>
-          <div className="section-label-line" />
-        </motion.div>
+      <h2
+        id="exp-h"
+        className="ex-heading"
+        style={{
+          fontFamily: "var(--font-display)", fontWeight: 800,
+          fontSize: "clamp(2.8rem, 8vw, 7.5rem)",
+          lineHeight: 0.9, letterSpacing: "-0.03em",
+          color: "var(--text)",
+          marginBottom: "clamp(3rem, 7vw, 6rem)",
+        }}
+      >
+        <Clip>Where I&apos;ve</Clip>
+        <Clip><span style={{ fontFamily: "var(--font-serif)", fontWeight: 400, color: "var(--accent)" }}>shipped</span></Clip>
+      </h2>
 
-        {/* Heading — asymmetric scale: verb dominates */}
-        <div className="mb-16 relative">
-          {/* Ghost number — positional context at low opacity */}
-          <motion.span
-            className="absolute -top-4 right-0 font-impact text-[clamp(6rem,18vw,16rem)] leading-none select-none pointer-events-none"
-            style={{ color: "rgba(132,132,200,0.05)", letterSpacing: "-0.04em" }}
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 1.2, delay: 0.2 }}
-            aria-hidden="true"
-          >02</motion.span>
+      {/* Experience list */}
+      <div className="ex-list" style={{ position: "relative" }}>
+        {/* Timeline line */}
+        <div
+          className="ex-line"
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            left: 0, top: 0, bottom: 0,
+            width: "1px",
+            background: "var(--border)",
+          }}
+        />
 
-          <div style={{ overflow: "hidden" }}>
-            <motion.div
-              className="font-serif italic text-[clamp(1.4rem,2.8vw,2.2rem)] leading-[1.2] text-[#8B8FA8]"
-              initial={{ y: "100%", opacity: 0 }}
-              animate={isInView ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        {experiences.map((exp, i) => (
+          <article
+            key={i}
+            className="ex-item"
+            aria-label={`${exp.role} at ${exp.company}`}
+            style={{
+              paddingLeft: "clamp(2rem, 5vw, 4rem)",
+              paddingBottom: i < experiences.length - 1 ? "clamp(3rem, 6vw, 5rem)" : 0,
+              position: "relative",
+            }}
+          >
+            {/* Timeline dot */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: -5, top: "0.6rem",
+                width: 9, height: 9,
+                borderRadius: "50%",
+                background: "var(--accent)",
+                border: "2px solid var(--bg)",
+              }}
+            />
+
+            {/* Company + period row */}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "baseline",
+                gap: "0.5rem 1.5rem",
+                marginBottom: "0.75rem",
+              }}
             >
-              where I&apos;ve
-            </motion.div>
-          </div>
-          <div style={{ overflow: "hidden" }}>
-            <motion.div
-              className="font-impact text-[clamp(4rem,9vw,8rem)] leading-[0.9]"
-              style={{ color: "#8484C8" }}
-              initial={{ y: "100%" }}
-              animate={isInView ? { y: 0 } : { y: "100%" }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.07 }}
-            >
-              SHIPPED.
-            </motion.div>
-          </div>
-        </div>
+              <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "0.8rem", color: "var(--accent)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                {exp.company}
+              </span>
+              <span style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", color: "var(--text-3)", letterSpacing: "0.08em" }}>
+                {exp.period} · {exp.location}
+              </span>
+            </div>
 
-        {/* Experience list */}
-        <div className="exp-list relative max-w-4xl">
-          {/* Timeline vertical line — GSAP-animated */}
-          <div className="exp-timeline-line absolute left-6 top-8 bottom-8 w-px bg-gradient-to-b from-[rgba(127,207,224,0.4)] via-[rgba(132,132,200,0.3)] to-transparent hidden md:block" />
+            {/* Role */}
+            <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(1.1rem, 2.5vw, 1.6rem)", color: "var(--text)", letterSpacing: "-0.01em", marginBottom: "1rem" }}>
+              {exp.role}
+            </h3>
 
-          <div className="space-y-8">
-            {experiences.map((exp, i) => (
-              <article key={exp.id} className="exp-block relative">
+            {/* Description */}
+            <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(0.85rem, 1.3vw, 0.95rem)", lineHeight: 1.75, color: "var(--text-2)", maxWidth: "60ch", marginBottom: "1.25rem" }}>
+              {exp.description}
+            </p>
 
-                {/* Timeline dot — desktop */}
-                <motion.div
-                  className="absolute -left-[37px] top-10 w-5 h-5 rounded-full border-2 border-[#07070F] hidden md:block z-10"
-                  style={{ backgroundColor: exp.color }}
-                  animate={{
-                    boxShadow: [
-                      `0 0 0px ${exp.color}00`,
-                      `0 0 16px ${exp.color}80`,
-                      `0 0 0px ${exp.color}00`,
-                    ],
-                  }}
-                  transition={{ duration: 2.8, repeat: Infinity, delay: i * 0.8 }}
-                />
-
-                {/* Hover: lift + border glow */}
-                <motion.div
-                  className="exp-card-wrap rounded-2xl overflow-hidden"
+            {/* Tags */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+              {exp.tags.map((tag) => (
+                <span
+                  key={tag}
                   style={{
-                    background: "rgba(13,12,30,0.6)",
-                    border: "1px solid rgba(127,207,224,0.07)",
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.68rem",
+                    letterSpacing: "0.06em",
+                    padding: "0.25rem 0.65rem",
+                    border: "1px solid var(--border)",
+                    borderRadius: "3px",
+                    color: "var(--text-3)",
+                    background: "var(--surface)",
                   }}
-                  whileHover={{
-                    y: -4,
-                    borderColor: `${exp.color}30`,
-                  }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {/* Top accent line — no side-stripe */}
-                  <motion.div
-                    className="absolute top-0 left-0 right-0 h-px"
-                    style={{ background: `linear-gradient(90deg, ${exp.color}80, ${exp.color}20, transparent)` }}
-                    initial={{ scaleX: 0, transformOrigin: "left" }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  />
-
-                  <div className="p-8 lg:p-10 pl-8 md:pl-12">
-                    <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-
-                      {/* Left meta */}
-                      <div className="lg:w-48 shrink-0 space-y-2">
-                        <div
-                          className="chip w-fit"
-                          style={{ borderColor: `${exp.color}35`, color: exp.color }}
-                        >
-                          {exp.type}
-                        </div>
-                        <p className="font-mono text-[10px] text-[#3D3F52] uppercase tracking-wider">
-                          {exp.period}
-                        </p>
-                        <p className="font-mono text-[10px] text-[#3D3F52] flex items-center gap-1">
-                          <svg width="7" height="9" viewBox="0 0 7 9" fill="currentColor" aria-hidden>
-                            <path d="M3.5 0C1.57 0 0 1.57 0 3.5c0 2.46 3.5 5.25 3.5 5.25S7 5.96 7 3.5C7 1.57 5.43 0 3.5 0zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6z"/>
-                          </svg>
-                          {exp.location}
-                        </p>
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1">
-                        <div className="mb-5">
-                          <h3 className="font-display font-bold text-2xl text-[#EDE8DC] mb-1">{exp.role}</h3>
-                          <p className="text-lg font-semibold" style={{ color: exp.color }}>{exp.company}</p>
-                        </div>
-
-                        {/* Bullet points */}
-                        <ul className="space-y-3 mb-6">
-                          {exp.description.map((item, j) => (
-                            <motion.li
-                              key={j}
-                              className="flex items-start gap-3 text-[#8B8FA8] text-sm leading-relaxed"
-                              initial={{ opacity: 0, x: -12 }}
-                              animate={isInView ? { opacity: 1, x: 0 } : {}}
-                              transition={{ duration: 0.55, delay: 0.6 + i * 0.2 + j * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                            >
-                              <motion.span
-                                className="mt-2 w-1 h-1 rounded-full shrink-0"
-                                style={{ backgroundColor: exp.color }}
-                                animate={{
-                                  scale: [1, 1.5, 1],
-                                  opacity: [0.6, 1, 0.6],
-                                }}
-                                transition={{ duration: 3, repeat: Infinity, delay: j * 0.4 }}
-                              />
-                              {item}
-                            </motion.li>
-                          ))}
-                        </ul>
-
-                        {/* Tech tags */}
-                        <div className="flex flex-wrap gap-2">
-                          {exp.tech.map((t) => (
-                            <motion.span
-                              key={t}
-                              className="exp-tech-tag px-3 py-1 rounded font-mono text-[11px] border"
-                              style={{
-                                borderColor: `${exp.color}20`,
-                                color: exp.color,
-                                backgroundColor: `${exp.color}07`,
-                              }}
-                              whileHover={{
-                                backgroundColor: `${exp.color}18`,
-                                borderColor: `${exp.color}50`,
-                                y: -2,
-                              }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              {t}
-                            </motion.span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </article>
-            ))}
-          </div>
-        </div>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
-  )
+  );
 }
