@@ -60,23 +60,32 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    /* Minimum duration: 1.6s for load effect, then 0.68s exit + 0.2s buffer = ~2.5s total */
+    const minDuration = 1600;
+    const startTime = Date.now();
+
     if (reduced) {
       setPhase("exit");
-      setTimeout(() => { setPhase("done"); onComplete(); }, 400);
+      setTimeout(() => { setPhase("done"); onComplete(); }, 300);
       return;
     }
 
     const tl = gsap.timeline({
       onComplete: () => {
-        setPhase("exit");
-        setTimeout(() => { setPhase("done"); onComplete(); }, 720);
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, minDuration - elapsed);
+
+        setTimeout(() => {
+          setPhase("exit");
+          setTimeout(() => { setPhase("done"); onComplete(); }, 700);
+        }, remaining);
       },
     });
 
-    /* 1. Progress line + counter — snappier */
+    /* 1. Progress line + counter */
     tl.to(lineRef.current, {
       scaleX: 1,
-      duration: 1.0,
+      duration: 0.9,
       ease: "power3.inOut",
       transformOrigin: "left",
     })
@@ -84,7 +93,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
         counterRef.current,
         {
           innerHTML: 100,
-          duration: 1.0,
+          duration: 0.9,
           ease: "power2.inOut",
           snap: { innerHTML: 1 },
           roundProps: "innerHTML",
@@ -96,17 +105,17 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
         wordRefs.current.filter(Boolean),
         {
           yPercent: 110,
-          duration: 0.7,
-          stagger: 0.1,
+          duration: 0.6,
+          stagger: 0.08,
           ease: "power4.out",
         },
-        "-=0.45"
+        "-=0.4"
       )
       /* 3. Role tag */
       .from(
         roleRef.current,
-        { opacity: 0, y: 8, duration: 0.4, ease: "power3.out" },
-        "-=0.25"
+        { opacity: 0, y: 8, duration: 0.35, ease: "power3.out" },
+        "-=0.2"
       );
 
     return () => { tl.kill(); };
