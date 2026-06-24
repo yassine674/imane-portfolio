@@ -7,6 +7,7 @@ import { RollText } from "@/components/layout/RollText";
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [entered, setEntered] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -14,6 +15,27 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  /* Page-load entrance (obsidianassembly): each group drops in with a
+     skew, settling on f-cubic-in. Synced to ~2.4s after the preloader
+     panels clear. Skips the transform under reduced-motion. */
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) { setEntered(true); return; }
+    const t = setTimeout(() => setEntered(true), 2400);
+    return () => clearTimeout(t);
+  }, []);
+
+  /* Per-group entrance style: hidden = lifted + skewed, shown = settled */
+  const enter = (i: number): React.CSSProperties => ({
+    transform: entered
+      ? "translate3d(0, 0, 0) skew(0deg, 0deg)"
+      : "translate3d(0, -160%, 0) skew(-10deg, -5deg)",
+    opacity: entered ? 1 : 0,
+    transition: "transform 2.1s var(--f-cubic-in), opacity 1.2s var(--f-cubic-in)",
+    transitionDelay: `${i * 0.12}s`,
+    willChange: "transform",
+  });
 
   const scrollTo = (href: string) => {
     setOpen(false);
@@ -43,13 +65,14 @@ export function Header() {
             fontFamily: "var(--font-display)", fontWeight: 800,
             fontSize: "1.2rem", letterSpacing: "-0.01em",
             color: "var(--text)",
+            ...enter(0),
           }}
         >
           IM<span style={{ color: "var(--accent)" }}>.</span>
         </button>
 
         {/* Desktop nav */}
-        <nav aria-label="Main navigation" className="nav-desktop" style={{ gap: "2.5rem", alignItems: "center" }}>
+        <nav aria-label="Main navigation" className="nav-desktop" style={{ gap: "2.5rem", alignItems: "center", ...enter(1) }}>
           {navLinks.map((l) => (
             <button
               type="button"
@@ -70,7 +93,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem", ...enter(2) }}>
           {/* Open to work badge */}
           <div className="nav-desktop" style={{ alignItems: "center", gap: "0.5rem" }}>
             <span style={{ display: "block", width: 6, height: 6, borderRadius: "50%", background: "oklch(72% 0.2 145)", animation: "pulse 2s infinite" }} />

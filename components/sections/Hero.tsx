@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { personalInfo } from "@/lib/data";
+import { asset } from "@/lib/asset";
 import { MagneticButton } from "@/components/layout/MagneticButton";
 
 /* Scattered editorial micro-labels, obsidian-assembly style */
@@ -110,7 +111,7 @@ export function Hero() {
           <div ref={crystalRef} style={{ transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1)", willChange: "transform" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/generated/obsidian-hero.png"
+              src={asset("/generated/obsidian-hero.png")}
               alt=""
               style={{
                 width: "100%", height: "auto", display: "block",
@@ -136,7 +137,7 @@ export function Hero() {
             <div ref={cardSilkRef} style={{ transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)", willChange: "transform" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/generated/silk-texture.png"
+                src={asset("/generated/silk-texture.png")}
                 alt=""
                 style={{
                   width: "100%", height: "auto", display: "block",
@@ -157,7 +158,7 @@ export function Hero() {
             <div ref={cardSphereRef} style={{ transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)", willChange: "transform" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/generated/obsidian-sphere.png"
+                src={asset("/generated/obsidian-sphere.png")}
                 alt=""
                 style={{
                   width: "100%", height: "auto", display: "block",

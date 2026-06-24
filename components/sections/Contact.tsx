@@ -236,42 +236,45 @@ export function Contact() {
                 href={l.href}
                 target={l.href.startsWith("http") ? "_blank" : undefined}
                 rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="ct-sub-item"
+                className={`ct-sub-item${l.href !== "#" ? " cross-link" : ""}`}
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.15rem",
                   textDecoration: "none",
                   cursor: l.href === "#" ? "default" : "pointer",
+                  color: "var(--text-2)",
                 }}
               >
+                {l.href !== "#" && (
+                  <span className="cross-mark" aria-hidden="true" />
+                )}
                 <span
                   style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "0.58rem",
-                    letterSpacing: "0.2em",
-                    color: "var(--text-3)",
-                    textTransform: "uppercase",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.15rem",
                   }}
                 >
-                  {l.label}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontWeight: 600,
-                    fontSize: "0.88rem",
-                    color: "var(--text-2)",
-                    transition: "color 0.2s",
-                  }}
-                  onMouseEnter={(e) =>
-                    l.href !== "#" && ((e.currentTarget as HTMLElement).style.color = "var(--accent)")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.color = "var(--text-2)")
-                  }
-                >
-                  {l.note}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "0.58rem",
+                      letterSpacing: "0.2em",
+                      color: "var(--text-3)",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {l.label}
+                  </span>
+                  <span
+                    className={l.href !== "#" ? "cross-label" : undefined}
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 600,
+                      fontSize: "0.88rem",
+                      color: "var(--text-2)",
+                    }}
+                  >
+                    {l.note}
+                  </span>
                 </span>
               </a>
             ))}
