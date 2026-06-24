@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CursorFollower } from "@/components/layout/CursorFollower";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
+import { ScrollFX } from "@/components/layout/ScrollFX";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
@@ -31,6 +32,7 @@ export default function Home() {
       <Preloader onComplete={() => setLoaded(true)} />
       <CursorFollower />
       <ScrollProgress />
+      <ScrollFX />
       <div
         style={{
           opacity: loaded ? 1 : 0,

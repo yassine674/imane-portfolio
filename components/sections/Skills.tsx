@@ -129,11 +129,13 @@ export function Skills() {
             key={cat.name}
             className="sk-cat"
             role="listitem"
+            data-spotlight
             style={{
               padding: "1.5rem",
               border: "1px solid var(--border)",
               borderRadius: "6px",
               background: "var(--surface)",
+              overflow: "hidden",
               transition: "border-color 0.2s",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}

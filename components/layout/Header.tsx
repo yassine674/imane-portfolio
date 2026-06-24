@@ -6,15 +6,24 @@ import { RollText } from "@/components/layout/RollText";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [entered, setEntered] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
+  /* Scrolled background + hide-on-scroll-down / show-on-scroll-up.
+     Stays visible while the mobile menu is open. */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      if (!open) setHidden(y > lastY && y > 120);
+      lastY = y;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [open]);
 
   /* Page-load entrance (obsidianassembly): each group drops in with a
      skew, settling on f-cubic-in. Synced to ~2.4s after the preloader
@@ -53,7 +62,10 @@ export function Header() {
           background: scrolled ? "color-mix(in oklch, var(--bg) 90%, transparent)" : "transparent",
           backdropFilter: scrolled ? "blur(16px)" : "none",
           borderBottom: scrolled ? "1px solid var(--border)" : "none",
-          transition: "background 0.4s, backdrop-filter 0.4s, border-color 0.4s",
+          transform: hidden ? "translate3d(0, -110%, 0)" : "translate3d(0, 0, 0)",
+          transition:
+            "transform 1.5s var(--f-fast), background 0.4s, backdrop-filter 0.4s, border-color 0.4s",
+          willChange: "transform",
         }}
       >
         <button

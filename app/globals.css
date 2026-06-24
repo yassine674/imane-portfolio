@@ -385,6 +385,48 @@ body::before {
 }
 .split-reveal .sr-space { display: inline-block; width: 0.28em; }
 
+/* ─── Scroll-driven parallax (driven by ScrollFX --progress) ──
+   Default --progress:0 → no transform, so content is fully visible
+   even before JS runs or under reduced-motion. */
+[data-parallax]        { will-change: transform; }
+[data-parallax="slow"]   { transform: translate3d(0, calc(var(--progress, 0) * -8vh),  0); }
+[data-parallax="medium"] { transform: translate3d(0, calc(var(--progress, 0) * -15vh), 0); }
+[data-parallax="fast"]   { transform: translate3d(0, calc(var(--progress, 0) * -25vh), 0); }
+[data-parallax="up"]     { transform: translate3d(0, calc(var(--progress, 0) * 12vh),  0); }
+[data-parallax="left"]   { transform: translate3d(calc(var(--progress, 0) * -10vw), 0, 0); }
+[data-parallax="right"]  { transform: translate3d(calc(var(--progress, 0) * 10vw),  0, 0); }
+
+/* ─── Cursor spotlight glow (obsidianassembly stone section) ──
+   A soft radial highlight tracks the pointer inside the element. */
+[data-spotlight] {
+  position: relative;
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+}
+[data-spotlight]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle 300px at var(--spotlight-x) var(--spotlight-y),
+    color-mix(in oklch, var(--accent) 16%, transparent),
+    transparent 66%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s var(--f-cubic);
+}
+[data-spotlight]:hover::after { opacity: 1; }
+/* keep card content above the glow so text stays crisp */
+[data-spotlight] > * { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-parallax] { transform: none !important; }
+  [data-spotlight]::after { display: none; }
+}
+
 /* ─── Responsive nav ──────────────────────────────────────── */
 .nav-desktop { display: flex; }
 .nav-mobile  { display: none; }

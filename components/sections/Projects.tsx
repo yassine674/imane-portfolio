@@ -54,7 +54,7 @@ export function Projects() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" aria-labelledby="proj-h">
+    <section ref={sectionRef} id="projects" aria-labelledby="proj-h" data-progress>
       {/* ── Header ── */}
       <div
         style={{
@@ -103,6 +103,7 @@ export function Projects() {
         </div>
         <span
           aria-hidden="true"
+          data-parallax="up"
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 800,
