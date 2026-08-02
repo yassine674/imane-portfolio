@@ -9,11 +9,11 @@ import { SplitReveal } from "@/components/layout/SplitReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* Strong, soft peach/coral/rose wash — microsoft.ai humanist warmth */
-const PAPER_BLOBS = [
-  { size: "52vw", top: "-16%", right: "-10%", color: "oklch(78% 0.15 38 / 0.5)",  anim: "mesh-1 21s ease-in-out infinite", blur: "90px" },
-  { size: "44vw", top: "-8%",  left: "-12%",  color: "oklch(80% 0.12 60 / 0.4)",  anim: "mesh-2 26s ease-in-out infinite", blur: "100px" },
-  { size: "38vw", bottom: "-14%", left: "20%", color: "oklch(75% 0.13 350 / 0.32)", anim: "mesh-3 19s ease-in-out infinite", blur: "100px" },
+/* Warm amber glow blobs on dark background */
+const DARK_BLOBS = [
+  { size: "52vw", top: "-16%", right: "-10%", color: "oklch(52% 0.11 42 / 0.28)", anim: "mesh-1 21s ease-in-out infinite", blur: "90px" },
+  { size: "44vw", top: "-8%",  left: "-12%",  color: "oklch(44% 0.09 55 / 0.22)", anim: "mesh-2 26s ease-in-out infinite", blur: "100px" },
+  { size: "38vw", bottom: "-14%", left: "20%", color: "oklch(38% 0.07 30 / 0.18)", anim: "mesh-3 19s ease-in-out infinite", blur: "100px" },
 ];
 
 export function About() {
@@ -44,14 +44,12 @@ export function About() {
       ref={ref}
       id="about"
       aria-labelledby="about-h"
-      className="section-light"
       style={{
         padding: "clamp(5rem, 11vw, 9rem) clamp(1.5rem, 5vw, 3.5rem) clamp(6rem, 14vw, 12rem)",
         overflow: "hidden",
       }}
     >
-      <MovingGradient blobs={PAPER_BLOBS} hueSpin={false} />
-      <FloatingPetals opacity={0.6} />
+      <MovingGradient blobs={DARK_BLOBS} hueSpin={false} />
 
       <div style={{ position: "relative", zIndex: 2 }}>
       {/* Label — mono micro-caption */}

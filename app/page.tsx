@@ -9,11 +9,11 @@ import { ScrollFX } from "@/components/layout/ScrollFX";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
-import { Projects } from "@/components/sections/Projects";
+import { ScrollingFeatureShowcase } from "@/components/ui/interactive-scrolling-story-component";
 import { Skills } from "@/components/sections/Skills";
 import { Contact } from "@/components/sections/Contact";
-import { MarqueeBand } from "@/components/sections/MarqueeBand";
 import { CurveDivider } from "@/components/layout/CurveDivider";
+import { AliceScrollStory } from "@/components/ui/alice-scroll-story";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -43,13 +43,15 @@ export default function Home() {
         <Header />
         <main id="main-content" tabIndex={-1}>
           <Hero />
-          <MarqueeBand />
-          <CurveDivider from="dark" to="paper" accent="oklch(70% 0.22 48)" />
           <About />
-          <CurveDivider from="paper" to="dark" />
           <Experience />
-          <Projects />
+          <AliceScrollStory
+            wordA="SELECTED"
+            wordB="WORKS"
+            eyebrow="a collection of case studies"
+          />
           <CurveDivider from="dark" to="paper" accent="oklch(70% 0.22 48)" />
+          <ScrollingFeatureShowcase />
           <Skills />
           <CurveDivider from="paper" to="dark" />
           <Contact />

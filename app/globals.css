@@ -2,11 +2,11 @@
 
 /* ─── Design Tokens ───────────────────────────────────────── */
 :root {
-  /* Warm plum-charcoal dark — softer / more feminine than cool blue-black */
-  --bg:        oklch(11% 0.022 350);
-  --surface:   oklch(15% 0.022 348);
-  --surface-2: oklch(20% 0.022 346);
-  --border:    oklch(27% 0.022 344);
+  /* Warm espresso-dark — beige/brown direction, no pink */
+  --bg:        oklch(11% 0.018 28);
+  --surface:   oklch(15% 0.018 26);
+  --surface-2: oklch(20% 0.018 24);
+  --border:    oklch(27% 0.020 24);
   --text:      oklch(95% 0.014 70);
   --text-2:    oklch(70% 0.022 50);
   --text-3:    oklch(50% 0.026 42);
@@ -65,14 +65,14 @@ html {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   scroll-behavior: auto;
 }
 
 body {
   background: var(--bg);
   min-height: 100svh;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ─── Grain overlay ───────────────────────────────────────── */

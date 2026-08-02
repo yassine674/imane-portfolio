@@ -6,7 +6,7 @@
    An optional 1px accent stroke traces the seam for a refined edge. */
 
 const COLORS = {
-  dark: "oklch(11% 0.022 350)",
+  dark: "oklch(11% 0.018 28)",
   paper: "oklch(96% 0.03 78)",
 } as const;
 

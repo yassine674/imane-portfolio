@@ -1,296 +1,219 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import Lenis from "lenis";
 import { personalInfo } from "@/lib/data";
-import { asset } from "@/lib/asset";
 import { MagneticButton } from "@/components/layout/MagneticButton";
 
-/* Scattered editorial micro-labels, obsidian-assembly style */
-const TAGS = [
-  { text: "imagine possible", x: "13%", y: "16%" },
-  { text: "a private practice", x: "76%", y: "22%" },
-  { text: "coordinates 43.5°N", x: "82%", y: "63%" },
-  { text: "nothing generic", x: "9%", y: "72%" },
-];
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const img = (name: string) => `${BASE}/parallax/${name}`;
+
+/* Exact parallax values from pauschal.design source */
+const LAYERS = [
+  { key: "clouds",         from:  60, to: -160 },
+  { key: "s",              from:   0, to: -130 },
+  { key: "m",              from:   0, to: -100 },
+  { key: "text-bottom",    from:   0, to:  -65 },
+  { key: "b",              from:   0, to:  -60 },
+  { key: "text-top",       from:   0, to:  -51 },
+  { key: "w",              from:   0, to:  -25 },
+  { key: "back",           from:   0, to:   -5 },
+] as const;
 
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const crystalRef = useRef<HTMLDivElement>(null);
-  const cardSilkRef = useRef<HTMLDivElement>(null);
-  const cardSphereRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
+  const wrapperRef  = useRef<HTMLDivElement>(null);
+  const blackBgRef  = useRef<HTMLDivElement>(null);
+  const cloudsRef   = useRef<HTMLDivElement>(null);
+  const sRef        = useRef<HTMLDivElement>(null);
+  const mRef        = useRef<HTMLDivElement>(null);
+  const textBotRef  = useRef<HTMLDivElement>(null);
+  const bRef        = useRef<HTMLDivElement>(null);
+  const textTopRef  = useRef<HTMLDivElement>(null);
+  const wRef        = useRef<HTMLDivElement>(null);
+  const backRef     = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { setMounted(true); }, []);
-
-  /* Cursor parallax — crystal + cards drift toward pointer */
   useEffect(() => {
-    if (!mounted) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
 
-    const onMove = (e: MouseEvent) => {
-      const cx = (e.clientX / window.innerWidth - 0.5) * 2;
-      const cy = (e.clientY / window.innerHeight - 0.5) * 2;
-      if (crystalRef.current) crystalRef.current.style.transform = `translate(${cx * 22}px, ${cy * 18}px)`;
-      if (cardSilkRef.current) cardSilkRef.current.style.transform = `translate(${cx * -34}px, ${cy * -26}px)`;
-      if (cardSphereRef.current) cardSphereRef.current.style.transform = `translate(${cx * 40}px, ${cy * 30}px)`;
+    /* Lenis smooth scroll — matches pauschal.design setup exactly */
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      syncTouch: false,
+    });
+    (window as unknown as { lenis: Lenis }).lenis = lenis;
+    gsap.ticker.add((time: number) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+
+    const heroEnd  = wrapper.offsetHeight - window.innerHeight;
+    const blackBg  = blackBgRef.current;
+    const layerEls = [
+      { ref: cloudsRef,  ...LAYERS[0] },
+      { ref: sRef,       ...LAYERS[1] },
+      { ref: mRef,       ...LAYERS[2] },
+      { ref: textBotRef, ...LAYERS[3] },
+      { ref: bRef,       ...LAYERS[4] },
+      { ref: textTopRef, ...LAYERS[5] },
+      { ref: wRef,       ...LAYERS[6] },
+      { ref: backRef,    ...LAYERS[7] },
+    ];
+
+    /* Set initial positions */
+    layerEls.forEach(({ ref, from }) => {
+      if (ref.current) ref.current.style.transform = `translate3d(0,${from}%,0)`;
+    });
+
+    const tick = () => {
+      const scroll: number =
+        (window as unknown as { lenis?: { scroll: number } }).lenis?.scroll ?? window.scrollY;
+      if (scroll > heroEnd * 1.2) return;
+      const p = Math.max(0, Math.min(1, scroll / heroEnd));
+      layerEls.forEach(({ ref, from, to }) => {
+        if (ref.current)
+          ref.current.style.transform = `translate3d(0,${from + (to - from) * p}%,0)`;
+      });
+      if (blackBg) blackBg.style.height = `${130 * p}%`;
     };
-    window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [mounted]);
 
-  /* Entrance — synced to fast preloader */
-  useEffect(() => {
-    if (!mounted) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 1.7 });
-      tl.from(".h-tagrow", { opacity: 0, y: 10, duration: 0.5, ease: "power3.out" })
-        .from(".h-name-line", { yPercent: 115, duration: 1.1, stagger: 0.12, ease: "power4.out" }, "-=0.2")
-        .from(".h-centerpiece", { opacity: 0, scale: 0.92, duration: 1.3, ease: "power3.out" }, "-=1.0")
-        .from(".h-card", { opacity: 0, scale: 0.8, duration: 0.9, stagger: 0.14, ease: "power3.out" }, "-=0.9")
-        .from(".h-role", { opacity: 0, y: 16, duration: 0.6, ease: "power3.out" }, "-=0.6")
-        .from(".h-bio", { opacity: 0, y: 12, duration: 0.6, ease: "power3.out" }, "-=0.4")
-        .from(".h-cta", { opacity: 0, y: 12, duration: 0.5, stagger: 0.1, ease: "power3.out" }, "-=0.3")
-        .from(".h-tag", { opacity: 0, duration: 0.5, stagger: 0.08, ease: "power3.out" }, "-=0.3")
-        .from(".h-scroll", { opacity: 0, duration: 0.5 }, "-=0.2");
-    }, sectionRef);
-    return () => ctx.revert();
-  }, [mounted]);
+    gsap.ticker.add(tick);
+    return () => {
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+    };
+  }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="hero"
-      aria-label="Hero"
-      className="hero-obsidian"
-      style={{
-        position: "relative",
-        minHeight: "100svh",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-end",
-        padding: "0 clamp(1.5rem, 5vw, 3.5rem) clamp(2.5rem, 6vh, 4rem)",
-        /* warm mocha → deep brown, obsidian-assembly gradient */
-        background:
-          "radial-gradient(120% 90% at 50% 8%, oklch(83% 0.045 62) 0%, oklch(64% 0.06 50) 32%, oklch(34% 0.05 40) 68%, oklch(16% 0.03 35) 100%)",
-      }}
-    >
-      {/* ── Orbital line paths ── */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          display: "grid", placeItems: "center",
-        }}
+    <div ref={wrapperRef} id="hero" style={{ position: "relative", height: "250vh" }}>
+      <section
+        aria-label="Hero"
+        style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}
       >
-        <svg
-          viewBox="0 0 1000 1000"
-          style={{ width: "130vh", height: "130vh", opacity: 0.28, animation: "orbit-spin 90s linear infinite" }}
-        >
-          <ellipse cx="500" cy="500" rx="470" ry="300" fill="none" stroke="oklch(92% 0.03 70)" strokeWidth="0.7" />
-          <ellipse cx="500" cy="500" rx="320" ry="440" fill="none" stroke="oklch(92% 0.03 70)" strokeWidth="0.5" opacity="0.7" />
-        </svg>
-      </div>
 
-      {/* ── Floating crystal centerpiece ── */}
-      {mounted && (
+        {/* ── Clouds (hero_8) z:18 — starts 60% below, sweeps through scene ── */}
+        <div ref={cloudsRef} aria-hidden style={layer(18)}>
+          <img src={img("hero_8.avif")} alt="" style={{ ...imgBase, zIndex: 11 }} />
+        </div>
+
+        {/* ── Black gradient overlay — grows from bottom as scroll progresses ── */}
         <div
-          className="h-centerpiece"
-          aria-hidden="true"
+          ref={blackBgRef}
+          aria-hidden
           style={{
-            position: "absolute",
-            top: "50%", left: "50%",
-            width: "min(46vh, 80vw)",
-            transform: "translate(-50%, -50%)",
-            zIndex: 2,
+            position: "absolute", right: 0, bottom: "2px", left: 0,
+            zIndex: 16, height: "0%",
+            background: "linear-gradient(#000, #0d0d0d)",
             pointerEvents: "none",
           }}
-        >
-          <div ref={crystalRef} style={{ transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1)", willChange: "transform" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={asset("/generated/obsidian-hero.png")}
-              alt=""
+        />
+
+        {/* ── S layer (hero_7) z:16 ── */}
+        <div ref={sRef} aria-hidden style={layer(16)}>
+          <img src={img("hero_7.avif")} alt="" style={imgBase} />
+        </div>
+
+        {/* ── Hero text bottom: role + bio + CTAs (z:14, top 5rem) ── */}
+        <div ref={textBotRef} style={{ position: "absolute", top: "5rem", left: 0, right: 0, width: "100%", height: "100%", zIndex: 14 }}>
+          <div style={{
+            display: "flex", flexDirection: "column", justifyContent: "flex-end",
+            padding: "0 clamp(2rem,6vw,5rem) clamp(4.5rem,9vh,7rem)",
+            width: "100%", height: "100%",
+          }}>
+            <p style={{
+              fontFamily: "var(--font-serif)", fontStyle: "italic",
+              fontSize: "clamp(1.1rem,2.4vw,1.75rem)",
+              color: "oklch(94% 0.06 50)", marginBottom: "0.75rem", lineHeight: 1.15,
+            }}>
+              {personalInfo.title}
+            </p>
+            <p style={{
+              fontFamily: "var(--font-body)", fontSize: "clamp(0.82rem,1.2vw,0.95rem)",
+              lineHeight: 1.75, color: "oklch(90% 0.02 70 / 0.82)", maxWidth: "38ch",
+              marginBottom: "clamp(1.4rem,2.8vw,2rem)",
+            }}>
+              {personalInfo.subtitle}
+            </p>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <MagneticButton
+                href="#projects"
+                variant="primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                View work
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </MagneticButton>
+              <MagneticButton href={`mailto:${personalInfo.email}`} variant="ghost" ariaLabel="Get in touch by email">
+                Get in touch
+              </MagneticButton>
+            </div>
+          </div>
+        </div>
+
+        {/* ── M layer (hero_9) z:14 ── */}
+        <div ref={mRef} aria-hidden style={layer(14)}>
+          <img src={img("hero_9.avif")} alt="" style={imgBase} />
+        </div>
+
+        {/* ── B layer (hero_10) z:13 ── */}
+        <div ref={bRef} aria-hidden style={layer(13)}>
+          <img src={img("hero_10.avif")} alt="" style={{ ...imgBase, zIndex: 6 }} />
+        </div>
+
+        {/* ── Hero text top: main headline (z:12, inset auto 0 5rem) ── */}
+        <div ref={textTopRef} style={{ position: "absolute", right: 0, bottom: "5rem", left: 0, width: "100%", height: "100%", zIndex: 12, pointerEvents: "none" }}>
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh" }}>
+            <h1
+              aria-label={personalInfo.name}
               style={{
-                width: "100%", height: "auto", display: "block",
-                animation: "float-bob 8s ease-in-out infinite",
-                /* feather edges so the crystal melts into the mocha gradient */
-                WebkitMaskImage: "radial-gradient(58% 64% at 50% 46%, #000 56%, transparent 82%)",
-                maskImage: "radial-gradient(58% 64% at 50% 46%, #000 56%, transparent 82%)",
-                filter: "drop-shadow(0 40px 60px oklch(15% 0.03 35 / 0.5))",
+                fontFamily: "var(--font-serif)", fontWeight: 400,
+                fontSize: "clamp(3rem,7.5vw,9rem)",
+                lineHeight: 0.9, letterSpacing: "-0.025em",
+                color: "oklch(97% 0.012 70)",
+                textShadow: "0 2px 80px oklch(10% 0.03 28 / 0.5), 0 0 120px oklch(55% 0.14 22 / 0.18)",
+                margin: 0, textAlign: "center",
               }}
-            />
+            >
+              <div style={{ overflow: "hidden" }}>
+                <span style={{ display: "block" }}>Imane</span>
+              </div>
+              <div style={{ overflow: "hidden" }}>
+                <span style={{ display: "block", fontStyle: "italic", color: "oklch(84% 0.13 38)" }}>
+                  Moumoun
+                </span>
+              </div>
+            </h1>
           </div>
         </div>
-      )}
 
-      {/* ── Floating editorial cards ── */}
-      {mounted && (
-        <>
-          <div
-            className="h-card"
-            aria-hidden="true"
-            style={{ position: "absolute", top: "15%", left: "8%", width: "clamp(110px, 13vw, 200px)", zIndex: 3, pointerEvents: "none" }}
-          >
-            <div ref={cardSilkRef} style={{ transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)", willChange: "transform" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={asset("/generated/silk-texture.png")}
-                alt=""
-                style={{
-                  width: "100%", height: "auto", display: "block",
-                  borderRadius: "12px",
-                  border: "1px solid oklch(95% 0.02 70 / 0.4)",
-                  boxShadow: "0 24px 50px oklch(15% 0.03 35 / 0.4)",
-                  animation: "drift-a 11s ease-in-out infinite",
-                }}
-              />
-            </div>
-          </div>
-
-          <div
-            className="h-card"
-            aria-hidden="true"
-            style={{ position: "absolute", bottom: "20%", right: "9%", width: "clamp(110px, 13vw, 190px)", zIndex: 3, pointerEvents: "none" }}
-          >
-            <div ref={cardSphereRef} style={{ transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)", willChange: "transform" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={asset("/generated/obsidian-sphere.png")}
-                alt=""
-                style={{
-                  width: "100%", height: "auto", display: "block",
-                  borderRadius: "12px",
-                  border: "1px solid oklch(95% 0.02 70 / 0.4)",
-                  boxShadow: "0 24px 50px oklch(15% 0.03 35 / 0.45)",
-                  animation: "drift-b 13s ease-in-out infinite",
-                }}
-              />
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* ── Scattered micro-labels ── */}
-      {mounted && TAGS.map((t) => (
-        <span
-          key={t.text}
-          className="h-tag"
-          aria-hidden="true"
-          style={{
-            position: "absolute", left: t.x, top: t.y, zIndex: 4,
-            fontFamily: "var(--font-mono)", fontSize: "0.64rem",
-            letterSpacing: "0.08em", color: "oklch(95% 0.02 70 / 0.78)",
-            textTransform: "lowercase", whiteSpace: "nowrap", pointerEvents: "none",
-          }}
-        >
-          {t.text}
-        </span>
-      ))}
-
-      {/* ── Giant serif name — overlaps the crystal ── */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 3, width: "100%", textAlign: "center", pointerEvents: "none",
-        }}
-      >
-        <h1
-          aria-label={personalInfo.name}
-          style={{
-            fontFamily: "var(--font-serif)", fontWeight: 400,
-            fontSize: "clamp(3.8rem, 15vw, 16rem)",
-            lineHeight: 0.82, letterSpacing: "-0.02em",
-            color: "oklch(96% 0.02 75)", margin: 0,
-            textShadow: "0 2px 40px oklch(20% 0.03 35 / 0.35)",
-          }}
-        >
-          <div style={{ overflow: "hidden" }}>
-            <span className="h-name-line" style={{ display: "block" }}>Imane</span>
-          </div>
-          <div style={{ overflow: "hidden" }}>
-            <span className="h-name-line" style={{ display: "block", fontStyle: "italic", color: "oklch(82% 0.10 45)" }}>Moumoun</span>
-          </div>
-        </h1>
-      </div>
-
-      {/* ── Top tag row ── */}
-      <div
-        className="h-tagrow"
-        style={{
-          position: "absolute", top: "clamp(5.5rem, 12vh, 8rem)", left: "50%",
-          transform: "translateX(-50%)", zIndex: 5,
-          fontFamily: "var(--font-mono)", fontSize: "0.66rem",
-          letterSpacing: "0.16em", color: "oklch(96% 0.02 75 / 0.85)",
-          textTransform: "lowercase", whiteSpace: "nowrap",
-        }}
-      >
-        ✦ a private practice for intelligent systems
-      </div>
-
-      {/* ── Lower-left content block ── */}
-      <div style={{ position: "relative", zIndex: 6, maxWidth: "42ch" }}>
-        <p
-          className="h-role"
-          style={{
-            fontFamily: "var(--font-serif)", fontStyle: "italic", fontWeight: 500,
-            fontSize: "clamp(1.2rem, 2.6vw, 1.9rem)",
-            color: "oklch(90% 0.06 50)", marginBottom: "0.9rem", lineHeight: 1.1,
-          }}
-        >
-          {personalInfo.title}
-        </p>
-        <p
-          className="h-bio"
-          style={{
-            fontFamily: "var(--font-body)", fontSize: "clamp(0.85rem, 1.3vw, 0.98rem)",
-            lineHeight: 1.7, color: "oklch(88% 0.03 65 / 0.85)", maxWidth: "38ch",
-            marginBottom: "clamp(1.5rem, 3vw, 2.2rem)",
-          }}
-        >
-          {personalInfo.subtitle}
-        </p>
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <MagneticButton
-            href="#projects"
-            variant="primary"
-            className="h-cta"
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
-            }}
-          >
-            View work
-            <svg className="btn-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </MagneticButton>
-          <MagneticButton href={`mailto:${personalInfo.email}`} variant="ghost" className="h-cta" ariaLabel="Get in touch by email">
-            Get in touch
-          </MagneticButton>
+        {/* ── W layer (hero_6) z:1 ── */}
+        <div ref={wRef} aria-hidden style={layer(1)}>
+          <img src={img("hero_6.avif")} alt="" style={imgBase} />
         </div>
-      </div>
 
-      {/* ── Scroll indicator ── */}
-      <div
-        className="h-scroll"
-        aria-hidden="true"
-        style={{
-          position: "absolute", bottom: "clamp(2rem, 5vh, 3.5rem)", right: "clamp(1.5rem, 5vw, 3.5rem)",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "0.6rem", zIndex: 6,
-        }}
-      >
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", letterSpacing: "0.15em", color: "oklch(95% 0.02 70 / 0.7)", writingMode: "vertical-rl", transform: "rotate(180deg)", textTransform: "lowercase" }}>
-          scroll
-        </span>
-        <div style={{ width: "1px", height: "56px", background: "oklch(95% 0.02 70 / 0.3)", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, oklch(82% 0.10 45), transparent)", animation: "scroll-line 2s ease-in-out infinite", transformOrigin: "top" }} />
+        {/* ── Back layer (hero_5) z:-1 — sky background, barely moves ── */}
+        <div ref={backRef} aria-hidden style={{ ...layer(-1), overflow: "hidden" }}>
+          <img src={img("hero_5.avif")} alt="" style={imgBase} />
         </div>
-      </div>
-    </section>
+
+      </section>
+    </div>
   );
 }
+
+/* Shared layer container style */
+function layer(z: number): React.CSSProperties {
+  return { position: "absolute", inset: 0, zIndex: z, pointerEvents: "none", display: "block" };
+}
+
+/* Shared img style — fills container, anchored bottom-center */
+const imgBase: React.CSSProperties = {
+  width: "100%", height: "100%",
+  objectFit: "cover", objectPosition: "50% 100%",
+  display: "block",
+};
