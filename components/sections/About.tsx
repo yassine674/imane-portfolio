@@ -2,7 +2,7 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { personalInfo, education, languages } from "@/lib/data";
+import { personalInfo, languages } from "@/lib/data";
 import { MovingGradient } from "@/components/layout/MovingGradient";
 import { FloatingPetals } from "@/components/layout/FloatingPetals";
 import { SplitReveal } from "@/components/layout/SplitReveal";
@@ -26,7 +26,6 @@ export function About() {
       /* heading now uses SplitReveal (per-char obsidian entrance) */
       gsap.from(".ab-body", { scrollTrigger: { trigger: ".ab-body", start: "top 85%", once: true }, opacity: 0, y: 18, duration: 0.7, ease: "power3.out" });
       gsap.from(".ab-fact", { scrollTrigger: { trigger: ".ab-facts", start: "top 80%", once: true }, opacity: 0, y: 20, duration: 0.6, stagger: 0.1, ease: "power3.out" });
-      gsap.from(".ab-edu-item", { scrollTrigger: { trigger: ".ab-edu", start: "top 80%", once: true }, opacity: 0, x: -16, duration: 0.6, stagger: 0.15, ease: "power3.out" });
       gsap.from(".ab-lang", { scrollTrigger: { trigger: ".ab-langs", start: "top 85%", once: true }, opacity: 0, y: 10, duration: 0.5, stagger: 0.07, ease: "power3.out" });
     }, ref);
     return () => ctx.revert();
@@ -146,50 +145,8 @@ export function About() {
           </ul>
         </div>
 
-        {/* Right — education + languages */}
+        {/* Right — languages */}
         <div>
-          {/* Education */}
-          <div className="ab-edu" style={{ marginBottom: "3rem" }}>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.1em", color: "var(--text-3)", textTransform: "lowercase", marginBottom: "1.5rem" }}>
-              education
-            </div>
-            {education.map((e, i) => (
-              <div
-                key={i}
-                className="ab-edu-item"
-                style={{
-                  paddingLeft: "1.25rem",
-                  borderLeft: "1px solid var(--border)",
-                  marginBottom: "2rem",
-                  position: "relative",
-                }}
-              >
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    left: -4, top: "0.45rem",
-                    width: 7, height: 7,
-                    borderRadius: "50%",
-                    background: "var(--accent)",
-                  }}
-                />
-                <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.95rem", color: "var(--text)", marginBottom: "0.3rem" }}>
-                  {e.school}
-                </div>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.82rem", color: "var(--text-2)", marginBottom: "0.2rem" }}>
-                  {e.degree}
-                </div>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", color: "var(--text-3)", marginBottom: "0.3rem" }}>
-                  {e.period} · {e.location}
-                </div>
-                <div style={{ fontFamily: "var(--font-serif)", fontSize: "0.82rem", color: "var(--text-3)" }}>
-                  {e.details}
-                </div>
-              </div>
-            ))}
-          </div>
-
           {/* Languages */}
           <div>
             <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.1em", color: "var(--text-3)", textTransform: "lowercase", marginBottom: "1.25rem" }}>

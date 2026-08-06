@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode so className="dark" activates dark: variants */
+@variant dark (&:is(.dark, .dark *));
+
 /* ─── Design Tokens ───────────────────────────────────────── */
 :root {
   /* Warm espresso-dark — beige/brown direction, no pink */
@@ -140,6 +143,21 @@ body::before {
   0%   { transform: translate(0, 0) scale(0.9); opacity: 0.4; }
   50%  { transform: translate(3%, -5%) scale(1.1); opacity: 0.7; }
   100% { transform: translate(0, 0) scale(0.9); opacity: 0.4; }
+}
+
+/* ─── Skills marquee ──────────────────────────────────────── */
+@keyframes marquee-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-marquee-left  { animation: marquee-left  35s linear infinite; }
+.animate-marquee-right { animation: marquee-right 35s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-left, .animate-marquee-right { animation: none; }
 }
 
 /* ─── Floating data label ─────────────────────────────────── */
@@ -495,6 +513,157 @@ body::before {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* ─── 21st.dev sterling-gate kinetic nav ──────────────────── */
+
+/* "click me" label */
+.nav-toggle-label { display: flex; align-items: center; }
+.toggle-text {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  opacity: 0.75;
+}
+
+/* Menu button — no border, plain text + icon */
+.nav-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.menu-button-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 1.15em;
+}
+.menu-button-text .p-large {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--text);
+}
+
+.icon-wrap { display: flex; align-items: center; }
+.menu-button-icon { width: 19px; height: 19px; display: block; }
+
+/* Overlay wrapper */
+.fullscreen-menu-container { position: static; }
+
+.nav-overlay-wrapper {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Sliding panel */
+.menu-content {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: min(580px, 92vw);
+  overflow: hidden;
+}
+
+.menu-bg { position: absolute; inset: 0; }
+
+/* Creamy warm backdrop layers */
+.backdrop-layer        { position: absolute; inset: 0; background: #fefdfb; }
+.backdrop-layer.first  { background: #2d1810; }
+.backdrop-layer.second { background: #c9a882; }
+
+.ambient-background-shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.bg-shape.active { opacity: 1; }
+
+.menu-content-wrapper {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* vertical padding only — horizontal padding moved to nav-link so bg can go full-width */
+  padding: clamp(3rem, 8vw, 5rem) 0;
+}
+
+/* Break list out of any residual padding so bg goes edge-to-edge */
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu-list-item {
+  overflow: hidden;
+  position: relative;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0.04em clamp(2.5rem, 6vw, 4.5rem);
+  width: 100%;
+}
+
+/* Clipping wrapper — font-size lives here so height: 1.15em resolves correctly */
+.nav-link-text-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-size: clamp(2.6rem, 6.5vw, 5rem);
+  height: 1.15em;
+}
+
+.nav-link-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1em;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+  flex-shrink: 0;
+}
+/* First copy: dark (rest state) */
+.nav-link-text:first-child { color: #1c1814; }
+/* Second copy: cream (slides in on hover) */
+.nav-link-text:last-child  { color: #f5efe8; }
+
+.nav-link-hover-bg { display: none; }
 
 /* ─── Reduced motion ──────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

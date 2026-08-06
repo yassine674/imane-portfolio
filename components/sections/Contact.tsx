@@ -1,314 +1,203 @@
 "use client";
-import { useRef, useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useRef, useState } from "react";
+import { useScroll, useTransform } from "framer-motion";
 import { personalInfo } from "@/lib/data";
-import { MovingGradient } from "@/components/layout/MovingGradient";
-import { MagneticButton } from "@/components/layout/MagneticButton";
-
-gsap.registerPlugin(ScrollTrigger);
-
-/* Split text into individual character spans for the reveal animation */
-function SplitText({ text, className }: { text: string; className: string }) {
-  return (
-    <>
-      {text.split("").map((char, i) => (
-        <span
-          key={i}
-          className={className}
-          style={{ display: "inline-block", willChange: "transform" }}
-        >
-          {char === " " ? " " : char}
-        </span>
-      ))}
-    </>
-  );
-}
+import { GoogleGeminiEffect } from "@/components/ui/google-gemini-effect";
+import ContactCards, { LinkedinIcon, XIcon } from "@/components/ui/contact-cards";
+import { asset } from "@/lib/asset";
 
 export function Contact() {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const [copied, setCopied] = useState(false);
+  const [btnHovered, setBtnHovered] = useState(false);
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const ctx = gsap.context(() => {
-      /* Label */
-      gsap.from(".ct-label", {
-        scrollTrigger: { trigger: ".ct-label", start: "top 90%", once: true },
-        opacity: 0,
-        y: 14,
-        duration: 0.6,
-        ease: "power3.out",
-      });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 70%", "end start"],
+  });
 
-      /* "LET'S" — slide up from clip */
-      gsap.from(".ct-lets-char", {
-        scrollTrigger: { trigger: ".ct-lets", start: "top 82%", once: true },
-        yPercent: 115,
-        duration: 0.95,
-        stagger: 0.028,
-        ease: "power4.out",
-      });
+  const pathLengthFirst  = useTransform(scrollYProgress, [0, 0.6], [0.05, 1.2]);
+  const pathLengthSecond = useTransform(scrollYProgress, [0, 0.6], [0.04, 1.2]);
+  const pathLengthThird  = useTransform(scrollYProgress, [0, 0.6], [0.03, 1.2]);
+  const pathLengthFourth = useTransform(scrollYProgress, [0, 0.6], [0.01, 1.2]);
+  const pathLengthFifth  = useTransform(scrollYProgress, [0, 0.6], [0, 1.2]);
 
-      /* "Collaborate" — slide up slightly after */
-      gsap.from(".ct-collab-char", {
-        scrollTrigger: { trigger: ".ct-collab", start: "top 82%", once: true },
-        yPercent: 115,
-        duration: 1.1,
-        stagger: 0.022,
-        delay: 0.08,
-        ease: "power4.out",
-      });
-
-      /* Subtext + links */
-      gsap.from(".ct-sub-item", {
-        scrollTrigger: { trigger: ".ct-sub-row", start: "top 88%", once: true },
-        opacity: 0,
-        y: 14,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power3.out",
-      });
-
-      /* Horizontal rule reveal */
-      gsap.from(".ct-rule", {
-        scrollTrigger: { trigger: ".ct-rule", start: "top 90%", once: true },
-        scaleX: 0,
-        duration: 1.0,
-        ease: "power3.inOut",
-        transformOrigin: "left",
-      });
-    }, ref);
-    return () => ctx.revert();
-  }, []);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(personalInfo.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  };
 
   return (
-    <section
-      ref={ref}
-      id="contact"
-      aria-labelledby="ct-h"
-      style={{
-        minHeight: "90svh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        padding: "clamp(6rem, 12vw, 10rem) clamp(1.5rem, 5vw, 3.5rem) clamp(4rem, 8vw, 6rem)",
-        borderTop: "1px solid var(--border)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* ── Animated moving mesh-gradient background ── */}
-      <MovingGradient />
-
-      {/* ── Main content ── */}
-      <div style={{ position: "relative", zIndex: 1 }}>
-        {/* Section label */}
+    <section id="contact" aria-labelledby="ct-h" style={{ borderTop: "1px solid var(--border)" }}>
+      <div
+        ref={ref}
+        style={{ height: "350vh", background: "#050505", position: "relative", overflow: "clip" }}
+      >
         <div
-          className="ct-label"
           style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "0.65rem",
-            letterSpacing: "0.22em",
-            color: "var(--accent)",
-            textTransform: "uppercase",
-            marginBottom: "clamp(2.5rem, 5vw, 4rem)",
+            position: "sticky", top: 0, height: "100vh",
+            display: "flex", flexDirection: "column",
+            justifyContent: "space-between", alignItems: "center",
+            padding: "clamp(2.5rem, 5vw, 4rem) 0 1.5rem",
+            zIndex: 10, pointerEvents: "none",
           }}
         >
-          05 / Contact
-        </div>
-
-        {/* ── "LET'S" ── */}
-        <div className="ct-lets" style={{ overflow: "hidden", lineHeight: 0.85 }}>
-          <h2
-            id="ct-h"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 800,
-              fontSize: "clamp(4.5rem, 14vw, 14rem)",
-              letterSpacing: "-0.04em",
-              color: "var(--text)",
-              margin: 0,
-              lineHeight: 0.85,
-              display: "block",
-            }}
-          >
-            <SplitText text="LET'S" className="ct-lets-char" />
-          </h2>
-        </div>
-
-        {/* ── "Collaborate" ── */}
-        <div
-          className="ct-collab"
-          style={{
-            overflow: "hidden",
-            lineHeight: 0.85,
-            marginBottom: "clamp(3rem, 6vw, 5rem)",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 400,
-              fontStyle: "italic",
-              fontSize: "clamp(4rem, 13vw, 13rem)",
-              letterSpacing: "-0.03em",
-              color: "var(--accent)",
-              lineHeight: 0.85,
-              display: "block",
-            }}
-          >
-            <SplitText text="Collaborate." className="ct-collab-char" />
-          </span>
-        </div>
-
-        {/* ── Rule ── */}
-        <div
-          className="ct-rule"
-          style={{
-            height: "1px",
-            background: "var(--border)",
-            marginBottom: "clamp(2.5rem, 5vw, 4rem)",
-          }}
-        />
-
-        {/* ── Sub row ── */}
-        <div
-          className="ct-sub-row"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "1.5rem 3rem",
-          }}
-        >
-          {/* Left: tagline + CTA */}
-          <div>
-            <p
-              className="ct-sub-item"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "clamp(0.82rem, 1.3vw, 1rem)",
-                color: "var(--text-3)",
-                lineHeight: 1.7,
-                marginBottom: "1.75rem",
-                maxWidth: "42ch",
-              }}
-            >
-              Open to research roles, internships &amp; collaborations.
-              <br />
-              Let's build something that matters.
-            </p>
-            <MagneticButton
-              href={`mailto:${personalInfo.email}`}
-              variant="primary"
-              className="ct-sub-item"
-              ariaLabel="Send Imane an email"
-            >
-              Send a message
-              <svg className="btn-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path
-                  d="M3 7h8M7 3l4 4-4 4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </MagneticButton>
-          </div>
-
-          {/* Right: social links */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1.5rem",
-            }}
-          >
-            {[
-              { label: "GitHub", note: "imanemn127", href: personalInfo.github },
-              { label: "LinkedIn", note: "imane-moumoun", href: personalInfo.linkedin },
-              { label: "Location", note: personalInfo.location, href: "#" },
-            ].map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                target={l.href.startsWith("http") ? "_blank" : undefined}
-                rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className={`ct-sub-item${l.href !== "#" ? " cross-link" : ""}`}
-                style={{
-                  textDecoration: "none",
-                  cursor: l.href === "#" ? "default" : "pointer",
-                  color: "var(--text-2)",
-                }}
-              >
-                {l.href !== "#" && (
-                  <span className="cross-mark" aria-hidden="true" />
-                )}
-                <span
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.15rem",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.58rem",
-                      letterSpacing: "0.2em",
-                      color: "var(--text-3)",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {l.label}
-                  </span>
-                  <span
-                    className={l.href !== "#" ? "cross-label" : undefined}
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontWeight: 600,
-                      fontSize: "0.88rem",
-                      color: "var(--text-2)",
-                    }}
-                  >
-                    {l.note}
-                  </span>
-                </span>
-              </a>
-            ))}
-
-            {/* Available indicator */}
-            <div
-              className="ct-sub-item"
-              style={{ display: "flex", alignItems: "center", gap: "0.6rem", paddingTop: "0.5rem" }}
-            >
-              <span
-                aria-hidden="true"
-                style={{
-                  display: "block",
-                  width: 7,
-                  height: 7,
-                  borderRadius: "50%",
-                  background: "oklch(72% 0.2 145)",
-                  flexShrink: 0,
-                  animation: "pulse 2s infinite",
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "0.62rem",
-                  letterSpacing: "0.14em",
-                  color: "var(--text-3)",
-                  textTransform: "uppercase",
-                }}
-              >
-                Available for opportunities
+          {/* TOP — badge + headline */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.9rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}>
+              <span style={{ display: "block", width: 8, height: 8, borderRadius: "50%", background: "oklch(72% 0.2 145)", animation: "pulse 2s infinite", flexShrink: 0 }} />
+              <span style={{ fontFamily: "var(--font-body)", fontSize: "0.6rem", letterSpacing: "0.22em", color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>
+                Available for projects
               </span>
             </div>
+
+            <div
+              style={{
+                textAlign: "center", lineHeight: 1,
+                transform: btnHovered ? "translateY(-10px)" : "translateY(0)",
+                transition: "transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              }}
+            >
+              <h2
+                id="ct-h"
+                style={{
+                  fontFamily: "var(--font-display)", fontWeight: 300,
+                  fontSize: "clamp(2.4rem, 6vw, 5.5rem)", letterSpacing: "-0.03em",
+                  color: "rgba(255,255,255,0.9)", margin: 0, lineHeight: 1.05,
+                }}
+              >
+                Let&apos;s work
+              </h2>
+              <div
+                style={{
+                  fontFamily: "var(--font-serif)", fontWeight: 400, fontStyle: "italic",
+                  fontSize: "clamp(2.2rem, 5.8vw, 5.2rem)", letterSpacing: "-0.02em",
+                  color: "rgba(255,255,255,0.22)", lineHeight: 1.05,
+                }}
+              >
+                together
+              </div>
+            </div>
           </div>
+
+          {/* BOTTOM — CTA + tagline + email */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+            <button
+              onClick={handleCopy}
+              onMouseEnter={() => setBtnHovered(true)}
+              onMouseLeave={() => setBtnHovered(false)}
+              style={{
+                pointerEvents: "auto", cursor: "pointer",
+                background: "#fff", border: "none",
+                borderRadius: "100px", padding: "1rem 2.6rem",
+                fontFamily: "var(--font-body)", fontWeight: 500,
+                fontSize: "0.88rem", letterSpacing: "0.04em", color: "#0a0a0a",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease",
+                transform: btnHovered ? "scale(1.06)" : "scale(1)",
+                boxShadow: btnHovered
+                  ? "0 0 0 1px rgba(255,255,255,0.4), 0 0 45px rgba(255,255,255,0.3), 0 0 90px rgba(255,255,255,0.12)"
+                  : "0 0 28px rgba(255,255,255,0.18), 0 0 60px rgba(255,255,255,0.07)",
+              }}
+              aria-label="Copy email address"
+            >
+              {copied ? "Copied ✓" : "Contact me"}
+            </button>
+
+            <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(0.72rem, 1vw, 0.85rem)", color: "rgba(255,255,255,0.28)", textAlign: "center", maxWidth: "38ch", lineHeight: 1.75, margin: 0 }}>
+              Have a project in mind? I&apos;d love to hear about it.<br />
+              Let&apos;s create something exceptional together.
+            </p>
+
+            <div style={{ pointerEvents: "auto", fontFamily: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif", fontSize: "16px", marginTop: "3rem" }} className="dark">
+              <ContactCards
+                email={personalInfo.email}
+                github={{
+                  username: "imanemn127",
+                  url: "https://github.com/imanemn127",
+                  avatar: (
+                    <img
+                      src="https://github.com/imanemn127.png"
+                      alt="imanemn127"
+                      width={40}
+                      height={40}
+                      style={{ borderRadius: "50%", width: 40, height: 40, objectFit: "cover", flexShrink: 0 }}
+                    />
+                  ),
+                }}
+                links={[
+                  {
+                    label: "LinkedIn",
+                    href: "https://www.linkedin.com/in/imane-moumoun/",
+                    icon: <LinkedinIcon />,
+                    card: (
+                      <div style={{ width: '16rem', overflow: 'hidden' }}>
+                        {/* Banner */}
+                        <div style={{ height: '3.5rem', position: 'relative', overflow: 'hidden' }}>
+                          <img
+                            src={asset("/linkedin-banner.jpg")}
+                            alt=""
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+                          />
+                        </div>
+                        {/* Avatar overlapping banner */}
+                        <div style={{ padding: '0 1rem 0.6rem', position: 'relative' }}>
+                          <img
+                            src="https://github.com/imanemn127.png"
+                            alt="Imane MOUMOUN"
+                            width={56}
+                            height={56}
+                            style={{
+                              borderRadius: '50%',
+                              width: 56,
+                              height: 56,
+                              objectFit: 'cover',
+                              border: '3px solid #18181b',
+                              position: 'absolute',
+                              top: -28,
+                              left: '1rem',
+                            }}
+                          />
+                          <div style={{ paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                            <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>Imane MOUMOUN</span>
+                            <span style={{ fontSize: '0.8rem', color: 'rgb(161 161 170)', lineHeight: 1.4 }}>AI &amp; ML Engineer · Mines Saint-Étienne → ENS Paris-Saclay</span>
+                            <span style={{ fontSize: '0.75rem', color: 'rgb(113 113 122)', marginTop: '0.15rem' }}>Morocco · 500+ connections</span>
+                          </div>
+                        </div>
+                      </div>
+                    ),
+                  },
+                  {
+                    label: "X",
+                    href: "https://x.com/imanemn127",
+                    icon: <XIcon />,
+                    card: (
+                      <div style={{ width: '16rem', padding: '0.8rem' }} className="flex items-center gap-3">
+                        <img
+                          src="https://github.com/imanemn127.png"
+                          alt="imanemn127"
+                          width={40}
+                          height={40}
+                          style={{ borderRadius: "50%", width: 40, height: 40, objectFit: "cover", flexShrink: 0 }}
+                        />
+                        <div className="flex flex-col">
+                          <span className="font-medium">Imane MOUMOUN</span>
+                          <span className="text-sm text-zinc-500">@imanemn127</span>
+                        </div>
+                      </div>
+                    ),
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Animated lines */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, transform: "translateY(-5.5vh)" }}>
+          <GoogleGeminiEffect
+            pathLengths={[pathLengthFirst, pathLengthSecond, pathLengthThird, pathLengthFourth, pathLengthFifth]}
+          />
         </div>
       </div>
     </section>

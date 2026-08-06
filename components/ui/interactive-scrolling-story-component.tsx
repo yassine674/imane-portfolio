@@ -1,6 +1,41 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { asset } from "@/lib/asset";
+import {
+  siPython, siPytorch, siTensorflow, siKeras, siScikitlearn,
+  siFastapi, siStreamlit, siNumpy, siPandas, siOpencv,
+  siDocker, siGit, siCplusplus, siStmicroelectronics, siYolo,
+  siJupyter, siArduino, siPlotly,
+} from "simple-icons/icons";
+import type { SimpleIcon } from "simple-icons";
+
+/* ── Skills data for the marquee ── */
+type Tool = { name: string; icon: SimpleIcon | null; hex: string };
+
+const TOOLS_ROW1: Tool[] = [
+  { name: "Python",       icon: siPython,             hex: "#3776AB" },
+  { name: "PyTorch",      icon: siPytorch,            hex: "#EE4C2C" },
+  { name: "TensorFlow",   icon: siTensorflow,         hex: "#FF6F00" },
+  { name: "Keras",        icon: siKeras,              hex: "#D00000" },
+  { name: "Scikit-learn", icon: siScikitlearn,        hex: "#F7931E" },
+  { name: "LlamaIndex",   icon: null,                 hex: "#6B4FBB" },
+  { name: "FastAPI",      icon: siFastapi,            hex: "#009688" },
+  { name: "Streamlit",    icon: siStreamlit,          hex: "#FF4B4B" },
+  { name: "NumPy",        icon: siNumpy,              hex: "#013243" },
+  { name: "Pandas",       icon: siPandas,             hex: "#150458" },
+];
+const TOOLS_ROW2: Tool[] = [
+  { name: "OpenCV",        icon: siOpencv,            hex: "#5C3EE8" },
+  { name: "Docker",        icon: siDocker,            hex: "#2496ED" },
+  { name: "Git",           icon: siGit,               hex: "#F03C2E" },
+  { name: "C / C++",       icon: siCplusplus,         hex: "#00599C" },
+  { name: "STM32",         icon: siStmicroelectronics,hex: "#03234B" },
+  { name: "TFLite",        icon: siTensorflow,        hex: "#FF6F00" },
+  { name: "LoRaWAN",       icon: siArduino,           hex: "#00878F" },
+  { name: "YOLOv8",        icon: siYolo,              hex: "#111F68" },
+  { name: "Jupyter",       icon: siJupyter,           hex: "#F37626" },
+  { name: "Matplotlib",    icon: siPlotly,            hex: "#7A76FF" },
+];
 
 const SLIDES = [
   {
@@ -95,6 +130,7 @@ export function ScrollingFeatureShowcase() {
   const current = SLIDES[activeIndex];
 
   return (
+    <>
     <div
       ref={sectionRef}
       id="projects"
@@ -431,5 +467,207 @@ export function ScrollingFeatureShowcase() {
         </div>
       </div>
     </div>
+
+    {/* ── "More work" pill button — centred between projects and skills ── */}
+    <div
+      className="section-light"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        padding: "clamp(3rem,6vw,5rem) 0 0",
+      }}
+    >
+      <a
+        href="https://github.com/imanemn127"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "3rem",
+          padding: "1rem 1.5rem 1rem 2rem",
+          border: "1px solid var(--text)",
+          borderRadius: "9999px",
+          fontFamily: "var(--font-body)",
+          fontWeight: 500,
+          fontSize: "clamp(0.9rem,1.2vw,1rem)",
+          letterSpacing: "0.02em",
+          color: "var(--text)",
+          textDecoration: "none",
+          transition: "background 0.25s ease, color 0.25s ease",
+          position: "relative",
+        }}
+        onMouseEnter={(e) => {
+          const el = e.currentTarget as HTMLAnchorElement;
+          el.style.background = "var(--text)";
+          el.style.color = "var(--bg)";
+        }}
+        onMouseLeave={(e) => {
+          const el = e.currentTarget as HTMLAnchorElement;
+          el.style.background = "transparent";
+          el.style.color = "var(--text)";
+        }}
+      >
+        More work
+        {/* Arrow icon in a small circle, top-right of button */}
+        <span style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "2rem",
+          height: "2rem",
+          borderRadius: "50%",
+          border: "1px solid currentColor",
+        }}>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M1.5 8.5L8.5 1.5M8.5 1.5H3M8.5 1.5V7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </a>
+    </div>
+
+    {/* ── Skills marquee — flows directly from the projects section ── */}
+    <div
+      id="skills"
+      className="section-light"
+      style={{
+        padding: "clamp(4rem,8vw,7rem) 0 clamp(5rem,10vw,9rem)",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      {/* Centred section label + heading (like image-1 integration layout) */}
+      <div style={{
+        textAlign: "center",
+        padding: "0 clamp(1.5rem,5vw,4rem)",
+        marginBottom: "clamp(3rem,6vw,5rem)",
+      }}>
+        {/* Small pill label */}
+        <div style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "0.45rem",
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.58rem",
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: "var(--text-2)",
+          border: "1px solid var(--border)",
+          borderRadius: "9999px",
+          padding: "0.3rem 0.85rem",
+          marginBottom: "1.6rem",
+        }}>
+          <span aria-hidden style={{ color: "var(--accent)", fontSize: "0.7rem" }}>✦</span>
+          04 — tools &amp; stack
+        </div>
+
+        <h2 style={{
+          fontFamily: "var(--font-serif)",
+          fontWeight: 400,
+          fontSize: "clamp(2.8rem,7vw,7rem)",
+          lineHeight: 0.94,
+          letterSpacing: "-0.02em",
+          color: "var(--text)",
+          margin: "0 auto",
+          maxWidth: "16ch",
+        }}>
+          My tech{" "}
+          <em style={{ fontStyle: "italic", color: "var(--accent)" }}>arsenal</em>
+        </h2>
+      </div>
+
+      {/* Row 1 — scrolls left */}
+      <div style={{ position: "relative", marginBottom: "0.75rem" }}>
+        <div className="animate-marquee-left" style={{ display: "flex", gap: "1.5rem", width: "max-content", alignItems: "flex-start" }}>
+          {[...TOOLS_ROW1, ...TOOLS_ROW1].map((t, i) => (
+            <ToolChip key={i} name={t.name} icon={t.icon} hex={t.hex} />
+          ))}
+        </div>
+      </div>
+
+      {/* Row 2 — scrolls right */}
+      <div style={{ position: "relative" }}>
+        <div className="animate-marquee-right" style={{ display: "flex", gap: "1.5rem", width: "max-content", alignItems: "flex-start" }}>
+          {[...TOOLS_ROW2, ...TOOLS_ROW2].map((t, i) => (
+            <ToolChip key={i} name={t.name} icon={t.icon} hex={t.hex} />
+          ))}
+        </div>
+      </div>
+
+      {/* Fade edges */}
+      <div aria-hidden style={{
+        position: "absolute", left: 0, top: 0, width: "12rem", height: "100%",
+        background: "linear-gradient(to right, var(--bg), transparent)",
+        pointerEvents: "none", zIndex: 2,
+      }} />
+      <div aria-hidden style={{
+        position: "absolute", right: 0, top: 0, width: "12rem", height: "100%",
+        background: "linear-gradient(to left, var(--bg), transparent)",
+        pointerEvents: "none", zIndex: 2,
+      }} />
+    </div>
+    </>
+  );
+}
+
+function ToolChip({ name, icon, hex }: Tool) {
+  return (
+    <span style={{
+      display: "inline-flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "0.55rem",
+      flexShrink: 0,
+      width: "5.5rem",
+    }}>
+      {/* Circular logo badge */}
+      <span style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "3.75rem",
+        height: "3.75rem",
+        borderRadius: "50%",
+        background: "oklch(100% 0 0)",
+        boxShadow: "0 2px 12px oklch(50% 0.05 50 / 0.12), 0 0 0 1px oklch(85% 0.02 50 / 0.6)",
+        flexShrink: 0,
+      }}>
+        {icon ? (
+          <svg
+            aria-hidden
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            style={{ fill: `#${hex}`, display: "block", flexShrink: 0 }}
+            dangerouslySetInnerHTML={{ __html: `<path d="${icon.path}" />` }}
+          />
+        ) : (
+          /* Fallback: coloured monogram for icons not in simple-icons */
+          <span style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.6rem",
+            fontWeight: 700,
+            color: hex,
+            letterSpacing: "-0.02em",
+            lineHeight: 1,
+          }}>
+            {name.slice(0, 2).toUpperCase()}
+          </span>
+        )}
+      </span>
+      {/* Label under the circle */}
+      <span style={{
+        fontFamily: "var(--font-mono)",
+        fontSize: "0.52rem",
+        letterSpacing: "0.06em",
+        textTransform: "uppercase",
+        color: "var(--text-3)",
+        whiteSpace: "nowrap",
+        textAlign: "center",
+      }}>
+        {name}
+      </span>
+    </span>
   );
 }

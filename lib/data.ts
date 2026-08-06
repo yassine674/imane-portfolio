@@ -180,12 +180,22 @@ export const allSkills = [
 
 export const education = [
   {
+    school: "ENS Paris-Saclay",
+    degree: "Master — Artificial Intelligence",
+    period: "2026 (incoming)",
+    location: "Paris, France",
+    details: "Admitted to the Master programme in Artificial Intelligence at one of France's most selective grandes écoles",
+    color: "#FF6B35",
+    incoming: true,
+  },
+  {
     school: "ISMIN, Mines Saint-Étienne",
     degree: "Engineering Degree",
-    period: "Since 2024",
+    period: "2024 – 2026",
     location: "Gardanne, France",
     details: "GPA 3.93 / 4.10 · Probability & Statistics, Signal Processing, Machine Learning, Deep Learning",
     color: "#00FFD1",
+    incoming: false,
   },
   {
     school: "Lycée Méditerranéen d'Excellence (LYMED)",
@@ -194,6 +204,7 @@ export const education = [
     location: "Martil, Morocco",
     details: "Intensive training in analysis, linear algebra, probability and Python programming",
     color: "#7B61FF",
+    incoming: false,
   },
 ];
 

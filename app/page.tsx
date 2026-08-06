@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Preloader } from "@/components/layout/Preloader";
 import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { CursorFollower } from "@/components/layout/CursorFollower";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { ScrollFX } from "@/components/layout/ScrollFX";
@@ -10,7 +9,6 @@ import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
 import { ScrollingFeatureShowcase } from "@/components/ui/interactive-scrolling-story-component";
-import { Skills } from "@/components/sections/Skills";
 import { Contact } from "@/components/sections/Contact";
 import { CurveDivider } from "@/components/layout/CurveDivider";
 import { AliceScrollStory } from "@/components/ui/alice-scroll-story";
@@ -52,11 +50,9 @@ export default function Home() {
           />
           <CurveDivider from="dark" to="paper" accent="oklch(70% 0.22 48)" />
           <ScrollingFeatureShowcase />
-          <Skills />
           <CurveDivider from="paper" to="dark" />
           <Contact />
         </main>
-        <Footer />
       </div>
     </>
   );
