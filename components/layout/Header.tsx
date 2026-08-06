@@ -95,8 +95,8 @@ export function Header() {
       // Rotate icon on button hover (only when menu is closed)
       const btn  = containerRef.current!.querySelector(".nav-close-btn");
       const icon = btn?.querySelector(".menu-button-icon");
-      const onBtnEnter = () => { if (!isMenuOpenRef.current) gsap.to(icon, { rotate: 90, duration: 0.4, ease: "power3.out" }); };
-      const onBtnLeave = () => { if (!isMenuOpenRef.current) gsap.to(icon, { rotate: 0,  duration: 0.35, ease: "power3.out" }); };
+      const onBtnEnter = () => { if (!isMenuOpenRef.current && icon) gsap.to(icon, { rotate: 90, duration: 0.4, ease: "power3.out" }); };
+      const onBtnLeave = () => { if (!isMenuOpenRef.current && icon) gsap.to(icon, { rotate: 0,  duration: 0.35, ease: "power3.out" }); };
       btn?.addEventListener("mouseenter", onBtnEnter);
       btn?.addEventListener("mouseleave", onBtnLeave);
       (btn as any)._cleanup = () => { btn?.removeEventListener("mouseenter", onBtnEnter); btn?.removeEventListener("mouseleave", onBtnLeave); };
@@ -125,8 +125,8 @@ export function Header() {
       const menuLinks       = containerRef.current!.querySelectorAll(".nav-link");
       const fadeTargets     = containerRef.current!.querySelectorAll("[data-menu-fade]");
       const menuButton      = containerRef.current!.querySelector(".nav-close-btn");
-      const menuButtonTexts = menuButton?.querySelectorAll("p");
-      const menuButtonIcon  = menuButton?.querySelector(".menu-button-icon");
+      const menuButtonTexts = menuButton?.querySelectorAll("p") ?? [];
+      const menuButtonIcon  = menuButton?.querySelector(".menu-button-icon") ?? [];
       const toggleText      = containerRef.current!.querySelector(".toggle-text");
       const tl = gsap.timeline();
 

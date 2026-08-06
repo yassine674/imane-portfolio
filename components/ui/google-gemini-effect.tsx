@@ -2,7 +2,8 @@
 import { motion, MotionValue } from "framer-motion";
 import React from "react";
 
-const transition = { duration: 0, ease: "linear" };
+import type { Transition } from "framer-motion";
+const transition: Transition = { duration: 0, ease: "linear" };
 
 export function GoogleGeminiEffect({ pathLengths }: { pathLengths: MotionValue[] }) {
   return (
