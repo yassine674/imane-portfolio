@@ -4,15 +4,14 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const words = [
-  "Hello",
-  "Bonjour",
-  "السلام عليكم",
   "Ciao",
   "Olà",
   "やあ",
-  "Hallå",
-  "Guten tag",
+  "Hello",
+  "Bonjour",
   "হ্যালো",
+  "Guten tag",
+  "السلام عليكم",
 ];
 
 const opacityVariant = {
@@ -59,6 +58,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
   }, [index, onComplete]);
 
   const isArabic = words[index] === "السلام عليكم";
+
 
   const { width, height } = dimension;
   const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height + 300} 0 ${height} L0 0`;
