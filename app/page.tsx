@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Preloader } from "@/components/layout/Preloader";
 import { Header } from "@/components/layout/Header";
-import { CursorFollower } from "@/components/layout/CursorFollower";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { ScrollFX } from "@/components/layout/ScrollFX";
 import { Hero } from "@/components/sections/Hero";
@@ -12,6 +11,7 @@ import { ScrollingFeatureShowcase } from "@/components/ui/interactive-scrolling-
 import { Contact } from "@/components/sections/Contact";
 import { CurveDivider } from "@/components/layout/CurveDivider";
 import { AliceScrollStory } from "@/components/ui/alice-scroll-story";
+import { MagneticCursor } from "@/components/ui/magnetic-cursor";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -26,9 +26,16 @@ export default function Home() {
   }, [loaded]);
 
   return (
-    <>
+    <MagneticCursor
+      magneticFactor={0.45}
+      cursorSize={32}
+      blendMode="difference"
+      cursorColor="white"
+      lerpAmount={0.12}
+      speedMultiplier={0.025}
+      contrastBoost={1}
+    >
       <Preloader onComplete={() => setLoaded(true)} />
-      <CursorFollower />
       <ScrollProgress />
       <ScrollFX />
       <div
@@ -54,6 +61,6 @@ export default function Home() {
           <Contact />
         </main>
       </div>
-    </>
+    </MagneticCursor>
   );
 }

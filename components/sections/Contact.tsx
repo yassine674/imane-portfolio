@@ -84,6 +84,7 @@ export function Contact() {
           {/* BOTTOM — CTA + tagline + email */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
             <button
+              data-magnetic
               onClick={handleCopy}
               onMouseEnter={() => setBtnHovered(true)}
               onMouseLeave={() => setBtnHovered(false)}

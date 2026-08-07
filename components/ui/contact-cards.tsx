@@ -281,6 +281,7 @@ export function CopyEmailButton({
 
 	return (
 		<button
+			data-magnetic
 			type="button"
 			onClick={copy}
 			aria-label={label}
