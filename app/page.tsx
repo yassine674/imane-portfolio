@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useLang, t } from "@/lib/i18n";
 import { Preloader } from "@/components/layout/Preloader";
 import { Header } from "@/components/layout/Header";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
@@ -11,9 +12,11 @@ import { ScrollingFeatureShowcase } from "@/components/ui/interactive-scrolling-
 import { Contact } from "@/components/sections/Contact";
 import { CurveDivider } from "@/components/layout/CurveDivider";
 import { AliceScrollStory } from "@/components/ui/alice-scroll-story";
-import { MagneticCursor } from "@/components/ui/magnetic-cursor";
+import { YanCursor } from "@/components/ui/yan-cursor";
 
 export default function Home() {
+  const { lang } = useLang();
+  const trP = t[lang].projects;
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -26,15 +29,8 @@ export default function Home() {
   }, [loaded]);
 
   return (
-    <MagneticCursor
-      magneticFactor={0.45}
-      cursorSize={32}
-      blendMode="difference"
-      cursorColor="white"
-      lerpAmount={0.12}
-      speedMultiplier={0.025}
-      contrastBoost={1}
-    >
+    <>
+      <YanCursor />
       <Preloader onComplete={() => setLoaded(true)} />
       <ScrollProgress />
       <ScrollFX />
@@ -51,9 +47,9 @@ export default function Home() {
           <About />
           <Experience />
           <AliceScrollStory
-            wordA="SELECTED"
-            wordB="WORKS"
-            eyebrow="a collection of case studies"
+            wordA={trP.aliceWordA}
+            wordB={trP.aliceWordB}
+            eyebrow={trP.aliceEyebrow}
           />
           <CurveDivider from="dark" to="paper" accent="oklch(70% 0.22 48)" />
           <ScrollingFeatureShowcase />
@@ -61,6 +57,6 @@ export default function Home() {
           <Contact />
         </main>
       </div>
-    </MagneticCursor>
+    </>
   );
 }

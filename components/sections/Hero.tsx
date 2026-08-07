@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import Lenis from "lenis";
 import { personalInfo } from "@/lib/data";
 import { MagneticButton } from "@/components/layout/MagneticButton";
+import { useLang, t } from "@/lib/i18n";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const img = (name: string) => `${BASE}/parallax/${name}`;
@@ -21,6 +22,8 @@ const LAYERS = [
 ] as const;
 
 export function Hero() {
+  const { lang } = useLang();
+  const tr = t[lang].hero;
   const wrapperRef  = useRef<HTMLDivElement>(null);
   const blackBgRef  = useRef<HTMLDivElement>(null);
   const cloudsRef   = useRef<HTMLDivElement>(null);
@@ -132,7 +135,7 @@ export function Hero() {
               lineHeight: 1.75, color: "oklch(90% 0.02 70 / 0.82)", maxWidth: "38ch",
               marginBottom: "clamp(1.4rem,2.8vw,2rem)",
             }}>
-              {personalInfo.subtitle}
+              {tr.subtitle}
             </p>
             <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <MagneticButton
@@ -143,13 +146,13 @@ export function Hero() {
                   document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
-                View work
+                {tr.cta1}
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </MagneticButton>
               <MagneticButton href={`mailto:${personalInfo.email}`} variant="ghost" ariaLabel="Get in touch by email">
-                Get in touch
+                {tr.cta2}
               </MagneticButton>
             </div>
           </div>

@@ -265,6 +265,7 @@ export function CopyEmailButton({
 	className?: string;
 }) {
 	const [state, setState] = useState<'idle' | 'copied' | 'manual'>('idle');
+	const [hovered, setHovered] = useState(false);
 	const timeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
 	useEffect(() => () => clearTimeout(timeout.current), []);
@@ -281,12 +282,23 @@ export function CopyEmailButton({
 
 	return (
 		<button
-			data-magnetic
 			type="button"
 			onClick={copy}
+			onMouseEnter={() => setHovered(true)}
+			onMouseLeave={() => setHovered(false)}
 			aria-label={label}
-			style={{ backgroundColor: '#e4e4e7', color: '#18181b', paddingLeft: '1.5rem', paddingRight: '1.5rem', paddingTop: '0.625rem', paddingBottom: '0.625rem', borderRadius: '12px', border: 'none', fontWeight: 500, cursor: 'pointer' }}
-			className={`relative flex items-center justify-center transition-all active:scale-95 ${className}`}
+			style={{
+				backgroundColor: '#e4e4e7', color: '#18181b',
+				paddingLeft: '1.5rem', paddingRight: '1.5rem',
+				paddingTop: '0.625rem', paddingBottom: '0.625rem',
+				borderRadius: '12px', border: 'none', fontWeight: 500, cursor: 'pointer',
+				transform: hovered ? 'scale(1.06)' : 'scale(1)',
+				boxShadow: hovered
+					? '0 0 0 1px rgba(255,255,255,0.4), 0 0 45px rgba(255,255,255,0.3), 0 0 90px rgba(255,255,255,0.12)'
+					: '0 0 28px rgba(255,255,255,0.18), 0 0 60px rgba(255,255,255,0.07)',
+				transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+			}}
+			className={`relative flex items-center justify-center active:scale-95 ${className}`}
 		>
 			<span
 				className={`transition-all duration-500 ${state === 'idle' ? '' : 'opacity-0 blur-[2px]'}`}

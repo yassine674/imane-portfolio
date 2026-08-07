@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { useLang, t } from "@/lib/i18n";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(CustomEase);
@@ -207,6 +209,9 @@ export function Header() {
   }, [isMenuOpen]);
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const { lang } = useLang();
+  const nav = t[lang].nav;
   const closeMenu  = () => setIsMenuOpen(false);
 
   const scrollTo = (href: string) => {
@@ -323,11 +328,11 @@ export function Header() {
             <div className="menu-content-wrapper">
               <ul className="menu-list">
                 {[
-                  { shape: "1", href: "#about",      label: "About"    },
-                  { shape: "2", href: "#experience", label: "Carrière" },
-                  { shape: "3", href: "#projects",   label: "Projects" },
-                  { shape: "4", href: "#skills",     label: "Skills"   },
-                  { shape: "5", href: "#contact",    label: "Contact"  },
+                  { shape: "1", href: "#about",      label: nav.about      },
+                  { shape: "2", href: "#experience", label: nav.experience },
+                  { shape: "3", href: "#projects",   label: nav.projects   },
+                  { shape: "4", href: "#skills",     label: nav.skills     },
+                  { shape: "5", href: "#contact",    label: nav.contact    },
                 ].map(({ shape, href, label }) => (
                   <li key={href} className="menu-list-item" data-shape={shape}>
                     <a href={href} className="nav-link w-inline-block" onClick={(e) => { e.preventDefault(); scrollTo(href); }}>
@@ -339,6 +344,13 @@ export function Header() {
                   </li>
                 ))}
               </ul>
+            </div>
+
+            {/* Language switcher — pinned to bottom-centre of panel */}
+            <div style={{ position: "absolute", bottom: "1.8rem", left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 10 }}>
+              <div data-menu-fade>
+                <LanguageSwitcher variant="dark" />
+              </div>
             </div>
           </nav>
         </div>

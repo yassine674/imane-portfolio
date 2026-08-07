@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { asset } from "@/lib/asset";
+import { useLang, t } from "@/lib/i18n";
 import {
   siPython, siPytorch, siTensorflow, siKeras, siScikitlearn,
   siFastapi, siStreamlit, siNumpy, siPandas, siOpencv,
@@ -96,6 +97,9 @@ const SLIDES = [
 ];
 
 export function ScrollingFeatureShowcase() {
+  const { lang } = useLang();
+  const trP = t[lang].projects;
+  const trS = t[lang].skills;
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -222,7 +226,7 @@ export function ScrollingFeatureShowcase() {
                   textTransform: "uppercase",
                 }}
               >
-                03 / Selected Work
+                {trP.label}
               </span>
 
               <div style={{ display: "flex", gap: "5px", alignItems: "center", marginLeft: "auto" }}>
@@ -301,7 +305,7 @@ export function ScrollingFeatureShowcase() {
                       marginBottom: "1.6rem",
                     }}
                   >
-                    {slide.description}
+                    {trP.descriptions[i]}
                   </p>
 
                   {/* Tags */}
@@ -358,7 +362,7 @@ export function ScrollingFeatureShowcase() {
                   el.style.color = "var(--text)";
                 }}
               >
-                View on GitHub
+                {trP.viewGithub}
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                   <path
                     d="M2 10L10 2M10 2H4M10 2v6"
@@ -509,7 +513,7 @@ export function ScrollingFeatureShowcase() {
           el.style.color = "var(--text)";
         }}
       >
-        More work
+        {trP.moreWork}
         {/* Arrow icon in a small circle, top-right of button */}
         <span style={{
           display: "inline-flex",
@@ -559,7 +563,7 @@ export function ScrollingFeatureShowcase() {
           marginBottom: "1.6rem",
         }}>
           <span aria-hidden style={{ color: "var(--accent)", fontSize: "0.7rem" }}>✦</span>
-          04 — tools &amp; stack
+          {trS.label}
         </div>
 
         <h2 style={{
@@ -572,8 +576,8 @@ export function ScrollingFeatureShowcase() {
           margin: "0 auto",
           maxWidth: "16ch",
         }}>
-          My tech{" "}
-          <em style={{ fontStyle: "italic", color: "var(--accent)" }}>arsenal</em>
+          {trS.heading1}{" "}
+          <em style={{ fontStyle: "italic", color: "var(--accent)" }}>{trS.heading2}</em>
         </h2>
       </div>
 

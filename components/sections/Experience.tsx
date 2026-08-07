@@ -2,8 +2,8 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { experiences, education } from "@/lib/data";
 import { Timeline, type TimelineEntry } from "@/components/ui/timeline";
+import { useLang, t } from "@/lib/i18n";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +15,7 @@ function EntryCard({
   description,
   tags,
   incoming,
+  incomingLabel = "incoming",
 }: {
   label: string;
   title: string;
@@ -23,6 +24,7 @@ function EntryCard({
   description: string;
   tags: string[];
   incoming?: boolean;
+  incomingLabel?: string;
 }) {
   return (
     <article
@@ -58,7 +60,7 @@ function EntryCard({
               letterSpacing: "0.15em",
             }}
           >
-            incoming
+            {incomingLabel}
           </span>
         )}
         {label}
@@ -130,18 +132,36 @@ function EntryCard({
   );
 }
 
+type ExperienceTr = {
+  label: string;
+  heading1: string;
+  heading2: string;
+  labelEdu: string;
+  labelExp: string;
+  incoming: string;
+  entries: {
+    prep: { title: string; period: string; location: string; description: string };
+    mines2024: { title: string; period: string; location: string; description: string };
+    minesCurrent: { title: string; period: string; location: string; description: string };
+    pellenc: { title: string; period: string; location: string; description: string };
+    inria: { title: string; period: string; location: string; description: string };
+    ens: { title: string; period: string; location: string; description: string };
+  };
+};
+
 /* Build the merged timeline entries grouped by year, oldest first */
-function buildCarriereData(): TimelineEntry[] {
+function buildCarriereData(tr: ExperienceTr): TimelineEntry[] {
+  const e = tr.entries;
   return [
     {
       title: "2022 – 24",
       content: (
         <EntryCard
-          label="Education"
-          title="Preparatory Classes MPSI / MP · LYMED"
-          period="2022 – 2024"
-          location="Martil, Morocco"
-          description="Two-year intensive preparatory programme in mathematics, physics and computer science (MPSI then MP track). Ranked in top tier for competitive entrance exams to French Grandes Écoles."
+          label={tr.labelEdu}
+          title={e.prep.title}
+          period={e.prep.period}
+          location={e.prep.location}
+          description={e.prep.description}
           tags={["Mathematics", "Physics", "Python", "Competitive Exam"]}
         />
       ),
@@ -150,11 +170,11 @@ function buildCarriereData(): TimelineEntry[] {
       title: "2024",
       content: (
         <EntryCard
-          label="Education"
-          title="Engineering Degree admitted · Mines Saint-Étienne"
-          period="Septembre 2024"
-          location="Gardanne, France"
-          description="Joined the engineering programme at ISMIN, Mines Saint-Étienne — one of France's top engineering schools (Grande École). Selection based on competitive entrance exams after two years of preparatory classes."
+          label={tr.labelEdu}
+          title={e.mines2024.title}
+          period={e.mines2024.period}
+          location={e.mines2024.location}
+          description={e.mines2024.description}
           tags={["Grande École", "Engineering", "Competitive Entrance"]}
         />
       ),
@@ -163,22 +183,20 @@ function buildCarriereData(): TimelineEntry[] {
       title: "2025",
       content: (
         <div>
-          {/* Mines Saint-Étienne ongoing */}
           <EntryCard
-            label="Education"
-            title="Engineering Degree · ISMIN, Mines Saint-Étienne"
-            period="2024 – 2026"
-            location="Gardanne, France"
-            description="GPA 3.93 / 4.10. Core curriculum in Probability & Statistics, Signal Processing, Machine Learning and Deep Learning, complemented by applied projects in edge AI and computer vision."
+            label={tr.labelEdu}
+            title={e.minesCurrent.title}
+            period={e.minesCurrent.period}
+            location={e.minesCurrent.location}
+            description={e.minesCurrent.description}
             tags={["Machine Learning", "Signal Processing", "Python", "Deep Learning"]}
           />
-          {/* PELLENC */}
           <EntryCard
-            label="Experience"
-            title="AI Intern · PELLENC"
-            period="Jan. – Feb. 2025"
-            location="Pertuis, France"
-            description="Collection and annotation of a dedicated dataset for olive tree trunk detection. Fine-tuning of the YOLOv8 model and hyperparameter optimization to improve model performance."
+            label={tr.labelExp}
+            title={e.pellenc.title}
+            period={e.pellenc.period}
+            location={e.pellenc.location}
+            description={e.pellenc.description}
             tags={["YOLOv8", "Python", "OpenCV", "Roboflow", "Dataset Annotation"]}
           />
         </div>
@@ -188,23 +206,23 @@ function buildCarriereData(): TimelineEntry[] {
       title: "2026",
       content: (
         <div>
-          {/* Inria internship */}
           <EntryCard
-            label="Experience"
-            title="AI Research Intern · Inria"
-            period="Apr. – Aug. 2026"
-            location="Montpellier, France"
-            description="Development of deep learning models (Transformers, GNN) for the automatic extraction of agricultural parcels from satellite imagery. Exploration of approaches combining temporal information, geometric constraints, and end-to-end vectorization."
+            label={tr.labelExp}
+            title={e.inria.title}
+            period={e.inria.period}
+            location={e.inria.location}
+            description={e.inria.description}
             tags={["PyTorch", "Transformers", "GNN", "Satellite Imagery", "Python"]}
           />
-          {/* ENS Paris-Saclay */}
           <EntryCard
-            label="✦ Education"
-            title="Master — Artificial Intelligence · ENS Paris-Saclay"
-            period="2026 – présent"
-            location="Paris, France"
-            description="Master en Intelligence Artificielle à l'ENS Paris-Saclay. Apprentissage statistique, théorie du deep learning et méthodologie de recherche."
+            label={`✦ ${tr.labelEdu}`}
+            title={e.ens.title}
+            period={e.ens.period}
+            location={e.ens.location}
+            description={e.ens.description}
             tags={["Machine Learning", "Deep Learning", "Statistics", "Research"]}
+            incoming
+            incomingLabel={tr.incoming}
           />
         </div>
       ),
@@ -213,6 +231,8 @@ function buildCarriereData(): TimelineEntry[] {
 }
 
 export function Experience() {
+  const { lang } = useLang();
+  const tr = t[lang].experience;
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -236,7 +256,7 @@ export function Experience() {
     </div>
   );
 
-  const data = buildCarriereData();
+  const data = buildCarriereData(tr);
 
   return (
     <section
@@ -259,7 +279,7 @@ export function Experience() {
           marginBottom: "2rem",
         }}
       >
-        02 / Carrière
+        {tr.label}
       </div>
 
       <h2
@@ -275,7 +295,7 @@ export function Experience() {
           marginBottom: "clamp(3rem, 7vw, 6rem)",
         }}
       >
-        <Clip>Parcours</Clip>
+        <Clip>{tr.heading1}</Clip>
         <Clip>
           <span
             style={{
@@ -284,7 +304,7 @@ export function Experience() {
               color: "var(--accent)",
             }}
           >
-            &amp; formations
+            {tr.heading2}
           </span>
         </Clip>
       </h2>

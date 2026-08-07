@@ -54,7 +54,6 @@ export function MagneticButton({
       onMouseLeave={handleLeave}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      data-magnetic
       className={`btn-slide ${variant === "primary" ? "btn-primary" : "btn-ghost"} ${className}`.trim()}
     >
       <span style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: "0.6rem" }}>

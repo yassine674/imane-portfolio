@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Bricolage_Grotesque, Red_Hat_Mono } from "next/font/google";
+import { Cormorant_Garamond, Bricolage_Grotesque, Red_Hat_Mono, Dancing_Script, Caveat } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/i18n";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -14,6 +15,20 @@ const cormorant = Cormorant_Garamond({
   weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-serif-var",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-handwriting",
+  display: "swap",
+});
+
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-script",
   display: "swap",
 });
 
@@ -43,8 +58,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${cormorant.variable} ${redHatMono.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${bricolage.variable} ${cormorant.variable} ${redHatMono.variable} ${dancingScript.variable} ${caveat.variable}`}>
+      <body className={`${dancingScript.variable} ${caveat.variable}`}><LanguageProvider>{children}</LanguageProvider></body>
     </html>
   );
 }

@@ -2,6 +2,7 @@
 import React, { useRef, useState } from "react";
 import { useScroll, useTransform } from "framer-motion";
 import { personalInfo } from "@/lib/data";
+import { useLang, t } from "@/lib/i18n";
 import { GoogleGeminiEffect } from "@/components/ui/google-gemini-effect";
 import ContactCards, { LinkedinIcon, XIcon } from "@/components/ui/contact-cards";
 import { asset } from "@/lib/asset";
@@ -21,6 +22,9 @@ export function Contact() {
   const pathLengthThird  = useTransform(scrollYProgress, [0, 0.6], [0.03, 1.2]);
   const pathLengthFourth = useTransform(scrollYProgress, [0, 0.6], [0.01, 1.2]);
   const pathLengthFifth  = useTransform(scrollYProgress, [0, 0.6], [0, 1.2]);
+
+  const { lang } = useLang();
+  const tr = t[lang].contact;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(personalInfo.email);
@@ -48,7 +52,7 @@ export function Contact() {
             <div style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}>
               <span style={{ display: "block", width: 8, height: 8, borderRadius: "50%", background: "oklch(72% 0.2 145)", animation: "pulse 2s infinite", flexShrink: 0 }} />
               <span style={{ fontFamily: "var(--font-body)", fontSize: "0.6rem", letterSpacing: "0.22em", color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>
-                Available for projects
+                {tr.available}
               </span>
             </div>
 
@@ -67,7 +71,7 @@ export function Contact() {
                   color: "rgba(255,255,255,0.9)", margin: 0, lineHeight: 1.05,
                 }}
               >
-                Let&apos;s work
+                {tr.heading1}
               </h2>
               <div
                 style={{
@@ -76,7 +80,7 @@ export function Contact() {
                   color: "rgba(255,255,255,0.22)", lineHeight: 1.05,
                 }}
               >
-                together
+                {tr.heading2}
               </div>
             </div>
           </div>
@@ -84,7 +88,6 @@ export function Contact() {
           {/* BOTTOM — CTA + tagline + email */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
             <button
-              data-magnetic
               onClick={handleCopy}
               onMouseEnter={() => setBtnHovered(true)}
               onMouseLeave={() => setBtnHovered(false)}
@@ -102,17 +105,19 @@ export function Contact() {
               }}
               aria-label="Copy email address"
             >
-              {copied ? "Copied ✓" : "Contact me"}
+              {copied ? tr.copied : tr.cta}
             </button>
 
             <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(0.72rem, 1vw, 0.85rem)", color: "rgba(255,255,255,0.28)", textAlign: "center", maxWidth: "38ch", lineHeight: 1.75, margin: 0 }}>
-              Have a project in mind? I&apos;d love to hear about it.<br />
-              Let&apos;s create something exceptional together.
+              {tr.tagline.split("\n").map((line, i) => (
+                <React.Fragment key={i}>{line}{i === 0 && <br />}</React.Fragment>
+              ))}
             </p>
 
             <div style={{ pointerEvents: "auto", fontFamily: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif", fontSize: "16px", marginTop: "3rem" }} className="dark">
               <ContactCards
                 email={personalInfo.email}
+                labels={{ copy: tr.copyEmail, copied: tr.emailCopied }}
                 github={{
                   username: "imanemn127",
                   url: "https://github.com/imanemn127",
