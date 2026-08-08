@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+const BG = "#2d1e24";
+
 const words = [
   "Hello",
   "Bonjour",
@@ -14,9 +16,9 @@ const words = [
   "السلام عليكم",
 ];
 
-const opacityVariant = {
+const opacity = {
   initial: { opacity: 0 },
-  enter: { opacity: 1, transition: { duration: 0.15 } },
+  enter: { opacity: 0.9, transition: { duration: 0.6, delay: 0.1 } },
 };
 
 const slideUp = {
@@ -27,12 +29,10 @@ const slideUp = {
   },
 };
 
-const BG = "oklch(18% 0.08 290)";
-
 export function Preloader({ onComplete }: { onComplete: () => void }) {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex]       = useState(0);
+  const [dimension, setDimension] = useState({ width: 0, height: 0 });
   const [isExiting, setIsExiting] = useState(false);
-  const [dimension, setDimension] = useState({ width: 1, height: 1 });
 
   useEffect(() => {
     setDimension({ width: window.innerWidth, height: window.innerHeight });
@@ -52,17 +52,27 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
       return () => clearTimeout(exitTimer);
     }
 
-    const delay = index === 0 ? 700 : 180;
+    const delay = index === 0 ? 800 : 180;
     const t = setTimeout(() => setIndex((i) => i + 1), delay);
     return () => clearTimeout(t);
   }, [index, onComplete]);
 
-  const isArabic = words[index] === "السلام عليكم";
-
-
   const { width, height } = dimension;
-  // Convex bottom — stays this shape throughout; the slide-up sweeps it across the screen
-  const curvePath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height + 400} 0 ${height} L0 0`;
+  const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height + 400} 0 ${height} L0 0`;
+  const targetPath  = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height} 0 ${height} L0 0`;
+
+  const curve = {
+    initial: {
+      d: initialPath,
+      transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const },
+    },
+    exit: {
+      d: targetPath,
+      transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const, delay: 0.2 },
+    },
+  };
+
+  const isArabic = words[index] === "السلام عليكم";
 
   return (
     <motion.div
@@ -82,37 +92,55 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
         pointerEvents: isExiting ? "none" : "auto",
       }}
     >
-      <motion.p
-        variants={opacityVariant}
-        initial="initial"
-        animate="enter"
-        key={index}
-        style={{
-          position: "relative",
-          zIndex: 10,
-          color: "oklch(93% 0.04 290)",
-          fontSize: "clamp(2rem, 5vw, 3.5rem)",
-          fontFamily: isArabic ? "var(--font-serif)" : "var(--font-display)",
-          fontWeight: isArabic ? 400 : 600,
-          letterSpacing: isArabic ? "0.02em" : "-0.02em",
-          direction: isArabic ? "rtl" : "ltr",
-        }}
-      >
-        {words[index]}
-      </motion.p>
+      {dimension.width > 0 && (
+        <>
+          <motion.p
+            key={index}
+            variants={opacity}
+            initial="initial"
+            animate="enter"
+            style={{
+              position: "absolute",
+              zIndex: 10,
+              display: "flex",
+              alignItems: "center",
+              gap: "0.6rem",
+              color: "oklch(93% 0.04 355)",
+              fontSize: "clamp(2rem, 5vw, 3.5rem)",
+              fontFamily: isArabic ? "var(--font-serif)" : "var(--font-display)",
+              fontWeight: isArabic ? 400 : 600,
+              letterSpacing: isArabic ? "0.02em" : "-0.02em",
+              direction: isArabic ? "rtl" : "ltr",
+            }}
+          >
+            <span style={{
+              display: "block",
+              width: "0.5rem",
+              height: "0.5rem",
+              background: "oklch(72% 0.13 355)",
+              borderRadius: "50%",
+              flexShrink: 0,
+            }} />
+            {words[index]}
+          </motion.p>
 
-      {width > 1 && (
-        <svg
-          style={{
-            position: "absolute",
-            top: 0,
-            width: "100%",
-            height: "calc(100% + 400px)",
-            pointerEvents: "none",
-          }}
-        >
-          <path d={curvePath} fill={BG} />
-        </svg>
+          <svg
+            style={{
+              position: "absolute",
+              top: 0,
+              width: "100%",
+              height: "calc(100% + 400px)",
+              pointerEvents: "none",
+            }}
+          >
+            <motion.path
+              variants={curve}
+              initial="initial"
+              animate={isExiting ? "exit" : "initial"}
+              fill={BG}
+            />
+          </svg>
+        </>
       )}
     </motion.div>
   );
