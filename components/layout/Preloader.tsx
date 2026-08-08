@@ -14,7 +14,6 @@ const opacity = {
     transition: { duration: 1, delay: 0.2 },
   },
 }
-
 const slideUp = {
   initial: {
     y: 0,
