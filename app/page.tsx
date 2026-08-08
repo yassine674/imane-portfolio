@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLang, t } from "@/lib/i18n";
 import { Preloader } from "@/components/layout/Preloader";
 import { Header } from "@/components/layout/Header";
@@ -18,6 +18,7 @@ export default function Home() {
   const { lang } = useLang();
   const trP = t[lang].projects;
   const [loaded, setLoaded] = useState(false);
+  const handleComplete = useCallback(() => setLoaded(true), []);
 
   useEffect(() => {
     if (loaded) {
@@ -31,7 +32,7 @@ export default function Home() {
   return (
     <>
       <YanCursor />
-      <Preloader onComplete={() => setLoaded(true)} />
+      <Preloader onComplete={handleComplete} />
       <ScrollProgress />
       <ScrollFX />
       <div
