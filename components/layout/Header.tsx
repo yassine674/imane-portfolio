@@ -1,5 +1,50 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+
+function FlowerLogo() {
+  const xy = (angleDeg: number, r: number): [number, number] => {
+    const a = (angleDeg - 90) * (Math.PI / 180);
+    return [50 + r * Math.cos(a), 50 + r * Math.sin(a)];
+  };
+  const stamens = Array.from({ length: 14 }, (_, i) => i * (360 / 14));
+  const centerDots = Array.from({ length: 8 }, (_, i) => xy(i * 45, 5));
+
+  return (
+    <svg width="26" height="26" viewBox="-10 -10 120 120" fill="none" aria-hidden="true" style={{ display: "block" }}>
+      {/* 5 petals — long, wider, notched tip */}
+      {[0, 72, 144, 216, 288].map(deg => (
+        <path
+          key={deg}
+          d="M 45 38 C 20 26, 24 -4, 43 -6 C 46 -7, 49 5, 50 6 C 51 5, 54 -7, 57 -6 C 76 -4, 80 26, 55 38 C 52 43, 48 43, 45 38 Z"
+          stroke="currentColor"
+          strokeWidth="3.2"
+          strokeLinejoin="round"
+          fill="currentColor"
+          fillOpacity="0.07"
+          transform={`rotate(${deg} 50 50)`}
+        />
+      ))}
+      {/* Stamen lines */}
+      {stamens.map(deg => {
+        const [x1, y1] = xy(deg, 13);
+        const [x2, y2] = xy(deg, 27);
+        return <line key={deg} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />;
+      })}
+      {/* Stamen tip dots */}
+      {stamens.map(deg => {
+        const [cx, cy] = xy(deg, 30);
+        return <circle key={deg} cx={cx} cy={cy} r="2" fill="currentColor" />;
+      })}
+      {/* Center circle */}
+      <circle cx="50" cy="50" r="12" stroke="currentColor" strokeWidth="3" fill="currentColor" fillOpacity="0.1" />
+      {/* Center texture dots */}
+      {centerDots.map(([cx, cy], i) => (
+        <circle key={i} cx={cx} cy={cy} r="1.4" fill="currentColor" />
+      ))}
+      <circle cx="50" cy="50" r="1.8" fill="currentColor" />
+    </svg>
+  );
+}
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
@@ -238,12 +283,11 @@ export function Header() {
         style={{
           position: "fixed", top: "1.4rem", left: "clamp(1.5rem, 5vw, 3.5rem)",
           zIndex: 1001, background: "none", border: "none", padding: 0, cursor: "pointer",
-          fontFamily: "var(--font-display)", fontWeight: 800,
-          fontSize: "1.2rem", letterSpacing: "-0.01em", color: "var(--text)",
+          lineHeight: 1, color: "var(--text)",
           ...enterStyle(0),
         }}
       >
-        IM<span style={{ color: "var(--accent)" }}>.</span>
+        <FlowerLogo />
       </button>
 
       {/* ── Top-right: "click me" label + Menu button — exact source structure ── */}

@@ -404,15 +404,32 @@ function StickyNoteSection({ bio }: { bio: string }) {
         initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }} viewport={{ once: true }}
       >
-        {/* inner div carries the rotation — keeps Framer Motion y-animation from overriding it */}
-        <div style={{ position: "relative", background: "#FFEEA3", borderRadius: 3, width: "min(560px,90vw)", padding: "clamp(2rem,5vw,3rem) clamp(1.8rem,4vw,2.6rem) clamp(2.2rem,5.5vw,3.2rem)", boxShadow: "0 8px 32px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07)", transform: "rotate(3deg)" }}>
-          {/* 5 equidistant square tape marks */}
-          {["10%", "30%", "50%", "70%", "90%"].map(left => (
-            <div key={left} style={{ position: "absolute", top: 16, left, transform: "translateX(-50%)", width: 18, height: 18, background: "rgba(185,183,168,0.6)", borderRadius: 2 }} />
-          ))}
-          <p style={{ fontFamily: "var(--font-handwriting)", fontSize: "clamp(17px,1.9vw,23px)", lineHeight: 1.85, color: "#3d2f0e", margin: 0 }}>
-            Curious mind doing a Master&rsquo;s in AI at ENS Paris-Saclay — where I get to ask the hard questions and build the tools that try to answer them. I am passionate about intelligence in all its forms: how it learns, how it surprises us, and where mathematics meets the unknown.
-          </p>
+        <div
+          style={{ position: "relative", background: "#FFF3A3", borderRadius: 3, width: "min(560px,90vw)", boxShadow: "0 8px 32px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07)", transform: "rotate(3deg)", overflow: "hidden", transition: "transform 0.25s ease, box-shadow 0.25s ease", cursor: "default" }}
+          onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "rotate(1.5deg) translateY(-4px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "0 14px 40px rgba(0,0,0,0.16),0 4px 10px rgba(0,0,0,0.09)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = "rotate(3deg)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07)"; }}
+        >
+          {/* Glue-edge top strip */}
+          <div style={{ background: "#F0DC6A", height: 44, display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid rgba(60,30,10,0.08)" }}>
+            <span style={{ fontSize: "1.4rem", lineHeight: 1 }}>🌸</span>
+          </div>
+
+          {/* Ruled lines */}
+          <div style={{ position: "absolute", top: 44, left: 0, right: 0, bottom: 0, pointerEvents: "none" }}>
+            {[44, 77, 110, 143, 176, 209, 242, 275].map(top => (
+              <div key={top} style={{ position: "absolute", top, left: 20, right: 20, height: 1, background: "rgba(60,30,10,0.07)" }} />
+            ))}
+          </div>
+
+          {/* Text content */}
+          <div style={{ position: "relative", zIndex: 1, padding: "clamp(1.4rem,3vw,1.8rem) clamp(1.8rem,4vw,2.6rem) clamp(2rem,5vw,2.8rem)" }}>
+            <p style={{ fontFamily: "var(--font-handwriting)", fontSize: "clamp(17px,1.9vw,23px)", lineHeight: 1.85, color: "#3d2f0e", margin: 0 }}>
+              Curious mind doing a Master&rsquo;s in AI at ENS Paris-Saclay — where I get to ask the hard questions and build the tools that try to answer them. I am passionate about intelligence in all its forms: how it learns, how it surprises us, and where mathematics meets the unknown. ✨
+            </p>
+          </div>
+
+          {/* Folded corner */}
+          <div style={{ position: "absolute", bottom: 0, right: 0, width: 34, height: 34, background: "linear-gradient(135deg, transparent 50%, #E8D040 50%)" }} />
         </div>
       </motion.div>
       <motion.div

@@ -268,20 +268,6 @@ export function Experience() {
         borderTop: "1px solid var(--border)",
       }}
     >
-      <div
-        className="car-label"
-        style={{
-          fontFamily: "var(--font-body)",
-          fontSize: "0.65rem",
-          letterSpacing: "0.2em",
-          color: "var(--accent)",
-          textTransform: "uppercase",
-          marginBottom: "2rem",
-        }}
-      >
-        {tr.label}
-      </div>
-
       <h2
         id="car-h"
         className="car-heading"
