@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const words = [
+  "Hello",
+  "Bonjour",
+  "Guten tag",
   "Ciao",
   "Olà",
   "やあ",
-  "Hello",
-  "Bonjour",
   "হ্যালো",
-  "Guten tag",
   "السلام عليكم",
 ];
 
@@ -22,8 +22,8 @@ const opacityVariant = {
 const slideUp = {
   initial: { y: 0 },
   exit: {
-    y: "-100vh",
-    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const, delay: 0.5 },
+    y: "calc(-100vh - 400px)",
+    transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] as const, delay: 0.1 },
   },
 };
 
@@ -61,19 +61,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
 
 
   const { width, height } = dimension;
-  const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height + 300} 0 ${height} L0 0`;
-  const targetPath  = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height} 0 ${height} L0 0`;
-
-  const curve = {
-    initial: {
-      d: initialPath,
-      transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const },
-    },
-    exit: {
-      d: targetPath,
-      transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] as const, delay: 0 },
-    },
-  };
+  // Convex bottom — stays this shape throughout; the slide-up sweeps it across the screen
+  const curvePath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height + 400} 0 ${height} L0 0`;
 
   return (
     <motion.div
@@ -118,16 +107,11 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
             position: "absolute",
             top: 0,
             width: "100%",
-            height: "calc(100% + 300px)",
+            height: "calc(100% + 400px)",
             pointerEvents: "none",
           }}
         >
-          <motion.path
-            variants={curve}
-            initial="initial"
-            animate={isExiting ? "exit" : "initial"}
-            fill={BG}
-          />
+          <path d={curvePath} fill={BG} />
         </svg>
       )}
     </motion.div>
