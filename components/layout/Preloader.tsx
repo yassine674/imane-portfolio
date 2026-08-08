@@ -1,65 +1,60 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
-const BG = "#2d1e24";
-
-const words = [
-  "Hello",
-  "Bonjour",
-  "Guten tag",
-  "Ciao",
-  "Olà",
-  "やあ",
-  "হ্যালো",
-  "السلام عليكم",
-];
+const words = ["Hello", "Bonjour", "السلام عليكم", "Olà", "やあ", "Hallå", "Guten tag", "হ্যালো"]
 
 const opacity = {
-  initial: { opacity: 0 },
-  enter: { opacity: 0.9, transition: { duration: 0.6, delay: 0.1 } },
-};
+  initial: {
+    opacity: 0,
+  },
+  enter: {
+    opacity: 0.75,
+    transition: { duration: 1, delay: 0.2 },
+  },
+}
 
 const slideUp = {
-  initial: { y: 0 },
-  exit: {
-    y: "calc(-100vh - 400px)",
-    transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] as const, delay: 0.1 },
+  initial: {
+    y: 0,
   },
-};
+  exit: {
+    y: "-100vh",
+    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const, delay: 0.2 },
+  },
+}
 
 export function Preloader({ onComplete }: { onComplete: () => void }) {
-  const [index, setIndex]       = useState(0);
-  const [dimension, setDimension] = useState({ width: 0, height: 0 });
-  const [isExiting, setIsExiting] = useState(false);
+  const [index, setIndex] = useState(0)
+  const [dimension, setDimension] = useState({ width: 0, height: 0 })
+  const [isExiting, setIsExiting] = useState(false)
 
   useEffect(() => {
-    setDimension({ width: window.innerWidth, height: window.innerHeight });
-  }, []);
+    setDimension({ width: window.innerWidth, height: window.innerHeight })
+  }, [])
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      onComplete();
-      return;
-    }
-
     if (index === words.length - 1) {
-      const exitTimer = setTimeout(() => {
-        setIsExiting(true);
-        setTimeout(() => onComplete(), 1000);
-      }, 800);
-      return () => clearTimeout(exitTimer);
+      setTimeout(() => {
+        setIsExiting(true)
+        setTimeout(() => {
+          onComplete()
+        }, 1000)
+      }, 1000)
+      return
     }
 
-    const delay = index === 0 ? 800 : 180;
-    const t = setTimeout(() => setIndex((i) => i + 1), delay);
-    return () => clearTimeout(t);
-  }, [index, onComplete]);
+    setTimeout(
+      () => {
+        setIndex(index + 1)
+      },
+      index === 0 ? 1000 : 150,
+    )
+  }, [index, onComplete])
 
-  const { width, height } = dimension;
-  const initialPath = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height + 400} 0 ${height} L0 0`;
-  const targetPath  = `M0 0 L${width} 0 L${width} ${height} Q${width / 2} ${height} 0 ${height} L0 0`;
+  const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height} L0 0`
+  const targetPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height} 0 ${dimension.height} L0 0`
 
   const curve = {
     initial: {
@@ -68,80 +63,35 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
     },
     exit: {
       d: targetPath,
-      transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const, delay: 0.2 },
+      transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const, delay: 0.3 },
     },
-  };
-
-  const isArabic = words[index] === "السلام عليكم";
+  }
 
   return (
     <motion.div
       variants={slideUp}
       initial="initial"
       animate={isExiting ? "exit" : "initial"}
-      style={{
-        position: "fixed",
-        top: 0, left: 0, right: 0, bottom: 0,
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: BG,
-        zIndex: 99999,
-        pointerEvents: isExiting ? "none" : "auto",
-      }}
+      style={{ background: "#2d1e24", pointerEvents: isExiting ? "none" : "auto" }}
+      className="fixed top-0 left-0 right-0 bottom-0 w-screen h-screen flex items-center justify-center z-[99999]"
     >
       {dimension.width > 0 && (
         <>
           <motion.p
-            key={index}
             variants={opacity}
             initial="initial"
             animate="enter"
-            style={{
-              position: "absolute",
-              zIndex: 10,
-              display: "flex",
-              alignItems: "center",
-              gap: "0.6rem",
-              color: "oklch(93% 0.04 355)",
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
-              fontFamily: isArabic ? "var(--font-serif)" : "var(--font-display)",
-              fontWeight: isArabic ? 400 : 600,
-              letterSpacing: isArabic ? "0.02em" : "-0.02em",
-              direction: isArabic ? "rtl" : "ltr",
-            }}
+            key={index}
+            className="flex items-center text-white text-4xl md:text-5xl lg:text-6xl absolute z-10 font-medium"
           >
-            <span style={{
-              display: "block",
-              width: "0.5rem",
-              height: "0.5rem",
-              background: "oklch(72% 0.13 355)",
-              borderRadius: "50%",
-              flexShrink: 0,
-            }} />
+            <span className="block w-2.5 h-2.5 bg-white rounded-full mr-2.5"></span>
             {words[index]}
           </motion.p>
-
-          <svg
-            style={{
-              position: "absolute",
-              top: 0,
-              width: "100%",
-              height: "calc(100% + 400px)",
-              pointerEvents: "none",
-            }}
-          >
-            <motion.path
-              variants={curve}
-              initial="initial"
-              animate={isExiting ? "exit" : "initial"}
-              fill={BG}
-            />
+          <svg className="absolute top-0 w-full h-[calc(100%+300px)]" style={{ pointerEvents: "none" }}>
+            <motion.path variants={curve} initial="initial" animate={isExiting ? "exit" : "initial"} fill="#2d1e24" />
           </svg>
         </>
       )}
     </motion.div>
-  );
+  )
 }
