@@ -23,7 +23,7 @@ const slideUp = {
   initial: { y: 0 },
   exit: {
     y: "-100vh",
-    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const, delay: 0.2 },
+    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const, delay: 0.5 },
   },
 };
 
@@ -71,7 +71,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
     },
     exit: {
       d: targetPath,
-      transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const, delay: 0.3 },
+      transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] as const, delay: 0 },
     },
   };
 
