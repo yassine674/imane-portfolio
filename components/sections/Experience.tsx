@@ -3,6 +3,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Timeline, type TimelineEntry } from "@/components/ui/timeline";
+import { Starfield } from "@/components/ui/starfield-1";
 import { useLang, t } from "@/lib/i18n";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -264,38 +265,63 @@ export function Experience() {
       id="experience"
       aria-labelledby="car-h"
       style={{
-        padding: "clamp(6rem, 14vw, 12rem) clamp(1.5rem, 5vw, 3.5rem)",
-        borderTop: "1px solid var(--border)",
+        padding: "clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 3.5rem) clamp(6rem, 14vw, 12rem)",
+        position: "relative",
+        zIndex: 1,
+        marginTop: "-60px",
+        borderRadius: "40px 40px 0 0",
+        boxShadow: "0 -8px 40px rgba(0,0,0,0.08), 0 -1px 0 rgba(0,0,0,0.04)",
+        background: "var(--bg)",
+        overflow: "clip",
       }}
     >
-      <h2
-        id="car-h"
-        className="car-heading"
-        style={{
-          fontFamily: "var(--font-display)",
-          fontWeight: 800,
-          fontSize: "clamp(2.8rem, 8vw, 7.5rem)",
-          lineHeight: 0.9,
-          letterSpacing: "-0.03em",
-          color: "var(--text)",
-          marginBottom: "clamp(3rem, 7vw, 6rem)",
-        }}
-      >
-        <Clip>{tr.heading1}</Clip>
-        <Clip>
-          <span
-            style={{
+      <Starfield
+        starColor="rgba(255,255,255,1)"
+        bgColor="rgba(20,14,10,1)"
+        speed={0.5}
+        quantity={600}
+      />
+      <div style={{ position: "relative", zIndex: 1 }}>
+      <div id="car-h" className="car-heading" style={{ marginBottom: "clamp(3rem, 7vw, 6rem)" }}>
+        {/* main heading */}
+        <h2 id="car-h-text" style={{ margin: 0 }}>
+          {/* "Career" — massive outlined */}
+          <Clip>
+            <span style={{
+              display: "block",
+              fontFamily: "var(--font-display)",
+              fontWeight: 900,
+              fontSize: "clamp(4rem, 11vw, 10rem)",
+              lineHeight: 0.88,
+              letterSpacing: "-0.04em",
+              WebkitTextStroke: "1.5px var(--text)",
+              color: "transparent",
+            }}>
+              {tr.heading1}
+            </span>
+          </Clip>
+
+          {/* "& training" — filled serif, offset right */}
+          <Clip>
+            <span style={{
+              display: "block",
               fontFamily: "var(--font-serif)",
               fontWeight: 400,
+              fontStyle: "italic",
+              fontSize: "clamp(3rem, 8.5vw, 8rem)",
+              lineHeight: 1,
+              letterSpacing: "-0.02em",
               color: "var(--accent)",
-            }}
-          >
-            {tr.heading2}
-          </span>
-        </Clip>
-      </h2>
+              paddingLeft: "clamp(2rem, 6vw, 6rem)",
+            }}>
+              {tr.heading2}
+            </span>
+          </Clip>
+        </h2>
+      </div>
 
-      <Timeline data={data} />
+        <Timeline data={data} />
+      </div>
     </section>
   );
 }

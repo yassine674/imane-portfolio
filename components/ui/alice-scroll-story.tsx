@@ -121,7 +121,7 @@ export function AliceScrollStory({
         position: "relative",
         height: "100vh",
         overflow: "hidden",
-        background: "var(--bg)",
+        background: "rgba(20,14,10,1)",
       }}
     >
       {/* ── Floating editorial micro-labels ── */}
@@ -175,7 +175,7 @@ export function AliceScrollStory({
           position:   "absolute",
           top: 0, left: 0, right: 0,
           height:     "50%",
-          background: "var(--bg)",
+          background: "rgba(20,14,10,1)",
           zIndex:     10,
           clipPath:   "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
           overflow:   "hidden",
@@ -211,7 +211,7 @@ export function AliceScrollStory({
           position:   "absolute",
           bottom: 0, left: 0, right: 0,
           height:     "50%",
-          background: "var(--bg)",
+          background: "rgba(20,14,10,1)",
           zIndex:     10,
           clipPath:   "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
           overflow:   "hidden",

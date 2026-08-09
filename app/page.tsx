@@ -5,14 +5,14 @@ import { Preloader } from "@/components/layout/Preloader";
 import { Header } from "@/components/layout/Header";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { ScrollFX } from "@/components/layout/ScrollFX";
-import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
+import { Hero, About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
 import { ScrollingFeatureShowcase } from "@/components/ui/interactive-scrolling-story-component";
 import { Contact } from "@/components/sections/Contact";
 import { CurveDivider } from "@/components/layout/CurveDivider";
 import { AliceScrollStory } from "@/components/ui/alice-scroll-story";
 import { YanCursor } from "@/components/ui/yan-cursor";
+
 
 export default function Home() {
   const { lang } = useLang();
@@ -37,8 +37,6 @@ export default function Home() {
       <ScrollFX />
       <div
         style={{
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 0.4s ease",
           pointerEvents: loaded ? "auto" : "none",
         }}
       >

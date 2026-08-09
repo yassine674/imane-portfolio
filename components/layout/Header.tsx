@@ -59,6 +59,7 @@ export function Header() {
   const isMenuOpenRef = useRef(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [entered, setEntered] = useState(false);
+  const [onLight, setOnLight] = useState(true);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -161,8 +162,15 @@ export function Header() {
   }, []);
 
   // Menu Open/Close Animation Effect
+  const isFirstMountRef = useRef(true);
   useEffect(() => {
     if (!containerRef.current) return;
+    // Skip the close animation on initial mount — nothing to close
+    if (!isMenuOpen && isFirstMountRef.current) {
+      isFirstMountRef.current = false;
+      return;
+    }
+    isFirstMountRef.current = false;
 
     const ctx = gsap.context(() => {
       const navWrap         = containerRef.current!.querySelector(".nav-overlay-wrapper");
@@ -201,48 +209,65 @@ export function Header() {
           .to(menu, { xPercent: 120 }, "<")
           .to(menuButtonTexts, { yPercent: 0 }, "<")
           .to(menuButtonIcon, { rotate: 0 }, "<")
-          .to([menuButtonTexts, menuButtonIcon, toggleText], { duration: 0.2, onComplete: () => gsap.set([menuButtonTexts, menuButtonIcon, toggleText], { clearProps: "color" }) }, "<")
-          .set(navWrap, { display: "none" });
+          .set(navWrap, { display: "none" })
+          .set(menuButtonTexts, { clearProps: "color" })
+          .set(menuButtonIcon, { clearProps: "color" })
+          .set(toggleText, { clearProps: "color" });
       }
     }, containerRef);
 
     return () => ctx.revert();
   }, [isMenuOpen]);
 
-  // Darken fixed header elements when over a light-background section
+  // Track whether the header is over a light-background section
   useEffect(() => {
-    const DARK = "#2a1810";
-    const getTargets = () => {
-      if (!containerRef.current) return [];
-      const btn = containerRef.current.querySelector(".nav-close-btn");
-      return [
-        containerRef.current.querySelector(".im-bubble"),
-        containerRef.current.querySelector(".toggle-text"),
-        ...(btn ? Array.from(btn.querySelectorAll("p")) : []),
-        btn?.querySelector(".menu-button-icon"),
-      ].filter(Boolean);
-    };
-
-    let lightCount = 0;
-    const applyDark = () => {
-      if (isMenuOpenRef.current) return;
-      gsap.to(getTargets(), { color: DARK, duration: 0.4, ease: "power2.out", overwrite: "auto" });
-    };
-    const applyDefault = () => {
-      if (isMenuOpenRef.current) return;
-      gsap.to(getTargets(), { color: "inherit", duration: 0.35, ease: "power2.out", overwrite: "auto",
-        onComplete: () => gsap.set(getTargets(), { clearProps: "color" }) });
-    };
-
+    const visible = new Set<Element>();
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { lightCount += e.isIntersecting ? 1 : -1; });
-      lightCount = Math.max(0, lightCount);
-      if (lightCount > 0) applyDark(); else applyDefault();
+      entries.forEach((e) => {
+        if (e.isIntersecting) visible.add(e.target);
+        else visible.delete(e.target);
+      });
+      setOnLight(visible.size > 0);
     }, { rootMargin: "0px 0px -92% 0px" });
 
     const sections = document.querySelectorAll(".section-light");
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
+  }, []);
+
+  // Proximity icon rotation — rotates the + when cursor is near, before hover
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!containerRef.current) return;
+
+    const RADIUS = 60;
+    const btn  = containerRef.current.querySelector<HTMLElement>(".nav-close-btn");
+    const icon = btn?.querySelector<HTMLElement>(".menu-button-icon");
+    if (!btn || !icon) return;
+
+    let near = false;
+
+    const onMove = (e: MouseEvent) => {
+      if (isMenuOpenRef.current) return;
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width  / 2);
+      const dy = e.clientY - (r.top  + r.height / 2);
+      const d  = Math.sqrt(dx * dx + dy * dy);
+
+      if (d < RADIUS && !near) {
+        near = true;
+        gsap.to(icon, { rotate: 90, duration: 0.4, ease: "power3.out", overwrite: "auto" });
+      } else if (d >= RADIUS && near) {
+        near = false;
+        gsap.to(icon, { rotate: 0, duration: 0.35, ease: "power3.out", overwrite: "auto" });
+      }
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      gsap.set(icon, { rotate: 0 });
+    };
   }, []);
 
   useEffect(() => {
@@ -283,8 +308,10 @@ export function Header() {
         style={{
           position: "fixed", top: "1.4rem", left: "clamp(1.5rem, 5vw, 3.5rem)",
           zIndex: 1001, background: "none", border: "none", padding: 0, cursor: "pointer",
-          lineHeight: 1, color: "var(--text)",
+          lineHeight: 1,
           ...enterStyle(0),
+          color: onLight && !isMenuOpen ? "#2a1810" : "var(--text)",
+          transition: `color 0.4s ease, transform 2.1s var(--f-cubic-in), opacity 1.2s var(--f-cubic-in)`,
         }}
       >
         <FlowerLogo />
@@ -296,6 +323,8 @@ export function Header() {
           position: "fixed", top: "1rem", right: "clamp(1.5rem, 5vw, 3.5rem)",
           zIndex: 1001, display: "flex", alignItems: "center", gap: "1.25rem",
           ...enterStyle(1),
+          color: onLight && !isMenuOpen ? "#2a1810" : undefined,
+          transition: `color 0.4s ease, transform 2.1s var(--f-cubic-in), opacity 1.2s var(--f-cubic-in)`,
         }}
       >
         <div className="nav-toggle-label" onClick={toggleMenu} style={{ cursor: "pointer", pointerEvents: "auto" }}>

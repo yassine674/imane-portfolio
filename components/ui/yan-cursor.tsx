@@ -33,7 +33,7 @@ function BurstEffect({ x, y, onDone }: { x: number; y: number; onDone: () => voi
   }, [onDone]);
 
   return (
-    <div className="fixed pointer-events-none" style={{ left: x, top: y, zIndex: 50 }}>
+    <div className="fixed pointer-events-none" style={{ left: x, top: y, zIndex: 99999 }}>
       {particles.map((p) => (
         <div
           key={p.id}
@@ -120,7 +120,7 @@ export function YanCursor() {
     <>
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] hidden lg:block"
+        className="fixed top-0 left-0 pointer-events-none z-[99999] hidden lg:block"
         style={{
           width: 22,
           height: 22,

@@ -41,13 +41,13 @@ const redHatMono = Red_Hat_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Imane MOUMOUN — AI & ML Engineer",
+  title: "Imane Moumoun — Portfolio",
   description:
     "Portfolio of Imane MOUMOUN — engineering intelligent systems at the intersection of deep learning, computer vision, and edge AI. Currently AI Research Intern at Inria.",
   keywords: ["AI", "Machine Learning", "Computer Vision", "Edge AI", "PyTorch", "Deep Learning"],
   authors: [{ name: "Imane MOUMOUN", url: "https://github.com/imanemn127" }],
   openGraph: {
-    title: "Imane MOUMOUN — AI & ML Engineer",
+    title: "Imane Moumoun — Portfolio",
     description:
       "Building intelligent systems at the intersection of deep learning, computer vision, and edge AI.",
     type: "website",

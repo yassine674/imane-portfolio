@@ -101,6 +101,8 @@ body::before {
   100%{ transform: translate(-1%, 1%); }
 }
 
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* ─── Focus & Selection ───────────────────────────────────── */
 :focus-visible {
   outline: 1.5px solid var(--accent);
@@ -497,7 +499,7 @@ body::before {
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
   font-size: 1rem;
-  color: var(--text);
+  color: inherit;
   letter-spacing: 0.01em;
   opacity: 0.75;
 }
@@ -510,7 +512,7 @@ body::before {
   background: none;
   border: none;
   padding: 0;
-  color: var(--text);
+  color: inherit;
   cursor: pointer;
 }
 
@@ -527,7 +529,7 @@ body::before {
   letter-spacing: -0.01em;
   line-height: 1.15;
   margin: 0;
-  color: var(--text);
+  color: inherit;
 }
 
 .icon-wrap { display: flex; align-items: center; }

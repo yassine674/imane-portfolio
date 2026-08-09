@@ -36,7 +36,7 @@ function Badge() {
       <div className={landed ? "badge-swing" : ""} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
 
         {/* lanyard strip */}
-        <div style={{ width: 26, height: 220, background: "#292524", position: "relative", boxShadow: "0 2px 6px rgba(0,0,0,0.3)", zIndex: 0 }}>
+        <div style={{ width: 26, height: 140, background: "#292524", position: "relative", boxShadow: "0 2px 6px rgba(0,0,0,0.3)", zIndex: 0 }}>
           <div style={{ position: "absolute", inset: 0, opacity: 0.2, backgroundImage: "repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.3) 2px,rgba(255,255,255,0.3) 3px)" }} />
           <span style={{ position: "absolute", bottom: "38%", left: "50%", transform: "translateX(-50%) rotate(-90deg)", fontFamily: "monospace", fontSize: 6, fontWeight: 700, color: "rgba(255,255,255,0.45)", letterSpacing: "0.22em", textTransform: "uppercase", whiteSpace: "nowrap", userSelect: "none" }}>
             imane.ai
@@ -83,13 +83,14 @@ function Badge() {
               </div>
             </div>
 
-            {/* back — quote */}
-            <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(170deg,#1c1917 0%,#0c0a09 100%)", borderRadius: 12, padding: "22px 18px", border: "1.5px solid rgba(255,255,255,0.08)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16 }}>
+            {/* back — quote + cat */}
+            <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(170deg,#1c1917 0%,#0c0a09 100%)", borderRadius: 12, padding: "18px 18px", border: "1.5px solid rgba(255,255,255,0.08)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10 }}>
               <span style={{ fontSize: 22, opacity: 0.4 }}>&ldquo;</span>
               <p style={{ color: "rgba(255,255,255,0.82)", fontSize: 11.5, lineHeight: 1.75, textAlign: "center", fontStyle: "italic", letterSpacing: "0.02em", margin: 0 }}>
-                The most beautiful thing about intelligence is that it is never finished — it only grows deeper with every question asked.
+                the robots aren&apos;t coming for us. they&apos;re coming for you. i sent them. hihihi <span style={{ display: "inline-block" }}>🎀</span> don&apos;t take it personally. i do this for everyone.
               </p>
-              <span style={{ fontSize: 9, color: "rgba(255,255,255,0.28)", letterSpacing: "0.18em", textTransform: "uppercase", marginTop: 4 }}>— Imane M.</span>
+              <img src={asset("/about/cat-dance.gif")} alt="dancing cat" draggable={false} style={{ height: 81, borderRadius: 6 }} />
+              <span style={{ fontSize: 9, color: "rgba(255,255,255,0.28)", letterSpacing: "0.18em", textTransform: "uppercase" }}>— Imane M.</span>
             </div>
           </motion.div>
         </div>
@@ -106,11 +107,11 @@ function RippedPaper() {
   return (
     <div
       className="absolute z-20 hero-entrance group/paper"
-      style={{ top: 20, left: "50%", transform: "translateX(-50%) rotate(-5deg)", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 0.5s both", willChange: "transform" }}
+      style={{ top: 20, left: "48%", transform: "translateX(-50%) rotate(-5deg)", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 0.5s both", willChange: "transform" }}
     >
       <div className="group-hover/paper:scale-110 group-hover/paper:rotate-[1deg]" style={{ transition: "all 0.3s ease-out" }}>
         <img src={asset("/about/ripped-paper.png")} alt="" draggable={false}
-          style={{ width: "clamp(240px,30vw,380px)", filter: "drop-shadow(0 6px 20px rgba(0,0,0,0.25))" }}
+          style={{ width: "clamp(276px,34.5vw,437px)", filter: "drop-shadow(0 6px 20px rgba(0,0,0,0.25))" }}
         />
         <div style={{ position: "absolute", top: "50%", left: "55%", transform: "translate(-50%,-50%)" }}>
           <img src={asset("/about/ice-coffee.png")} alt="Ice coffee" draggable={false} className="coffee-wobble"
@@ -169,10 +170,10 @@ function Ticket() {
   return (
     <div
       className="hidden lg:block absolute z-30 hero-entrance"
-      style={{ right: 80, top: 100, width: "clamp(160px,20vw,260px)", rotate: "4deg", animation: "hero-slide-right 0.7s cubic-bezier(0.4,0,0.2,1) 0.9s both", willChange: "transform" }}
+      style={{ right: 100, top: 90, width: "clamp(202px,25.3vw,329px)", animation: "hero-slide-right 0.7s cubic-bezier(0.4,0,0.2,1) 0.9s both", willChange: "transform" }}
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
     >
-      <div style={{ transform: hov ? "scale(1.5) rotate(1deg)" : "scale(1)", transition: "transform 0.3s ease-out" }}>
+      <div style={{ transform: hov ? "scale(1.5) rotate(0deg)" : "scale(1) rotate(4deg)", transition: "transform 0.4s ease-out" }}>
         <img src={asset("/about/ticket.jpg")} alt="Design x Technology" draggable={false} style={{ width: "100%", borderRadius: 4, opacity: 0.95 }} />
         {hov && (
           <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", borderRadius: 4 }}>
@@ -192,15 +193,15 @@ function CollageAndCat() {
   return (
     <div
       className="hidden lg:block absolute z-10 hero-entrance"
-      style={{ right: -20, top: 195, rotate: "6deg", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 1.0s both", willChange: "transform" }}
+      style={{ right: 50, top: 195, rotate: "6deg", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 1.0s both", willChange: "transform" }}
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
     >
       <div style={{ position: "relative", overflow: "visible", transform: hov ? "scale(1.05) rotate(2deg)" : "scale(1)", transition: "transform 0.3s ease-out" }}>
         <img src={asset("/about/cat.png")} alt="Cat peeking" draggable={false}
-          style={{ position: "absolute", top: "28%", right: "8%", width: "clamp(90px,11vw,145px)", zIndex: 2, transform: hov ? "scale(1) rotate(8deg) translateY(-12px)" : "scale(0)", opacity: hov ? 1 : 0, transition: "transform 0.5s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s", filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.3))", transformOrigin: "center bottom" }}
+          style={{ position: "absolute", top: "28%", right: "18%", width: "clamp(90px,11vw,145px)", zIndex: 2, transform: hov ? "scale(1) rotate(8deg) translateY(-12px)" : "scale(0)", opacity: hov ? 1 : 0, transition: "transform 0.5s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s", filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.3))", transformOrigin: "center bottom" }}
         />
         <img src={asset("/about/image-collage.jpg")} alt="Photo collage" draggable={false}
-          style={{ width: "clamp(155px,18vw,240px)", borderRadius: 10, display: "block", boxShadow: "0 4px 20px rgba(0,0,0,0.15)" }}
+          style={{ width: "clamp(178px,21vw,276px)", borderRadius: 10, display: "block", boxShadow: "0 4px 20px rgba(0,0,0,0.15)" }}
         />
       </div>
     </div>
@@ -212,13 +213,31 @@ function CollageAndCat() {
 ══════════════════════════════════════════════════════════ */
 function Vinyl() {
   const [hov, setHov] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const ref = useRef<HTMLDivElement>(null);
+  const hovRef = useRef(false);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!ref.current || !hovRef.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const dx = e.clientX - (rect.left + rect.width / 2);
+      const dy = e.clientY - (rect.top + rect.height / 2);
+      setTilt({ x: (dy / rect.height) * 18, y: -(dx / rect.width) * 18 });
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
   return (
     <div
+      ref={ref}
       className="hidden lg:block absolute z-30 group/vinyl hero-entrance"
       style={{ left: 40, top: 410, rotate: "-5deg", overflow: "visible", animation: "hero-slide-left 0.7s cubic-bezier(0.4,0,0.2,1) 0.7s both", transition: "all 0.3s ease-out", willChange: "transform" }}
-      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      onMouseEnter={() => { setHov(true); hovRef.current = true; }}
+      onMouseLeave={() => { setHov(false); hovRef.current = false; setTilt({ x: 0, y: 0 }); }}
     >
-      <div style={{ position: "relative", width: "clamp(150px,16vw,200px)", overflow: "visible" }}>
+      <div style={{ position: "relative", width: "clamp(150px,16vw,200px)", overflow: "visible", transform: `scale(${hov ? 1.14 : 1}) rotate(${hov ? 6 : 0}deg)`, transition: "transform 0.25s ease-out" }}>
         <div style={{ position: "absolute", inset: "0 0 auto", top: 24, display: "flex", justifyContent: "center", zIndex: 10, pointerEvents: "none", overflow: "visible" }}>
           <img
             src={asset("/about/vinyl.png")} alt="Vinyl record" draggable={false}
@@ -235,8 +254,9 @@ function Vinyl() {
           <div style={{ width: "clamp(96px,10vw,130px)", height: "clamp(96px,10vw,130px)" }} />
           <div style={{ position: "relative", zIndex: 1, marginTop: 14, textAlign: "center" }}>
             <p style={{ fontSize: 10, color: "#a8a29e", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: 4 }}>Playlist</p>
-            <h3 style={{ fontSize: 15, fontWeight: 700, color: "#1c1917", lineHeight: 1.2, margin: "0 0 4px" }}>Study &amp; Focus</h3>
-            <p style={{ fontSize: 11, color: "#a8a29e", margin: 0 }}>∞ songs and counting</p>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: "#1c1917", lineHeight: 1.2, margin: "0 0 4px" }}>Vibe Coding</h3>
+            <p style={{ fontSize: 11, color: "#a8a29e", margin: "0 0 2px" }}>20+ projects and counting</p>
+            <p style={{ fontSize: 11, color: "#78716c", margin: 0, fontStyle: "italic" }}>Learning by building</p>
           </div>
         </div>
       </div>
@@ -286,6 +306,25 @@ function Folder() {
    TERMINAL — whoami typewriter
    Position: right-[310px] top-[500px] (Yan Liu exact)
 ══════════════════════════════════════════════════════════ */
+function AsciiCat({ visible }: { visible: boolean }) {
+  const [key, setKey] = useState(0);
+  useEffect(() => {
+    if (visible) setKey(k => k + 1);
+  }, [visible]);
+  return (
+    <div style={{
+      textAlign: "center",
+      marginTop: 0,
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(6px)",
+      transition: "opacity 0.3s ease, transform 0.3s ease",
+      pointerEvents: "none",
+    }}>
+      <img key={key} src={asset("/about/cat.gif")} alt="cat" draggable={false} style={{ height: 90, display: "inline-block" }} />
+    </div>
+  );
+}
+
 const TERMINAL_LINES = [
   { prompt: "$ whoami",    output: "AI & ML Engineer · ENS Paris-Saclay" },
   { prompt: "$ ls interests/", output: "AI/maths/chess/languages/travel" },
@@ -320,7 +359,7 @@ function Terminal() {
   return (
     <div
       className="hidden lg:block absolute z-20 hero-entrance"
-      style={{ right: 310, top: 490, animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 1.35s both" }}
+      style={{ right: 310, top: 540, animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 1.35s both" }}
       onMouseEnter={() => done && setHov(true)} onMouseLeave={() => setHov(false)}
     >
       <div style={{ width: 340, transform: hov ? "scale(1.05)" : "scale(1)", transition: "transform 0.3s ease-out", cursor: done ? "pointer" : "default" }}>
@@ -337,22 +376,29 @@ function Terminal() {
           </div>
 
           {/* terminal body */}
-          <div style={{ padding: 12, fontFamily: "monospace", fontSize: 11, lineHeight: 1.7, minHeight: 140, background: "#fff" }}>
-            {TERMINAL_LINES.map((item, i) => (
-              <div key={i}>
-                {lines[2*i] !== undefined && (
-                  <div style={{ color: "#1c1917" }}>
-                    <span style={{ color: "#16a34a" }}>~</span>{" "}{lines[2*i]}
-                    {lines[2*i+1] === undefined && (
-                      <span style={{ display: "inline-block", width: 6, height: 12, background: "#a8a29e", marginLeft: 1, verticalAlign: "text-bottom", animation: "blink 1s step-end infinite" }} />
-                    )}
-                  </div>
-                )}
-                {lines[2*i+1] !== undefined && (
-                  <div style={{ color: "#78716c", marginBottom: 4 }}>{lines[2*i+1]}</div>
-                )}
+          <div style={{ position: "relative", padding: 12, fontFamily: "monospace", fontSize: 11, lineHeight: 1.7, minHeight: 155, background: "#fff", paddingBottom: 18 }}>
+            {done && (
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 0, pointerEvents: "none" }}>
+                <AsciiCat visible={hov} />
               </div>
-            ))}
+            )}
+            <div style={{ position: "relative", zIndex: 1 }}>
+              {TERMINAL_LINES.map((item, i) => (
+                <div key={i}>
+                  {lines[2*i] !== undefined && (
+                    <div style={{ color: "#1c1917" }}>
+                      <span style={{ color: "#16a34a" }}>~</span>{" "}{lines[2*i]}
+                      {lines[2*i+1] === undefined && (
+                        <span style={{ display: "inline-block", width: 6, height: 12, background: "#a8a29e", marginLeft: 1, verticalAlign: "text-bottom", animation: "blink 1s step-end infinite" }} />
+                      )}
+                    </div>
+                  )}
+                  {lines[2*i+1] !== undefined && (
+                    <div style={{ color: "#78716c", marginBottom: 4 }}>{lines[2*i+1]}</div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -391,9 +437,15 @@ function CenterName({ tagline }: { tagline: string }) {
 /* ═══════════════════════════════════════════════════════
    STICKY NOTE SECTION
 ══════════════════════════════════════════════════════════ */
-function StickyNoteSection({ bio }: { bio: string }) {
+interface StickyProps {
+  stickyNote: string;
+  bio1pre: string; bio1into: string; bio1post: string; bio1badge: string;
+  bio2badge: string; bio2post: string;
+}
+
+function StickyNoteSection({ stickyNote, bio1pre, bio1into, bio1post, bio1badge, bio2badge, bio2post }: StickyProps) {
   return (
-    <div style={{ ...GRID, position: "relative", minHeight: "50vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "clamp(4rem,9vw,7rem) clamp(1.5rem,5vw,4rem)", gap: "clamp(2rem,4vw,3rem)" }}>
+    <div style={{ position: "relative", minHeight: "50vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "clamp(4rem,9vw,7rem) clamp(1.5rem,5vw,4rem) clamp(8rem,14vw,12rem)", gap: "clamp(2rem,4vw,3rem)" }}>
       {[{ top: 24, left: 24 }, { top: 24, right: 24 }, { bottom: 24, left: 24 }, { bottom: 24, right: 24 }].map((pos, i) => (
         <div key={i} style={{ position: "absolute", ...pos, width: 20, height: 20, opacity: 0.22, pointerEvents: "none" }}>
           <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 1, background: "#a8a29e", transform: "translateY(-50%)" }} />
@@ -424,7 +476,7 @@ function StickyNoteSection({ bio }: { bio: string }) {
           {/* Text content */}
           <div style={{ position: "relative", zIndex: 1, padding: "clamp(1.4rem,3vw,1.8rem) clamp(1.8rem,4vw,2.6rem) clamp(2rem,5vw,2.8rem)" }}>
             <p style={{ fontFamily: "var(--font-handwriting)", fontSize: "clamp(17px,1.9vw,23px)", lineHeight: 1.85, color: "#3d2f0e", margin: 0 }}>
-              Curious mind doing a Master&rsquo;s in AI at ENS Paris-Saclay — where I get to ask the hard questions and build the tools that try to answer them. I am passionate about intelligence in all its forms: how it learns, how it surprises us, and where mathematics meets the unknown. ✨
+              {stickyNote}
             </p>
           </div>
 
@@ -438,20 +490,20 @@ function StickyNoteSection({ bio }: { bio: string }) {
         style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75em" }}
       >
         <p style={{ textAlign: "center", maxWidth: 700, fontFamily: "var(--font-mono,monospace)", fontSize: "clamp(13px,1.4vw,17px)", color: "#57534e", lineHeight: 1.7, margin: 0 }}>
-          I turn mathematical intuition{" "}
+          {bio1pre}{" "}
           <img src={asset("/about/messy.svg")} alt="" draggable={false} style={{ display: "inline-block", width: "clamp(22px,2.2vw,30px)", verticalAlign: "middle", margin: "0 3px -2px" }} />
-          {" "}into{" "}
+          {" "}{bio1into}{" "}
           <span style={{ position: "relative", display: "inline-block", paddingTop: "22px" }}>
             <img src={asset("/about/highlights.svg")} alt="" draggable={false} style={{ position: "absolute", top: 0, left: "-4px", width: "clamp(18px,1.8vw,24px)", pointerEvents: "none" }} />
             AI
           </span>
-          {" "}— from whiteboards and research papers to models that actually{" "}
-          <span style={{ display: "inline-block", border: "1px solid #a8a29e", padding: "1px 10px", borderRadius: 4, background: "rgba(255,255,255,0.6)" }}>ship and scale.</span>
+          {" "}{bio1post}{" "}
+          <span style={{ display: "inline-block", border: "1px solid #a8a29e", padding: "1px 10px", borderRadius: 4, background: "rgba(255,255,255,0.6)" }}>{bio1badge}</span>
         </p>
         <p style={{ textAlign: "center", maxWidth: 700, fontFamily: "var(--font-mono,monospace)", fontSize: "clamp(13px,1.4vw,17px)", color: "#57534e", lineHeight: 1.7, margin: 0 }}>
           <img src={asset("/about/star.svg")} alt="" draggable={false} style={{ display: "inline-block", width: "clamp(22px,2.2vw,30px)", verticalAlign: "middle", marginRight: 6 }} />
-          <span style={{ display: "inline-block", border: "1px solid #a8a29e", padding: "1px 10px", borderRadius: 4, background: "rgba(255,255,255,0.6)" }}>I research, I build,</span>{" "}
-          and I stay curious enough to never stop doing both.
+          <span style={{ display: "inline-block", border: "1px solid #a8a29e", padding: "1px 10px", borderRadius: 4, background: "rgba(255,255,255,0.6)" }}>{bio2badge}</span>{" "}
+          {bio2post}
         </p>
       </motion.div>
     </div>
@@ -459,23 +511,19 @@ function StickyNoteSection({ bio }: { bio: string }) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   MAIN EXPORT
+   HERO — the interactive scene (formerly About part 1)
 ══════════════════════════════════════════════════════════ */
-export function About() {
+export function Hero() {
   const { lang } = useLang();
   const tr = t[lang].about;
 
   return (
-    <section id="about" className="section-light" style={{ position: "relative", paddingTop: "clamp(4rem,8vw,6rem)", ...GRID }}>
-      {/* Add CSS blink keyframe inline for terminal cursor */}
+    <section id="hero" className="section-light" style={{ position: "relative", paddingTop: "clamp(0.5rem,1.5vw,1rem)", ...GRID }}>
       <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
 
-      {/* Badge hangs from the top of the section padding space */}
       <Badge />
 
-      {/* Scene */}
       <div style={{
-        ...GRID,
         position: "relative",
         width: "100%",
         minHeight: "clamp(580px,60vw,740px)",
@@ -493,9 +541,40 @@ export function About() {
         <Terminal />
         <CenterName tagline={tr.tagline ?? "I RESEARCH · I BUILD · I CREATE"} />
       </div>
+    </section>
+  );
+}
 
-      {/* Sticky note section */}
-      <StickyNoteSection bio={tr.bio} />
+/* ═══════════════════════════════════════════════════════
+   ABOUT — sticky note + bio (formerly About part 2)
+══════════════════════════════════════════════════════════ */
+export function About() {
+  const { lang } = useLang();
+  const tr = t[lang].about;
+
+  return (
+    <section id="about" className="section-light" style={{ position: "relative", ...GRID }}>
+      <StickyNoteSection
+        stickyNote={tr.stickyNote}
+        bio1pre={tr.bio1pre}
+        bio1into={tr.bio1into}
+        bio1post={tr.bio1post}
+        bio1badge={tr.bio1badge}
+        bio2badge={tr.bio2badge}
+        bio2post={tr.bio2post}
+      />
+
+      {/* gradient fade into Experience */}
+      <div style={{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 100,
+        background: "linear-gradient(to bottom, transparent, rgba(20,14,10,1))",
+        pointerEvents: "none",
+        zIndex: 10,
+      }} />
     </section>
   );
 }
