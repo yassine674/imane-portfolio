@@ -2,7 +2,9 @@
 
 # Reference source — not to be committed
 /pauschal.design/
+/yanliuportfolio.vercel.app/
 dev.log
+*.log
 
 # dependencies
 /node_modules
