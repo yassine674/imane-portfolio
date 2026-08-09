@@ -553,7 +553,7 @@ export function About() {
   const tr = t[lang].about;
 
   return (
-    <section id="about" className="section-light" style={{ position: "relative", zIndex: 2, ...GRID }}>
+    <section id="about" className="section-light" style={{ position: "relative", ...GRID }}>
       <StickyNoteSection
         stickyNote={tr.stickyNote}
         bio1pre={tr.bio1pre}
