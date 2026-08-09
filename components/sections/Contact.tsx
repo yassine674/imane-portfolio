@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import { useScroll, useTransform, AnimatePresence, motion } from "framer-motion";
-import { personalInfo } from "@/lib/data";
+const EMAIL = "imanemn127@gmail.com";
 import { useLang, t } from "@/lib/i18n";
 import { GoogleGeminiEffect } from "@/components/ui/google-gemini-effect";
 import ContactCards, { LinkedinIcon, XIcon } from "@/components/ui/contact-cards";
@@ -163,7 +163,7 @@ export function Contact() {
 
             <div style={{ pointerEvents: "auto", fontFamily: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif", fontSize: "16px", marginTop: "3rem" }} className="dark">
               <ContactCards
-                email={personalInfo.email}
+                email={EMAIL}
                 labels={{ copy: tr.copyEmail, copied: tr.emailCopied }}
                 github={{
                   username: "imanemn127",
