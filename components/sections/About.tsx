@@ -553,7 +553,7 @@ export function About() {
   const tr = t[lang].about;
 
   return (
-    <section id="about" className="section-light" style={{ position: "relative", ...GRID }}>
+    <section id="about" className="section-light" style={{ position: "relative", zIndex: 2, ...GRID }}>
       <StickyNoteSection
         stickyNote={tr.stickyNote}
         bio1pre={tr.bio1pre}
@@ -570,8 +570,8 @@ export function About() {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 100,
-        background: "linear-gradient(to bottom, transparent, rgba(20,14,10,1))",
+        height: 120,
+        background: "linear-gradient(to bottom, transparent 0%, transparent 20%, rgba(20,14,10,0.6) 65%, rgba(20,14,10,1) 100%)",
         pointerEvents: "none",
         zIndex: 10,
       }} />
