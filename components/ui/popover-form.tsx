@@ -27,8 +27,8 @@ export function PopoverForm({
   title = "Feedback",
   showCloseButton = false,
 }: PopoverFormProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  useClickOutside(ref, () => setOpen(false));
+  const ref = useRef<HTMLDivElement | null>(null);
+  useClickOutside(ref as RefObject<HTMLElement>, () => setOpen(false));
 
   return (
     <div key={title} className="flex min-h-[300px] w-full items-center justify-center">
