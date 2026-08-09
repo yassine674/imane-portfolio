@@ -1,17 +1,16 @@
-"use client";
+﻿"use client";
 import { useState, useEffect, useCallback } from "react";
 import { useLang, t } from "@/lib/i18n";
 import { Preloader } from "@/components/layout/Preloader";
 import { Header } from "@/components/layout/Header";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
-import { ScrollFX } from "@/components/layout/ScrollFX";
 import { Hero, About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
-import { ScrollingFeatureShowcase } from "@/components/ui/interactive-scrolling-story-component";
+import { ScrollingFeatureShowcase } from "@/components/ui/ScrollingFeatureShowcase";
 import { Contact } from "@/components/sections/Contact";
 import { CurveDivider } from "@/components/layout/CurveDivider";
-import { AliceScrollStory } from "@/components/ui/alice-scroll-story";
-import { YanCursor } from "@/components/ui/yan-cursor";
+import { AliceScrollStory } from "@/components/ui/AliceScrollStory";
+import { YanCursor } from "@/components/ui/YanCursor";
 
 
 export default function Home() {
@@ -34,7 +33,6 @@ export default function Home() {
       <YanCursor />
       <Preloader onComplete={handleComplete} />
       <ScrollProgress />
-      <ScrollFX />
       <div
         style={{
           pointerEvents: loaded ? "auto" : "none",

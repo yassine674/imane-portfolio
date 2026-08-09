@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Timeline, type TimelineEntry } from "@/components/ui/timeline";
-import { Starfield } from "@/components/ui/starfield-1";
+import { Timeline, type TimelineEntry } from "@/components/ui/Timeline";
+import { Starfield } from "@/components/ui/Starfield";
 import { useLang, t } from "@/lib/i18n";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -92,7 +92,7 @@ function EntryCard({
           marginBottom: "0.9rem",
         }}
       >
-        {period} · {location}
+        {period} Â· {location}
       </div>
 
       {/* Description */}
@@ -155,7 +155,7 @@ function buildCarriereData(tr: ExperienceTr): TimelineEntry[] {
   const e = tr.entries;
   return [
     {
-      title: "2022 – 24",
+      title: "2022 â€“ 24",
       content: (
         <EntryCard
           label={tr.labelEdu}
@@ -176,7 +176,7 @@ function buildCarriereData(tr: ExperienceTr): TimelineEntry[] {
           period={e.mines2024.period}
           location={e.mines2024.location}
           description={e.mines2024.description}
-          tags={["Grande École", "Engineering", "Competitive Entrance"]}
+          tags={["Grande Ã‰cole", "Engineering", "Competitive Entrance"]}
         />
       ),
     },
@@ -216,7 +216,7 @@ function buildCarriereData(tr: ExperienceTr): TimelineEntry[] {
             tags={["PyTorch", "Transformers", "GNN", "Satellite Imagery", "Python"]}
           />
           <EntryCard
-            label={`✦ ${tr.labelEdu}`}
+            label={`âœ¦ ${tr.labelEdu}`}
             title={e.ens.title}
             period={e.ens.period}
             location={e.ens.location}
@@ -285,7 +285,7 @@ export function Experience() {
       <div id="car-h" className="car-heading" style={{ marginBottom: "clamp(3rem, 7vw, 6rem)" }}>
         {/* main heading */}
         <h2 id="car-h-text" style={{ margin: 0 }}>
-          {/* "Career" — massive outlined */}
+          {/* "Career" â€” massive outlined */}
           <Clip>
             <span style={{
               display: "block",
@@ -301,7 +301,7 @@ export function Experience() {
             </span>
           </Clip>
 
-          {/* "& training" — filled serif, offset right */}
+          {/* "& training" â€” filled serif, offset right */}
           <Clip>
             <span style={{
               display: "block",

@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 import React, { useRef, useState, useEffect } from "react";
 import { useScroll, useTransform, AnimatePresence, motion } from "framer-motion";
 const EMAIL = "imanemn127@gmail.com";
 import { useLang, t } from "@/lib/i18n";
-import { GoogleGeminiEffect } from "@/components/ui/google-gemini-effect";
-import ContactCards, { LinkedinIcon, XIcon } from "@/components/ui/contact-cards";
+import { GoogleGeminiEffect } from "@/components/ui/GoogleGeminiEffect";
+import ContactCards, { LinkedinIcon, XIcon } from "@/components/ui/ContactCards";
 import { asset } from "@/lib/asset";
 import {
   PopoverFormButton,
@@ -12,7 +12,7 @@ import {
   PopoverFormCutOutRightIcon,
   PopoverFormSeparator,
   PopoverFormSuccess,
-} from "@/components/ui/popover-form";
+} from "@/components/ui/PopoverForm";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
@@ -94,7 +94,7 @@ export function Contact() {
             zIndex: 10, pointerEvents: "none",
           }}
         >
-          {/* TOP — badge + headline */}
+          {/* TOP â€” badge + headline */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.9rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}>
               <span style={{ display: "block", width: 8, height: 8, borderRadius: "50%", background: "oklch(72% 0.2 145)", animation: "pulse 2s infinite", flexShrink: 0 }} />
@@ -132,7 +132,7 @@ export function Contact() {
             </div>
           </div>
 
-          {/* BOTTOM — CTA + tagline + email */}
+          {/* BOTTOM â€” CTA + tagline + email */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", position: "relative" }}>
             <button
               onClick={() => setFormOpen(true)}
@@ -213,8 +213,8 @@ export function Contact() {
                           />
                           <div style={{ paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                             <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>Imane MOUMOUN</span>
-                            <span style={{ fontSize: '0.8rem', color: 'rgb(161 161 170)', lineHeight: 1.4 }}>AI &amp; ML Engineer · Mines Saint-Étienne → ENS Paris-Saclay</span>
-                            <span style={{ fontSize: '0.75rem', color: 'rgb(113 113 122)', marginTop: '0.15rem' }}>Morocco · 500+ connections</span>
+                            <span style={{ fontSize: '0.8rem', color: 'rgb(161 161 170)', lineHeight: 1.4 }}>AI &amp; ML Engineer Â· Mines Saint-Ã‰tienne â†’ ENS Paris-Saclay</span>
+                            <span style={{ fontSize: '0.75rem', color: 'rgb(113 113 122)', marginTop: '0.15rem' }}>Morocco Â· 500+ connections</span>
                           </div>
                         </div>
                       </div>
@@ -281,7 +281,7 @@ export function Contact() {
                   boxShadow: "0 40px 120px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
                 }}
               >
-                {/* LEFT — invitation panel */}
+                {/* LEFT â€” invitation panel */}
                 <div
                   className="hidden min-[540px]:flex flex-col justify-between"
                   style={{
@@ -332,7 +332,7 @@ export function Contact() {
                   </div>
                 </div>
 
-                {/* RIGHT — form */}
+                {/* RIGHT â€” form */}
                 <div style={{ position: "relative", overflow: "hidden" }}>
                   <AnimatePresence mode="popLayout">
                     {formState === "success" ? (
@@ -356,7 +356,7 @@ export function Contact() {
                         {/* Header row */}
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.2rem" }}>
                           <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)", fontFamily: "var(--font-body)", letterSpacing: "0.01em" }}>Send a message</span>
-                          <button type="button" onClick={() => setFormOpen(false)} style={{ background: "rgba(255,255,255,0.07)", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.45)", fontSize: 15, lineHeight: 1, padding: "4px 8px", borderRadius: 6 }}>×</button>
+                          <button type="button" onClick={() => setFormOpen(false)} style={{ background: "rgba(255,255,255,0.07)", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.45)", fontSize: 15, lineHeight: 1, padding: "4px 8px", borderRadius: 6 }}>Ã—</button>
                         </div>
 
                         {/* Name + Email grouped block */}
@@ -423,7 +423,7 @@ export function Contact() {
                         >
                           {formState === "loading" ? (
                             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ animation: "spin 1s linear infinite" }}><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeDasharray="20" strokeDashoffset="10" /></svg>
-                          ) : "Send message →"}
+                          ) : "Send message â†’"}
                         </button>
                         {formState === "error" && (
                           <p style={{ fontSize: 12, color: "rgba(255,100,100,0.85)", textAlign: "center", margin: 0, fontFamily: "var(--font-body)" }}>

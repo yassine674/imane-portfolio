@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useEffect, useRef, useState } from "react";
 
 function FlowerLogo() {
@@ -11,7 +11,7 @@ function FlowerLogo() {
 
   return (
     <svg width="26" height="26" viewBox="-10 -10 120 120" fill="none" aria-hidden="true" style={{ display: "block" }}>
-      {/* 5 petals — long, wider, notched tip */}
+      {/* 5 petals â€” long, wider, notched tip */}
       {[0, 72, 144, 216, 288].map(deg => (
         <path
           key={deg}
@@ -47,7 +47,7 @@ function FlowerLogo() {
 }
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
-import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { useLang, t } from "@/lib/i18n";
 
 if (typeof window !== "undefined") {
@@ -117,7 +117,7 @@ export function Header() {
             { scale: 0.5, opacity: 0, rotation: -10 },
             { scale: 1, opacity: 1, rotation: 0, duration: 0.6, stagger: 0.08, ease: "back.out(1.7)", overwrite: "auto" }
           );
-          // same yPercent trick as Menu → Close button
+          // same yPercent trick as Menu â†’ Close button
           gsap.to(linkTexts, { yPercent: -100, duration: 0.5, ease: "power3.out", overwrite: "auto" });
           gsap.to(navLink,   { backgroundColor: "rgba(45,30,36,0.88)", duration: 0.45, ease: "power3.out", overwrite: "auto" });
         };
@@ -165,7 +165,7 @@ export function Header() {
   const isFirstMountRef = useRef(true);
   useEffect(() => {
     if (!containerRef.current) return;
-    // Skip the close animation on initial mount — nothing to close
+    // Skip the close animation on initial mount â€” nothing to close
     if (!isMenuOpen && isFirstMountRef.current) {
       isFirstMountRef.current = false;
       return;
@@ -235,7 +235,7 @@ export function Header() {
     return () => observer.disconnect();
   }, []);
 
-  // Proximity icon rotation — rotates the + when cursor is near, before hover
+  // Proximity icon rotation â€” rotates the + when cursor is near, before hover
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!containerRef.current) return;
@@ -299,7 +299,7 @@ export function Header() {
 
   return (
     <div ref={containerRef}>
-      {/* ── IM. bubble — fixed top-left ── */}
+      {/* â”€â”€ IM. bubble â€” fixed top-left â”€â”€ */}
       <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -317,7 +317,7 @@ export function Header() {
         <FlowerLogo />
       </button>
 
-      {/* ── Top-right: "click me" label + Menu button — exact source structure ── */}
+      {/* â”€â”€ Top-right: "click me" label + Menu button â€” exact source structure â”€â”€ */}
       <div
         style={{
           position: "fixed", top: "1rem", right: "clamp(1.5rem, 5vw, 3.5rem)",
@@ -349,7 +349,7 @@ export function Header() {
         </button>
       </div>
 
-      {/* ── Fullscreen menu — exact source structure ── */}
+      {/* â”€â”€ Fullscreen menu â€” exact source structure â”€â”€ */}
       <section className="fullscreen-menu-container">
         <div data-nav="closed" className="nav-overlay-wrapper">
           <div className="overlay" onClick={closeMenu}></div>
@@ -419,7 +419,7 @@ export function Header() {
               </ul>
             </div>
 
-            {/* Language switcher — pinned to bottom-centre of panel */}
+            {/* Language switcher â€” pinned to bottom-centre of panel */}
             <div style={{ position: "absolute", bottom: "1.8rem", left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 10 }}>
               <div data-menu-fade>
                 <LanguageSwitcher variant="dark" />
