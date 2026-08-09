@@ -10,13 +10,13 @@ import {
 	useState,
 } from 'react';
 
-export type ContributionDay = {
+type ContributionDay = {
 	date: string;
 	count: number;
 	level?: 0 | 1 | 2 | 3 | 4;
 };
 
-export type ContactLink = {
+type ContactLink = {
 	label: string;
 	href: string;
 	icon: ReactNode;
@@ -255,7 +255,7 @@ async function copyText(text: string): Promise<boolean> {
 	}
 }
 
-export function CopyEmailButton({
+function CopyEmailButton({
 	email,
 	labels,
 	className = '',
@@ -345,7 +345,7 @@ function GithubCard({
 	);
 }
 
-export function ContributionGraph({
+function ContributionGraph({
 	days,
 	locale,
 	className = '',
