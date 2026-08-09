@@ -570,8 +570,8 @@ export function About() {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 120,
-        background: "linear-gradient(to bottom, transparent 0%, transparent 20%, rgba(20,14,10,0.6) 65%, rgba(20,14,10,1) 100%)",
+        height: 100,
+        background: "linear-gradient(to bottom, transparent, rgba(20,14,10,1))",
         pointerEvents: "none",
         zIndex: 10,
       }} />
