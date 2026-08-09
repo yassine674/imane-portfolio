@@ -213,8 +213,8 @@ export function Contact() {
                           />
                           <div style={{ paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                             <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>Imane MOUMOUN</span>
-                            <span style={{ fontSize: '0.8rem', color: 'rgb(161 161 170)', lineHeight: 1.4 }}>AI &amp; ML Engineer Â· Mines Saint-Ã‰tienne â†’ ENS Paris-Saclay</span>
-                            <span style={{ fontSize: '0.75rem', color: 'rgb(113 113 122)', marginTop: '0.15rem' }}>Morocco Â· 500+ connections</span>
+                            <span style={{ fontSize: '0.8rem', color: 'rgb(161 161 170)', lineHeight: 1.4 }}>AI &amp; ML Engineer · Mines Saint-Étienne → ENS Paris-Saclay</span>
+                            <span style={{ fontSize: '0.75rem', color: 'rgb(113 113 122)', marginTop: '0.15rem' }}>Morocco · 500+ connections</span>
                           </div>
                         </div>
                       </div>
@@ -343,7 +343,7 @@ export function Contact() {
                         transition={{ type: "spring", duration: 0.4, bounce: 0 }}
                         style={{ padding: "3rem 2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 300, color: "#fff" }}
                       >
-                        <PopoverFormSuccess title="Message Sent!" description="Thank you for reaching out. I'll get back to you soon!" />
+                        <PopoverFormSuccess title={tr.successTitle} description={tr.successDesc} />
                       </motion.div>
                     ) : (
                       <motion.form
@@ -355,8 +355,8 @@ export function Contact() {
                       >
                         {/* Header row */}
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.2rem" }}>
-                          <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)", fontFamily: "var(--font-body)", letterSpacing: "0.01em" }}>Send a message</span>
-                          <button type="button" onClick={() => setFormOpen(false)} style={{ background: "rgba(255,255,255,0.07)", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.45)", fontSize: 15, lineHeight: 1, padding: "4px 8px", borderRadius: 6 }}>Ã—</button>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)", fontFamily: "var(--font-body)", letterSpacing: "0.01em" }}>{tr.formTitle}</span>
+                          <button type="button" onClick={() => setFormOpen(false)} aria-label="Close" style={{ background: "rgba(255,255,255,0.07)", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.45)", fontSize: 15, lineHeight: 1, padding: "4px 8px", borderRadius: 6 }}>×</button>
                         </div>
 
                         {/* Name + Email grouped block */}
@@ -367,7 +367,7 @@ export function Contact() {
                               type="text"
                               value={name}
                               onChange={e => setName(e.target.value)}
-                              placeholder="Your name"
+                              placeholder={tr.namePlaceholder}
                               style={{ flex: 1, background: "none", border: "none", outline: "none", fontSize: 13.5, color: "#fff", fontFamily: "var(--font-body)" }}
                               required
                             />
@@ -393,7 +393,7 @@ export function Contact() {
                             value={message}
                             onChange={e => setMessage(e.target.value)}
                             rows={4}
-                            placeholder="Tell me about your project..."
+                            placeholder={tr.messagePlaceholder}
                             style={{ flex: 1, background: "none", border: "none", outline: "none", resize: "none", fontSize: 13.5, color: "#fff", lineHeight: 1.55, fontFamily: "var(--font-body)" }}
                             required
                           />
@@ -423,11 +423,11 @@ export function Contact() {
                         >
                           {formState === "loading" ? (
                             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ animation: "spin 1s linear infinite" }}><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeDasharray="20" strokeDashoffset="10" /></svg>
-                          ) : "Send message â†’"}
+                          ) : tr.sendButton}
                         </button>
                         {formState === "error" && (
                           <p style={{ fontSize: 12, color: "rgba(255,100,100,0.85)", textAlign: "center", margin: 0, fontFamily: "var(--font-body)" }}>
-                            Something went wrong. Please try again.
+                            {tr.errorText}
                           </p>
                         )}
                       </motion.form>
