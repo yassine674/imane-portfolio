@@ -152,7 +152,7 @@ function Flower() {
     >
       <div style={{ position: "relative", width: "clamp(55px,6vw,80px)", transform: `rotate(-6deg)${hov ? " scale(1.8) translateY(-24px)" : ""}`, transformOrigin: "bottom center", transition: "transform 0.5s ease-out", willChange: "transform", zIndex: hov ? 40 : "auto" }}>
         <img src={asset("/about/flower.png")} alt="" draggable={false} style={{ width: "100%", opacity: hov ? 0 : 1, transition: "opacity 0.5s" }} />
-        <img src={asset("/about/flower-hover.png")} alt="" draggable={false}
+        <img src={asset("/about/flower-hover.png")} alt="" draggable={false} loading="lazy"
           style={{ position: "absolute", inset: 0, width: "100%", opacity: hov ? 1 : 0, transition: "opacity 0.5s", animation: hov ? "flower-glitch 1.5s ease-in-out infinite" : "none" }}
         />
       </div>
@@ -195,7 +195,7 @@ function CollageAndCat() {
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
     >
       <div style={{ position: "relative", overflow: "visible", transform: hov ? "scale(1.05) rotate(2deg)" : "scale(1)", transition: "transform 0.3s ease-out" }}>
-        <img src={asset("/about/cat.png")} alt="Cat peeking" draggable={false}
+        <img src={asset("/about/cat.png")} alt="Cat peeking" draggable={false} loading="lazy"
           style={{ position: "absolute", top: "28%", right: "18%", width: "clamp(90px,11vw,145px)", zIndex: 2, transform: hov ? "scale(1) rotate(8deg) translateY(-12px)" : "scale(0)", opacity: hov ? 1 : 0, transition: "transform 0.5s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s", filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.3))", transformOrigin: "center bottom" }}
         />
         <img src={asset("/about/image-collage.jpg")} alt="Photo collage" draggable={false}
@@ -279,13 +279,13 @@ function Folder() {
         transition: "filter 0.3s ease-out",
       }}>
         <img src={asset("/about/mac-folder-back.svg")} alt="" draggable={false} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 0 }} />
-        <img src={asset("/about/ipad-notebook.svg")} alt="iPad and notebook" draggable={false}
+        <img src={asset("/about/ipad-notebook.svg")} alt="iPad and notebook" draggable={false} loading="lazy"
           style={{ position: "absolute", left: "50%", bottom: "30%", width: 105, transform: hov ? "translateX(-140px) translateY(-75px) rotate(-15deg)" : "translateX(-50%)", opacity: hov ? 1 : 0, transition: "all 0.5s ease-out", filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))", zIndex: 25 }}
         />
-        <img src={asset("/about/claude-logo.svg")} alt="Claude" draggable={false}
+        <img src={asset("/about/claude-logo.svg")} alt="Claude" draggable={false} loading="lazy"
           style={{ position: "absolute", left: "50%", bottom: "30%", width: 65, transform: hov ? "translateX(-30px) translateY(-95px) rotate(5deg)" : "translateX(-50%)", opacity: hov ? 1 : 0, transition: "all 0.5s ease-out 75ms", filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))", zIndex: 25 }}
         />
-        <img src={asset("/about/laptop.svg")} alt="Laptop" draggable={false}
+        <img src={asset("/about/laptop.svg")} alt="Laptop" draggable={false} loading="lazy"
           style={{ position: "absolute", left: "50%", bottom: "30%", width: 105, transform: hov ? "translateX(40px) translateY(-65px) rotate(10deg)" : "translateX(-50%)", opacity: hov ? 1 : 0, transition: "all 0.5s ease-out 150ms", filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))", zIndex: 25 }}
         />
         <img src={asset("/about/mac-folder-front.svg")} alt="Folder" draggable={false}

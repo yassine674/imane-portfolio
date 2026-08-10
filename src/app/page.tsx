@@ -1,18 +1,20 @@
-﻿"use client";
+"use client";
 import { useState, useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { useLang, t } from "@/lib/i18n";
 import { Preloader } from "@/components/layout/Preloader";
 import { Header } from "@/components/layout/Header";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
-import { Experience } from "@/components/sections/Experience";
-import { ScrollingFeatureShowcase } from "@/components/ui/ScrollingFeatureShowcase";
-import { Contact } from "@/components/sections/Contact";
-import { CurveDivider } from "@/components/layout/CurveDivider";
-import { AliceScrollStory } from "@/components/ui/AliceScrollStory";
 import { YanCursor } from "@/components/ui/YanCursor";
 
+// Below-fold sections — loaded as separate JS chunks, not in the initial bundle
+const About = dynamic(() => import("@/components/sections/About").then(m => ({ default: m.About })));
+const Experience = dynamic(() => import("@/components/sections/Experience").then(m => ({ default: m.Experience })));
+const AliceScrollStory = dynamic(() => import("@/components/ui/AliceScrollStory").then(m => ({ default: m.AliceScrollStory })));
+const CurveDivider = dynamic(() => import("@/components/layout/CurveDivider").then(m => ({ default: m.CurveDivider })));
+const ScrollingFeatureShowcase = dynamic(() => import("@/components/ui/ScrollingFeatureShowcase").then(m => ({ default: m.ScrollingFeatureShowcase })));
+const Contact = dynamic(() => import("@/components/sections/Contact").then(m => ({ default: m.Contact })));
 
 export default function Home() {
   const { lang } = useLang();
@@ -31,11 +33,7 @@ export default function Home() {
       <YanCursor />
       <Preloader onComplete={handleComplete} />
       <ScrollProgress />
-      <div
-        style={{
-          pointerEvents: loaded ? "auto" : "none",
-        }}
-      >
+      <div style={{ pointerEvents: loaded ? "auto" : "none" }}>
         <Header />
         <main id="main-content" tabIndex={-1}>
           <Hero />

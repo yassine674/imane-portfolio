@@ -6,21 +6,10 @@ import { motion } from "framer-motion"
 const words = ["Hello", "Bonjour", "السلام عليكم", "Olà", "やあ", "Hallå", "Guten tag", "হ্যালো"]
 
 const opacity = {
-  initial: {
-    opacity: 0,
-  },
+  initial: { opacity: 0 },
   enter: {
     opacity: 0.75,
     transition: { duration: 0.2 },
-  },
-}
-const slideUp = {
-  initial: {
-    y: 0,
-  },
-  exit: {
-    y: "-100vh",
-    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const, delay: 0.2 },
   },
 }
 
@@ -41,8 +30,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
         setIsExiting(true)
         setTimeout(() => {
           onCompleteRef.current()
-        }, 1000)
-      }, 1000)
+        }, 900)
+      }, 500)
       return () => clearTimeout(t1)
     }
 
@@ -52,6 +41,17 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
     )
     return () => clearTimeout(t)
   }, [index])
+
+  // Slide far enough to clear the 300px SVG overhang below the viewport
+  const exitY = dimension.height > 0 ? -(dimension.height + 320) : "-110vh"
+
+  const slideUp = {
+    initial: { y: 0 },
+    exit: {
+      y: exitY,
+      transition: { duration: 0.75, ease: [0.76, 0, 0.24, 1] as const, delay: 0.15 },
+    },
+  }
 
   const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height} L0 0`
   const targetPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height} 0 ${dimension.height} L0 0`
@@ -63,7 +63,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
     },
     exit: {
       d: targetPath,
-      transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const, delay: 0.3 },
+      transition: { duration: 0.3, ease: [0.76, 0, 0.24, 1] as const, delay: 0 },
     },
   }
 
