@@ -92,7 +92,7 @@ function EntryCard({
           marginBottom: "0.9rem",
         }}
       >
-        {period} Â· {location}
+        {period} · {location}
       </div>
 
       {/* Description */}
@@ -155,7 +155,7 @@ function buildCarriereData(tr: ExperienceTr): TimelineEntry[] {
   const e = tr.entries;
   return [
     {
-      title: "2022 â€“ 24",
+      title: "2022 – 24",
       content: (
         <EntryCard
           label={tr.labelEdu}
@@ -176,7 +176,7 @@ function buildCarriereData(tr: ExperienceTr): TimelineEntry[] {
           period={e.mines2024.period}
           location={e.mines2024.location}
           description={e.mines2024.description}
-          tags={["Grande Ã‰cole", "Engineering", "Competitive Entrance"]}
+          tags={["Grande École", "Engineering", "Competitive Entrance"]}
         />
       ),
     },
@@ -216,7 +216,7 @@ function buildCarriereData(tr: ExperienceTr): TimelineEntry[] {
             tags={["PyTorch", "Transformers", "GNN", "Satellite Imagery", "Python"]}
           />
           <EntryCard
-            label={`âœ¦ ${tr.labelEdu}`}
+            label={`✦ ${tr.labelEdu}`}
             title={e.ens.title}
             period={e.ens.period}
             location={e.ens.location}
