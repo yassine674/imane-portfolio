@@ -11,7 +11,6 @@ const GRID: React.CSSProperties = {
     "linear-gradient(hsla(36,31%,69%,.25) 1px,transparent 0)," +
     "linear-gradient(90deg,hsla(36,31%,69%,.25) 1px,transparent 0)",
   backgroundSize: "56px 56px",
-  backgroundAttachment: "fixed",
 };
 
 /* ═══════════════════════════════════════════════════════
@@ -457,55 +456,6 @@ export function Hero() {
         <CenterName tagline={tr.tagline ?? "I RESEARCH · I BUILD · I CREATE"} />
       </div>
 
-      {/* Mobile-only: subtitle + CTA buttons (desktop shows the card collage instead) */}
-      <div className="lg:hidden" style={{
-        padding: "0 1.75rem 3.5rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "1.5rem",
-        textAlign: "center",
-      }}>
-        <p style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: "0.8rem",
-          color: "#6b6460",
-          lineHeight: 1.75,
-          maxWidth: "34ch",
-          margin: 0,
-        }}>
-          {t[lang].hero.subtitle}
-        </p>
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center" }}>
-          <a href="#projects" style={{
-            padding: "0.75rem 1.75rem",
-            background: "#1c1917",
-            color: "#fafaf9",
-            fontFamily: "var(--font-body)",
-            fontWeight: 500,
-            fontSize: "0.82rem",
-            letterSpacing: "0.04em",
-            borderRadius: "9999px",
-            textDecoration: "none",
-          }}>
-            {t[lang].hero.cta1}
-          </a>
-          <a href="#contact" style={{
-            padding: "0.75rem 1.75rem",
-            background: "transparent",
-            color: "#1c1917",
-            fontFamily: "var(--font-body)",
-            fontWeight: 500,
-            fontSize: "0.82rem",
-            letterSpacing: "0.04em",
-            borderRadius: "9999px",
-            border: "1px solid #a8a29e",
-            textDecoration: "none",
-          }}>
-            {t[lang].hero.cta2}
-          </a>
-        </div>
-      </div>
     </section>
   );
 }
