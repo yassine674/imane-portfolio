@@ -291,7 +291,7 @@ export function Experience() {
               display: "block",
               fontFamily: "var(--font-display)",
               fontWeight: 900,
-              fontSize: "clamp(4rem, 11vw, 10rem)",
+              fontSize: "clamp(3rem, 11vw, 10rem)",
               lineHeight: 0.88,
               letterSpacing: "-0.04em",
               WebkitTextStroke: "1.5px var(--text)",
@@ -308,11 +308,11 @@ export function Experience() {
               fontFamily: "var(--font-serif)",
               fontWeight: 400,
               fontStyle: "italic",
-              fontSize: "clamp(3rem, 8.5vw, 8rem)",
+              fontSize: "clamp(2rem, 8.5vw, 8rem)",
               lineHeight: 1,
               letterSpacing: "-0.02em",
               color: "var(--accent)",
-              paddingLeft: "clamp(2rem, 6vw, 6rem)",
+              paddingLeft: "clamp(0.5rem, 6vw, 6rem)",
             }}>
               {tr.heading2}
             </span>

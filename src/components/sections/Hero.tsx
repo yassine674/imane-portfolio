@@ -105,7 +105,7 @@ function RippedPaper() {
   const [pencilHov, setPencilHov] = useState(false);
   return (
     <div
-      className="absolute z-20 hero-entrance group/paper"
+      className="hidden lg:block absolute z-20 hero-entrance group/paper"
       style={{ top: 20, left: "48%", transform: "translateX(-50%) rotate(-5deg)", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 0.5s both", willChange: "transform" }}
     >
       <div className="group-hover/paper:scale-110 group-hover/paper:rotate-[1deg]" style={{ transition: "all 0.3s ease-out" }}>
@@ -417,7 +417,7 @@ function CenterName({ tagline }: { tagline: string }) {
             Moumoun
           </div>
         </div>
-        <p style={{ fontSize: "clamp(8px,0.8vw,11px)", letterSpacing: "0.22em", textTransform: "uppercase", color: "#78716c", margin: 0, userSelect: "none", fontFamily: "'Noto Sans',system-ui,sans-serif" }}>
+        <p style={{ fontSize: "clamp(10px,1.5vw,12px)", letterSpacing: "0.22em", textTransform: "uppercase", color: "#78716c", margin: 0, userSelect: "none", fontFamily: "'Noto Sans',system-ui,sans-serif" }}>
           {tagline}
         </p>
       </motion.div>
@@ -455,6 +455,56 @@ export function Hero() {
         <Folder />
         <Terminal />
         <CenterName tagline={tr.tagline ?? "I RESEARCH · I BUILD · I CREATE"} />
+      </div>
+
+      {/* Mobile-only: subtitle + CTA buttons (desktop shows the card collage instead) */}
+      <div className="lg:hidden" style={{
+        padding: "0 1.75rem 3.5rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "1.5rem",
+        textAlign: "center",
+      }}>
+        <p style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.8rem",
+          color: "#6b6460",
+          lineHeight: 1.75,
+          maxWidth: "34ch",
+          margin: 0,
+        }}>
+          {t[lang].hero.subtitle}
+        </p>
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center" }}>
+          <a href="#projects" style={{
+            padding: "0.75rem 1.75rem",
+            background: "#1c1917",
+            color: "#fafaf9",
+            fontFamily: "var(--font-body)",
+            fontWeight: 500,
+            fontSize: "0.82rem",
+            letterSpacing: "0.04em",
+            borderRadius: "9999px",
+            textDecoration: "none",
+          }}>
+            {t[lang].hero.cta1}
+          </a>
+          <a href="#contact" style={{
+            padding: "0.75rem 1.75rem",
+            background: "transparent",
+            color: "#1c1917",
+            fontFamily: "var(--font-body)",
+            fontWeight: 500,
+            fontSize: "0.82rem",
+            letterSpacing: "0.04em",
+            borderRadius: "9999px",
+            border: "1px solid #a8a29e",
+            textDecoration: "none",
+          }}>
+            {t[lang].hero.cta2}
+          </a>
+        </div>
       </div>
     </section>
   );

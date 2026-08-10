@@ -206,7 +206,7 @@ export function ScrollingFeatureShowcase() {
           {/* ── LEFT — text ── */}
           <div
             className="flex flex-col justify-center"
-            style={{ paddingRight: "clamp(2rem, 6vw, 6rem)", paddingTop: "5rem", paddingBottom: "5rem" }}
+            style={{ paddingRight: "clamp(0rem, 6vw, 6rem)", paddingTop: "clamp(3rem, 5vw, 5rem)", paddingBottom: "clamp(3rem, 5vw, 5rem)" }}
           >
             {/* Top bar */}
             <div
@@ -262,7 +262,7 @@ export function ScrollingFeatureShowcase() {
             </div>
 
             {/* Sliding title block */}
-            <div style={{ position: "relative", height: "clamp(22rem, 52vh, 34rem)", overflow: "hidden" }}>
+            <div style={{ position: "relative", height: "clamp(26rem, 52vh, 34rem)", overflow: "hidden" }}>
               {SLIDES.map((slide, i) => (
                 <div
                   key={slide.id}
@@ -285,7 +285,7 @@ export function ScrollingFeatureShowcase() {
                       fontFamily: "var(--font-serif)",
                       fontStyle: "italic",
                       fontWeight: 400,
-                      fontSize: "clamp(3rem, 7.5vw, 7.5rem)",
+                      fontSize: "clamp(2rem, 7.5vw, 7.5rem)",
                       lineHeight: 0.92,
                       letterSpacing: "-0.02em",
                       color: "var(--text)",
