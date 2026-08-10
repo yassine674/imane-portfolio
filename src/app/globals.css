@@ -70,6 +70,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
   scroll-behavior: auto;
+  scrollbar-gutter: stable;
 }
 
 body {

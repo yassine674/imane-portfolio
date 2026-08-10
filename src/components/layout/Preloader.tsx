@@ -11,7 +11,7 @@ const opacity = {
   },
   enter: {
     opacity: 0.75,
-    transition: { duration: 1, delay: 0.2 },
+    transition: { duration: 0.2 },
   },
 }
 const slideUp = {
@@ -48,7 +48,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
 
     const t = setTimeout(
       () => { setIndex(index + 1) },
-      index === 0 ? 1000 : 150,
+      index === 0 ? 800 : 380,
     )
     return () => clearTimeout(t)
   }, [index])

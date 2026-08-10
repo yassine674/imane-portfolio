@@ -21,12 +21,9 @@ export default function Home() {
   const handleComplete = useCallback(() => setLoaded(true), []);
 
   useEffect(() => {
-    if (loaded) {
-      document.documentElement.style.overflow = "";
-    } else {
-      document.documentElement.style.overflow = "hidden";
-    }
-    return () => { document.documentElement.style.overflow = ""; };
+    const el = document.documentElement;
+    el.style.overflowY = loaded ? "" : "hidden";
+    return () => { el.style.overflowY = ""; };
   }, [loaded]);
 
   return (
