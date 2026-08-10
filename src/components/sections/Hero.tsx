@@ -11,6 +11,7 @@ const GRID: React.CSSProperties = {
     "linear-gradient(hsla(36,31%,69%,.25) 1px,transparent 0)," +
     "linear-gradient(90deg,hsla(36,31%,69%,.25) 1px,transparent 0)",
   backgroundSize: "56px 56px",
+  backgroundPosition: "0 bottom",
 };
 
 /* ═══════════════════════════════════════════════════════
