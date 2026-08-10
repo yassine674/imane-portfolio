@@ -54,12 +54,6 @@ export const metadata: Metadata = {
     locale: "en_US",
   },
   robots: { index: true, follow: true },
-  icons: {
-    icon: [
-      { url: "/imane-portfolio/favicon.svg", type: "image/svg+xml" },
-      { url: "/imane-portfolio/favicon.ico", type: "image/x-icon" },
-    ],
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
