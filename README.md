@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Imane MOUMOUN — Portfolio
 
-## Getting Started
+Personal portfolio of Imane MOUMOUN, AI/ML engineering student at Mines Saint-Étienne → ENS Paris-Saclay.
 
-First, run the development server:
+**Live:** https://yassine674.github.io/imane-portfolio/
+
+---
+
+## Stack
+
+- **Next.js 16** — App Router, static export (`output: "export"`)
+- **TypeScript** — strict mode
+- **Tailwind CSS v4** — utility classes + OKLCH design tokens
+- **Framer Motion** — scroll-triggered animations
+- **GSAP** — timeline scrub animations (Experience section)
+- **Resend** — contact form email delivery
+
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For the contact form, create `.env.local`:
+```
+RESEND_API_KEY=re_your_key_here
+CONTACT_EMAIL=your@email.com
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build & Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build    # generates static site in /out
+```
 
-## Learn More
+Deployed automatically to GitHub Pages on every push to `main`.
 
-To learn more about Next.js, take a look at the following resources:
+## Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/           — layout, page entry, global CSS, favicon, API route
+  components/    — layout/, sections/, ui/
+  lib/           — asset helper, i18n context, translations (EN + FR)
+public/
+  about/         — hero collage images
+  project/       — project card images
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+All page copy is in `src/lib/translations.ts` — edit there to update any text in either language.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> For Claude Code: see `CLAUDE.md` for full architecture, patterns, and task guides.
