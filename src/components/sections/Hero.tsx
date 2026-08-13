@@ -89,6 +89,7 @@ function Badge() {
                       onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
                     />
                   </div>
+                  <div style={{ marginTop: 8, height: 11 }} aria-hidden="true" />
                 </div>
               </div>
             </div>
