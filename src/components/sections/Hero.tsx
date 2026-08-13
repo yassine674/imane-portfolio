@@ -19,6 +19,19 @@ const GRID: React.CSSProperties = {
 function Badge() {
   const [flipped, setFlipped] = useState(false);
   const [landed,  setLanded]  = useState(false);
+  const clickCount = useRef(0);
+  const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleClick = () => {
+    clickCount.current += 1;
+    if (clickTimer.current) clearTimeout(clickTimer.current);
+    if (clickCount.current >= 3) {
+      clickCount.current = 0;
+      setFlipped(f => !f);
+    } else {
+      clickTimer.current = setTimeout(() => { clickCount.current = 0; }, 500);
+    }
+  };
 
   return (
     <motion.div
@@ -43,7 +56,7 @@ function Badge() {
         </div>
 
         {/* card */}
-        <div onClick={() => setFlipped(f => !f)} style={{ width: 210, marginTop: -30, position: "relative", perspective: 800, cursor: "pointer" }}>
+        <div onClick={handleClick} style={{ width: 210, marginTop: -30, position: "relative", perspective: 800, cursor: "default" }}>
           <motion.div
             animate={{ rotateY: flipped ? 180 : 0 }}
             transition={{ duration: 0.55, ease: "easeOut" }}
@@ -76,7 +89,6 @@ function Badge() {
                       onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
                     />
                   </div>
-                  <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 9, marginTop: 8, letterSpacing: "0.12em", textTransform: "uppercase" }}>click to flip</p>
                 </div>
               </div>
             </div>
