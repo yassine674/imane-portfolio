@@ -25,7 +25,7 @@ function Badge() {
   const handleClick = () => {
     clickCount.current += 1;
     if (clickTimer.current) clearTimeout(clickTimer.current);
-    if (clickCount.current >= 3) {
+    if (clickCount.current >= 5) {
       clickCount.current = 0;
       setFlipped(f => !f);
     } else {
@@ -89,7 +89,7 @@ function Badge() {
                       onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
                     />
                   </div>
-                  <div style={{ marginTop: 8, height: 11 }} aria-hidden="true" />
+                  <div style={{ marginTop: 8, height: 32 }} aria-hidden="true" />
                 </div>
               </div>
             </div>
